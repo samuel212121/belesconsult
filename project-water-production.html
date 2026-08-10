@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Supply, Infrastructure & Well Production | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --bg-grey: #f2f4f7;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #ffffff; font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        /* ── REVEAL ── */
+        .reveal-element { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ══ SLIM NAV ══ */
+        .slim-nav { position: sticky; top: 0; z-index: 1000; background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%); border-bottom: 3px solid var(--maroon-brand); box-shadow: 0 4px 20px rgba(0,0,0,0.35); height: 58px; display: flex; align-items: center; padding: 0 6%; }
+        .slim-nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .slim-nav-logo { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .slim-nav-logo img { height: 34px; width: auto; }
+        .slim-nav-logo span { font-size: 0.85rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .slim-nav-logo span em { color: var(--blue-accent); font-style: normal; }
+        .slim-nav-right { display: flex; align-items: center; gap: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; transition: color 0.2s; }
+        .back-btn:hover { color: var(--blue-accent); }
+        .back-btn i { font-size: 0.7rem; transition: transform 0.2s; }
+        .back-btn:hover i { transform: translateX(-3px); }
+        .nav-cta-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--maroon-brand); color: #fff; text-decoration: none; padding: 8px 18px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; transition: background 0.2s, transform 0.2s; }
+        .nav-cta-pill:hover { background: #9e0d23; transform: translateY(-1px); }
+
+        /* ══ HERO ══ */
+        .page-hero { position: relative; min-height: 82vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--bg-dark); background-image: linear-gradient(to top, rgba(7,13,25,0.4) 0%, rgba(7,13,25,0.6) 50%, rgba(7,13,25,0.35) 100%), url('https://images.unsplash.com/photo-1538300342682-cf57afb97285?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; border-bottom: 5px solid var(--maroon-brand); }
+        .hero-watermark { position: absolute; inset: 0; pointer-events: none; opacity: 0.06; background-repeat: no-repeat; background-position: right 8% center; background-size: 45%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 500' stroke='%23ffffff' stroke-width='0.6' fill='none'><circle cx='300' cy='250' r='160'/><circle cx='300' cy='250' r='110'/><path d='M300 90 v320 M140 250 h320' stroke-dasharray='8,4'/><path d='M220 180 Q300 140 380 180 Q420 250 380 320 Q300 360 220 320 Q180 250 220 180 Z' stroke-width='0.5'/><path d='M150 380 q150 -40 300 0' stroke-width='0.5'/></svg>"); }
+        .hero-grid { position: absolute; inset: 0; display: flex; pointer-events: none; z-index: 1; }
+        .hero-grid-col { flex: 1; border-right: 1px solid rgba(255,255,255,0.04); }
+        .hero-content { position: relative; z-index: 5; max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 6% 80px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+        .breadcrumb a, .breadcrumb span { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--blue-accent); }
+        .breadcrumb i { font-size: 0.55rem; color: rgba(255,255,255,0.2); }
+        .breadcrumb span:last-child { color: var(--blue-accent); }
+        .hero-label { display: inline-flex; align-items: center; gap: 10px; background: rgba(21,135,210,0.15); border: 1px solid rgba(21,135,210,0.3); color: var(--blue-accent); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px; border-radius: 2px; margin-bottom: 20px; }
+        .hero-content h1 { font-size: clamp(2.6rem,5.5vw,4.5rem); font-weight: 800; color: #fff; line-height: 1.05; letter-spacing: -2px; margin-bottom: 18px; }
+        .hero-content h1 span { color: var(--blue-accent); }
+        .hero-content p { font-size: 1rem; color: #abbcd0; max-width: 580px; line-height: 1.75; margin-bottom: 36px; }
+        .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+        .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 50px; }
+        .hero-pill i { color: var(--blue-accent); font-size: 0.75rem; }
+
+        /* ══ DISCIPLINE INTRO BLOCKS ══ */
+        .discipline-section { background: #fff; padding: 90px 6%; }
+        .discipline-inner { max-width: 1200px; margin: 0 auto; }
+        .section-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--maroon-brand); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .section-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--maroon-brand); }
+        .discipline-intro-title { font-size: clamp(1.8rem,3vw,2.5rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 48px; max-width: 700px; line-height: 1.2; }
+        .discipline-intro-title span { color: var(--maroon-brand); }
+        .discipline-blocks { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(22,71,128,0.06); }
+        .disc-block { background: #fff; padding: 36px 28px; position: relative; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+        .disc-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .disc-block:nth-child(1)::before { background: var(--navy-brand); }
+        .disc-block:nth-child(2)::before { background: var(--maroon-brand); }
+        .disc-block:nth-child(3)::before { background: var(--blue-accent); }
+        .disc-block:hover { box-shadow: 0 12px 32px rgba(22,71,128,0.08); transform: translateY(-4px); }
+        .disc-block-num { font-size: 5rem; font-weight: 900; color: rgba(22,71,128,0.05); position: absolute; top: 8px; right: 16px; line-height: 1; pointer-events: none; }
+        .disc-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 18px; }
+        .disc-block:nth-child(1) .disc-icon { background: rgba(22,71,128,0.1); }
+        .disc-block:nth-child(2) .disc-icon { background: rgba(127,10,28,0.1); }
+        .disc-block:nth-child(3) .disc-icon { background: rgba(21,135,210,0.1); }
+        .disc-block:nth-child(1) .disc-icon i { color: var(--navy-brand); }
+        .disc-block:nth-child(2) .disc-icon i { color: var(--maroon-brand); }
+        .disc-block:nth-child(3) .disc-icon i { color: var(--blue-accent); }
+        .disc-icon i { font-size: 1.2rem; }
+        .disc-block h4 { font-size: 1rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; }
+        .disc-block p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* ══ SECTION HEADERS ══ */
+        .featured-section { background: var(--bg-grey); padding: 100px 6%; }
+        .featured-inner { max-width: 1200px; margin: 0 auto; }
+        .featured-header { margin-bottom: 60px; }
+        .featured-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 12px; }
+        .red-line { width: 52px; height: 3px; background: var(--maroon-brand); margin-bottom: 20px; }
+        .featured-header p { font-size: 0.95rem; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+
+        /* Showcase card grid */
+        .showcase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+        .showcase-card { position: relative; overflow: hidden; border: 1px solid #e2e8f0; background: #fff; display: flex; flex-direction: column; transition: box-shadow 0.35s, transform 0.35s, border-color 0.35s; }
+        .showcase-card:hover { box-shadow: 0 24px 56px rgba(22,71,128,0.12); transform: translateY(-6px); border-color: rgba(22,71,128,0.2); }
+        .sc-image { position: relative; height: 220px; overflow: hidden; flex-shrink: 0; }
+        .sc-image img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.65); transition: transform 0.55s ease, filter 0.4s ease; }
+        .showcase-card:hover .sc-image img { transform: scale(1.06); filter: brightness(0.5); }
+        .sc-value-badge { position: absolute; top: 16px; left: 16px; background: var(--maroon-brand); color: #fff; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; }
+        .sc-status { position: absolute; top: 16px; right: 16px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #16a34a; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; padding: 5px 11px; border-radius: 50px; display: flex; align-items: center; gap: 5px; backdrop-filter: blur(4px); }
+        .sc-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #16a34a; display: inline-block; }
+        .sc-location { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 16px; background: linear-gradient(to top, rgba(7,13,25,0.92), transparent); display: flex; align-items: flex-end; gap: 8px; }
+        .sc-location i { color: var(--blue-accent); font-size: 0.75rem; margin-bottom: 2px; }
+        .sc-location span { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.8); }
+        .sc-body { padding: 24px 24px 0 24px; flex: 1; }
+        .sc-title { font-size: 1.05rem; font-weight: 800; color: var(--navy-brand); line-height: 1.3; margin-bottom: 12px; }
+        .sc-narrative { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 18px; }
+        .sc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+        .sc-tag { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 2px; background: var(--bg-grey); color: var(--navy-brand); border: 1px solid #dde3ec; }
+        .sc-tag.arch { background: rgba(21,135,210,0.07); color: var(--blue-accent); border-color: rgba(21,135,210,0.2); }
+        .sc-tag.struct { background: rgba(22,71,128,0.07); color: var(--navy-brand); border-color: rgba(22,71,128,0.18); }
+        .sc-tag.elec { background: rgba(180,120,0,0.07); color: #92620a; border-color: rgba(180,120,0,0.2); }
+        .sc-tag.sanit { background: rgba(34,197,94,0.07); color: #16a34a; border-color: rgba(34,197,94,0.2); }
+        .sc-tag.feas { background: rgba(127,10,28,0.07); color: var(--maroon-brand); border-color: rgba(127,10,28,0.18); }
+        .sc-tag.admin { background: rgba(100,116,139,0.07); color: #475569; border-color: rgba(100,116,139,0.2); }
+        .sc-tag.water { background: rgba(21,135,210,0.07); color: var(--blue-accent); border-color: rgba(21,135,210,0.2); }
+        .sc-divider { height: 1px; background: #f1f5f9; margin: 0 24px; }
+        .sc-footer { padding: 14px 24px 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .sc-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .sc-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+        .sc-meta-item i { color: var(--navy-brand); font-size: 0.7rem; }
+        .sc-employer { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+        .sc-employer i { color: var(--maroon-brand); }
+
+        /* Full-width showcase card */
+        .showcase-card.full-width { grid-column: 1 / -1; flex-direction: row; }
+        .showcase-card.full-width .sc-image { width: 380px; height: auto; min-height: 300px; flex-shrink: 0; }
+        .showcase-card.full-width .sc-body { padding: 32px 28px 0 28px; }
+        .showcase-card.full-width .sc-title { font-size: 1.2rem; }
+        .showcase-card.full-width .sc-narrative { font-size: 0.88rem; }
+        .showcase-card.full-width .sc-footer { padding: 16px 28px 28px 28px; }
+        .showcase-card.full-width .sc-divider { margin: 0 28px; }
+        .showcase-card.full-width .sc-content { display: flex; flex-direction: column; flex: 1; }
+
+        /* Engineering specs strip inside showcase card */
+        .sc-specs { display: flex; gap: 0; margin-bottom: 20px; border: 1px solid #e8ecf2; background: var(--bg-light); }
+        .sc-spec-item { flex: 1; padding: 12px 16px; border-right: 1px solid #e8ecf2; }
+        .sc-spec-item:last-child { border-right: none; }
+        .sc-spec-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; display: block; }
+        .sc-spec-value { font-size: 0.82rem; font-weight: 800; color: var(--navy-brand); }
+        .sc-spec-value.gold { color: #92620a; }
+
+        /* ══ WHY BELES ══ */
+        .why-section { background: var(--navy-brand); padding: 90px 6%; border-top: 4px solid var(--maroon-brand); }
+        .why-inner { max-width: 1200px; margin: 0 auto; }
+        .why-section .section-eyebrow { color: rgba(255,255,255,0.45); }
+        .why-section .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+        .why-section h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: #fff; margin-bottom: 48px; letter-spacing: -0.5px; }
+        .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+        .why-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid var(--maroon-brand); padding: 32px 28px; transition: background 0.3s, transform 0.3s; }
+        .why-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+        .why-icon { width: 44px; height: 44px; background: rgba(127,10,28,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; transition: background 0.3s; }
+        .why-card:hover .why-icon { background: var(--maroon-brand); }
+        .why-icon i { color: var(--maroon-brand); font-size: 1.1rem; transition: color 0.3s; }
+        .why-card:hover .why-icon i { color: #fff; }
+        .why-card h4 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .why-card p { font-size: 0.85rem; color: #abbcd0; line-height: 1.65; }
+
+        /* ══ ENGAGE ══ */
+        .engage-section { background: var(--bg-dark); padding: 100px 6%; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); }
+        .engage-inner { max-width: 540px; margin: 0 auto; }
+        .mascot-wrap { width: 120px; height: 120px; margin: 0 auto 28px auto; background: radial-gradient(circle, rgba(21,135,210,0.15) 0%, transparent 70%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .mascot-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(21,135,210,0.4); animation: spin 20s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .css-avatar { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .av-hat { position: absolute; top: 8px; width: 62px; height: 34px; background: var(--maroon-brand); border-radius: 36px 36px 6px 6px; z-index: 5; }
+        .av-hat-b { position: absolute; top: 8px; left: 24px; width: 13px; height: 13px; background: #e2e8f0; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--navy-brand); font-weight: 900; }
+        .av-brim { position: absolute; top: 38px; width: 74px; height: 5px; background: #630512; border-radius: 3px; z-index: 6; }
+        .av-face { position: absolute; top: 36px; width: 54px; height: 52px; background: #d1a17d; border-radius: 2px 2px 24px 24px; z-index: 3; }
+        .av-eye-l { position: absolute; top: 16px; left: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-eye-r { position: absolute; top: 16px; right: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-smile { position: absolute; bottom: 10px; left: 16px; width: 18px; height: 8px; border-bottom: 2.5px solid #2d3748; border-radius: 0 0 12px 12px; }
+        .av-body { position: absolute; bottom: 0; width: 88px; height: 28px; background: var(--navy-brand); border-radius: 14px 14px 3px 3px; z-index: 2; }
+        .av-shirt { position: absolute; top: 0; left: 35px; width: 18px; height: 11px; background: #fff; clip-path: polygon(0 0,100% 0,50% 100%); }
+        .engage-motto { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--blue-accent); margin-bottom: 10px; }
+        .engage-inner h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .engage-inner p { font-size: 0.9rem; color: #abbcd0; line-height: 1.7; margin-bottom: 32px; }
+        .engage-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+        .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; box-shadow: 0 4px 20px rgba(37,211,102,0.3); animation: pulse-wa 2.2s infinite; transition: transform 0.2s; }
+        .btn-wa:hover { transform: translateY(-2px); }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+        .btn-em { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+        .btn-em:hover { border-color: var(--blue-accent); background: rgba(21,135,210,0.1); transform: translateY(-2px); }
+        .intl-note { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 10px 20px; border-radius: 50px; font-size: 0.76rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+        .intl-note i { color: var(--blue-accent); }
+
+        /* ══ FOOTER ══ */
+        .corporate-footer { background: var(--bg-dark); color: #fff; padding: 70px 6% 36px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 48px; }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-col h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 18px; }
+        .footer-col p { color: #abbcd0; font-size: 0.88rem; line-height: 1.6; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .footer-links li a { color: #abbcd0; text-decoration: none; font-size: 0.88rem; transition: color 0.25s; }
+        .footer-links li a:hover { color: #fff; }
+        .footer-contact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; color: #abbcd0; font-size: 0.88rem; }
+        .footer-contact-list li { display: flex; align-items: center; gap: 10px; }
+        .footer-contact-list li i { color: var(--maroon-brand); }
+        .footer-bottom { max-width: 1200px; margin: 26px auto 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: #64748b; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .discipline-blocks { grid-template-columns: 1fr; }
+            .showcase-grid { grid-template-columns: 1fr; }
+            .showcase-card.full-width { flex-direction: column; }
+            .showcase-card.full-width .sc-image { width: 100%; height: 220px; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+            .sc-specs { flex-wrap: wrap; }
+            .sc-spec-item { flex: 1 1 45%; border-bottom: 1px solid #e8ecf2; }
+        }
+        @media (max-width: 640px) {
+            .why-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .slim-nav-right .back-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ SLIM NAV ══ -->
+<nav class="slim-nav">
+    <div class="slim-nav-inner">
+        <a href="index.html" class="slim-nav-logo">
+            <img src="logos/beles.png" alt="Beles Consulting" onerror="this.onerror=null;this.src='https://placehold.co/120x34/164780/ffffff?text=Beles'">
+            <span>Beles <em>Consult</em></span>
+        </a>
+        <div class="slim-nav-right">
+            <a href="projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i><span>Back to Projects</span></a>
+            <a href="https://wa.me/251911281227" class="nav-cta-pill" target="_blank"><i class="fa-brands fa-whatsapp"></i> Get a Quote</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="page-hero">
+    <div class="hero-watermark"></div>
+    <div class="hero-grid">
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+    </div>
+    <div class="hero-content">
+        <div class="breadcrumb reveal-element">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="projects.html">Projects</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Water Supply &amp; Well Production</span>
+        </div>
+        <div class="hero-label reveal-element delay-1"><i class="fa-solid fa-droplet"></i> Project Category</div>
+        <h1 class="reveal-element delay-1">Water Supply,<br>Infrastructure &amp;<br><span>Well Production</span></h1>
+        <p class="reveal-element delay-2">From Afar to Somali Region, Beles Consulting delivers detailed design and full construction supervision for large-scale water infrastructure — deep wells, spring development, and integrated water supply systems engineered for resilience and long-term reliability.</p>
+        <div class="hero-pills reveal-element delay-3">
+            <div class="hero-pill"><i class="fa-solid fa-water"></i> Deep Well Production</div>
+            <div class="hero-pill"><i class="fa-solid fa-faucet-drip"></i> Water Supply Systems</div>
+            <div class="hero-pill"><i class="fa-solid fa-leaf"></i> ESIA &amp; Sustainability</div>
+            <div class="hero-pill"><i class="fa-solid fa-helmet-safety"></i> Construction Supervision</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ DISCIPLINE INTRO BLOCKS ══ -->
+<section class="discipline-section">
+    <div class="discipline-inner">
+        <div class="section-eyebrow reveal-element">Our Water Infrastructure Disciplines</div>
+        <h2 class="discipline-intro-title reveal-element">Engineering Water <span>Security at Scale</span></h2>
+        <div class="discipline-blocks">
+            <div class="disc-block reveal-element">
+                <div class="disc-block-num">01</div>
+                <div class="disc-icon"><i class="fa-solid fa-pencil-ruler"></i></div>
+                <h4>Detailed Water Infrastructure Design</h4>
+                <p>Optimized water supply system design covering deep well production, spring development, distribution networks, and structural resilience considerations — including earthquake-resistant design approaches for critical infrastructure.</p>
+            </div>
+            <div class="disc-block reveal-element delay-1">
+                <div class="disc-block-num">02</div>
+                <div class="disc-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h4>Environmental &amp; Social Impact Assessment</h4>
+                <p>Comprehensive ESIA studies integrated into every water infrastructure design, ensuring sustainability, regulatory compliance, and minimal environmental disruption across well production and supply system projects.</p>
+            </div>
+            <div class="disc-block reveal-element delay-2">
+                <div class="disc-block-num">03</div>
+                <div class="disc-icon"><i class="fa-solid fa-helmet-safety"></i></div>
+                <h4>Construction Supervision &amp; QA</h4>
+                <p>Rigorous construction supervision ensuring contractor deliverables strictly adhere to contract specifications — safeguarding client interests and securing a satisfactory return on every infrastructure investment.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FEATURED WATER PROJECTS ══ -->
+<section class="featured-section">
+    <div class="featured-inner">
+        <div class="featured-header reveal-element">
+            <div class="section-eyebrow">Project Portfolio</div>
+            <h2>Water Supply &amp; Well Production Projects</h2>
+            <div class="red-line"></div>
+            <p>Major water infrastructure assignments delivered for the Ministry of Agriculture across Ethiopia's Afar and Somali Regions — combining detailed engineering design, deep well production, and full construction supervision under sole contract.</p>
+        </div>
+
+        <div class="showcase-grid">
+
+            <!-- ── SHOWCASE: Asaita Water Infrastructure ── -->
+            <div class="showcase-card full-width reveal-element">
+                <div class="sc-image">
+                    <img src="images/water.jfif"Asaita Water Infrastructure">
+                    <div class="sc-value-badge">78.5 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Afar Region, Ethiopia</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Asaita Water Infrastructure and Well Production Project — Detailed Design &amp; Supervision</div>
+                        <div class="sc-narrative">A 78.5 million ETB water infrastructure project in the Afar Region, involving intricate detailed design work for water supply systems and well production. The project incorporated various technical design approaches including earthquake resilience considerations, and was anchored by a comprehensive Environmental and Social Impact Assessment to develop an optimized water supply system. Beles Consulting's supervision ensured the contractor's work met all contract specifications, safeguarding the client's interests and investment.</div>
+                        <div class="sc-specs">
+                            <div class="sc-spec-item"><span class="sc-spec-label">Construction Cost</span><span class="sc-spec-value gold">78,525,352 ETB</span></div>
+                            <div class="sc-spec-item"><span class="sc-spec-label">Duration</span><span class="sc-spec-value">26 Months</span></div>
+                            <div class="sc-spec-item"><span class="sc-spec-label">Region</span><span class="sc-spec-value">Afar</span></div>
+                        </div>
+                        <div class="sc-tags">
+                            <span class="sc-tag water">Detailed Design</span>
+                            <span class="sc-tag water">Well Production</span>
+                            <span class="sc-tag feas">ESIA</span>
+                            <span class="sc-tag struct">Earthquake Resilience</span>
+                            <span class="sc-tag admin">Construction Supervision</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Jul 2020 – Sep 2022</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 78,525,352 ETB</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Ministry of Agriculture</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SHOWCASE: Wabishebele Water Supply ── -->
+            <div class="showcase-card full-width reveal-element">
+                <div class="sc-image">
+                    <img src="images/water2.jfif" alt="Wabishebele Water Supply and Deep Wells">
+                    <div class="sc-value-badge">112.9 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Ethiopia · Ministry of Agriculture</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Wabishebele Water Supply and #4 Deep Well Project — Detailed Design &amp; Supervision</div>
+                        <div class="sc-narrative">A 112.9 million ETB project — the largest in this portfolio — covering detailed design and construction supervision of a water supply system together with four deep wells. The consultancy integrated an in-depth Environmental and Social Impact Assessment to ensure sustainability and regulatory compliance, while design approaches accounted for earthquake resilience. Construction supervision confirmed full adherence to contract specifications throughout delivery.</div>
+                        <div class="sc-specs">
+                            <div class="sc-spec-item"><span class="sc-spec-label">Construction Cost</span><span class="sc-spec-value gold">112,898,252 ETB</span></div>
+                            <div class="sc-spec-item"><span class="sc-spec-label">Deep Wells</span><span class="sc-spec-value">4 Wells</span></div>
+                            <div class="sc-spec-item"><span class="sc-spec-label">Duration</span><span class="sc-spec-value">~29 Months</span></div>
+                        </div>
+                        <div class="sc-tags">
+                            <span class="sc-tag water">Detailed Design</span>
+                            <span class="sc-tag water">4 Deep Wells</span>
+                            <span class="sc-tag feas">ESIA</span>
+                            <span class="sc-tag struct">Earthquake Resilience</span>
+                            <span class="sc-tag admin">Construction Supervision</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Jul 2020 – Dec 2022</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 112,898,252 ETB</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Ministry of Agriculture</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SHOWCASE: Gode Water Supply ── -->
+            <div class="showcase-card full-width reveal-element">
+                <div class="sc-image">
+                    <img src="images/water3.jfif" alt="Gode Water Supply, Springs and Deep Wells">
+                    <div class="sc-value-badge">84.4 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Somali Region, Ethiopia</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Gode Water Supply, #2 Springs and #2 Deep Wells Project — Detailed Design &amp; Supervision</div>
+                        <div class="sc-narrative">An 84.4 million ETB water infrastructure project in Somali Region, combining a water supply system with two springs and two deep wells. As with the wider portfolio, the consultancy delivered detailed design work aimed at an optimized water supply system, anchored by an in-depth Environmental and Social Impact Assessment, with design approaches accounting for earthquake resilience and rigorous construction supervision.</div>
+                        <div class="sc-specs">
+                            <div class="sc-spec-item"><span class="sc-spec-label">Construction Cost</span><span class="sc-spec-value gold">84,365,478 ETB</span></div>
+                            <div class="sc-spec-item"><span class="sc-spec-label">Sources</span><span class="sc-spec-value">2 Springs · 2 Deep Wells</span></div>
+                            <div class="sc-spec-item"><span class="sc-spec-label">Duration</span><span class="sc-spec-value">13 Months</span></div>
+                        </div>
+                        <div class="sc-tags">
+                            <span class="sc-tag water">Detailed Design</span>
+                            <span class="sc-tag water">Springs &amp; Deep Wells</span>
+                            <span class="sc-tag feas">ESIA</span>
+                            <span class="sc-tag struct">Earthquake Resilience</span>
+                            <span class="sc-tag admin">Construction Supervision</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Oct 2021 – Nov 2022</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 84,365,478 ETB</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Ministry of Agriculture</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ══ WHY BELES ══ -->
+<section class="why-section">
+    <div class="why-inner">
+        <div class="section-eyebrow reveal-element">Why Beles Consulting</div>
+        <h2 class="reveal-element">Our Edge in Water Infrastructure</h2>
+        <div class="why-grid">
+            <div class="why-card reveal-element delay-1">
+                <div class="why-icon"><i class="fa-solid fa-award"></i></div>
+                <h4>Over 275 Million ETB Delivered</h4>
+                <p>Across Asaita, Wabishebele, and Gode alone, Beles Consulting has overseen the detailed design and supervision of water infrastructure worth more than 275 million ETB — entirely on a sole-contract basis for the Ministry of Agriculture.</p>
+            </div>
+            <div class="why-card reveal-element delay-2">
+                <div class="why-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h4>Sustainability Built In</h4>
+                <p>Every project integrates a comprehensive Environmental and Social Impact Assessment from the design stage onward, ensuring long-term sustainability and full regulatory compliance for critical water infrastructure.</p>
+            </div>
+            <div class="why-card reveal-element delay-3">
+                <div class="why-icon"><i class="fa-solid fa-helmet-safety"></i></div>
+                <h4>Investment-Grade Supervision</h4>
+                <p>Our construction supervision is designed to protect the client's investment — verifying that contractor deliverables strictly match contract specifications, from deep well production to final commissioning.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ENGAGE US ══ -->
+<section class="engage-section">
+    <div class="engage-inner">
+        <div class="mascot-wrap reveal-element">
+            <div class="mascot-ring"></div>
+            <div class="css-avatar">
+                <div class="av-hat"><div class="av-hat-b">B</div></div>
+                <div class="av-brim"></div>
+                <div class="av-face">
+                    <div class="av-eye-l"></div><div class="av-eye-r"></div><div class="av-smile"></div>
+                </div>
+                <div class="av-body"><div class="av-shirt"></div></div>
+            </div>
+        </div>
+        <p class="engage-motto reveal-element">Honest to Serve</p>
+        <h2 class="reveal-element">Need a Water Infrastructure<br>Consultancy?</h2>
+        <p class="reveal-element">Whether you are planning deep well production, spring development, or a full regional water supply system — our experienced team is ready to deliver from detailed design through to construction supervision and commissioning.</p>
+        <div class="engage-btns reveal-element">
+            <a href="https://wa.me/251911281227" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="mailto:belesconsult@gmail.com" class="btn-em"><i class="fa-solid fa-envelope"></i> Send an Email</a>
+        </div>
+        <div class="intl-note reveal-element">
+            <i class="fa-solid fa-earth-africa"></i>
+            International consultancy available across East Africa, South Africa &amp; beyond
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="corporate-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Beles Consulting P.L.C.</h4>
+            <p>Providing premium feasibility studies, environmental assessments, resettlement planning, detailed engineering design, building supervision, water infrastructure, and world-class consultancy since October 2007. Compliant with national and international standards.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Other Project Categories</h5>
+            <ul class="footer-links">
+                <li><a href="project-feasibility-eia.html">Feasibility, EIA &amp; Resettlement Studies</a></li>
+                <li><a href="project-detailed-engineering-design.html">Detailed Engineering Design</a></li>
+                <li><a href="project-building-design.html">Building Design &amp; Supervision</a></li>
+                <li><a href="project-bridge-design.html">Bridge Design</a></li>
+                <li><a href="project-road-pavement.html">Road &amp; Pavement Design</a></li>
+                <li><a href="project-supervision.html">Supervision &amp; Contract Admin</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact Channels</h5>
+            <ul class="footer-contact-list">
+                <li><i class="fa-solid fa-map-location-dot"></i>Gurd shola, Infront of Ethio Telecom, Addis Ababa, Ethiopia</li>
+                <li><i class="fa-solid fa-square-phone"></i> (+251) 911 281 227 / 911 459 248</li>
+                <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+        <span>Honest to Serve</span>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const reveals = document.querySelectorAll('.reveal-element');
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => obs.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('active'));
+    }
+});
+</script>
+</body>
+</html>

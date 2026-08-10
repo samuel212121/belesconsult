@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Design Portfolio | Beles Consulting P.L.C</title>
+    <!-- Iconography & Typography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-light: #f8fafc;
+            --bg-grey: #f1f5f9;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #ffffff; font-family: var(--font-main); color: var(--text-dark); -webkit-font-smoothing: antialiased; }
+
+        /* ══ STICKY SLIM NAV ══ */
+        .slim-nav {
+            position: sticky; top: 0; left: 0; width: 100%; height: 70px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05); z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 6%;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .slim-nav .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--navy-brand); text-decoration: none; font-size: 1.1rem; letter-spacing: -0.5px; }
+        .slim-nav .logo-area span { color: var(--maroon-brand); }
+        .slim-nav .back-link { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .slim-nav .back-link:hover { color: var(--navy-brand); transform: translateX(-3px); }
+        .slim-nav .quote-pill { background: var(--maroon-brand); color: #ffffff; padding: 10px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: var(--transition); box-shadow: 0 4px 12px rgba(127, 10, 28, 0.15); }
+        .slim-nav .quote-pill:hover { background: var(--navy-brand); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(22, 71, 128, 0.2); }
+        .nav-right-cluster { display: flex; align-items: center; gap: 30px; }
+
+        /* ══ 1. HERO SECTION (DARK CINEMATIC) ══ */
+        .hero-section {
+            position: relative; min-height: 70vh;
+            background: linear-gradient(rgba(10, 20, 35, 0.82), rgba(15, 23, 42, 0.95)), 
+                        url('') no-repeat center center/cover;
+            display: flex; flex-direction: column; justify-content: center; padding: 80px 6% 100px 6%; overflow: hidden;
+        }
+        .blueprint-watermark { position: absolute; right: -5%; top: 10%; width: 45%; opacity: 0.04; pointer-events: none; color: #ffffff; }
+        
+        .breadcrumb { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); margin-bottom: 20px; }
+        .breadcrumb a { color: #ffffff; text-decoration: none; opacity: 0.8; transition: var(--transition); }
+        .breadcrumb a:hover { opacity: 1; color: var(--blue-accent); }
+        .hero-section h1 { font-size: 3.8rem; font-weight: 800; color: #ffffff; letter-spacing: -1.5px; max-width: 800px; line-height: 1.15; margin-bottom: 40px; }
+        
+        .stat-pills-row { display: flex; flex-wrap: wrap; gap: 15px; margin-top: auto; }
+        .stat-pill { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); backdrop-filter: blur(5px); padding: 12px 24px; border-radius: 50px; color: #ffffff; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .stat-pill i { color: var(--blue-accent); }
+
+        /* ══ 2. SECTION INTRO (LIGHT BACKGROUND) ══ */
+        .intro-section { padding: 90px 6%; background: var(--bg-light); border-bottom: 1px solid #e2e8f0; }
+        .intro-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 60px; align-items: center; }
+        .intro-left h2 { font-size: 2.2rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 20px; letter-spacing: -0.5px; }
+        .intro-left p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 25px; }
+        .scope-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .scope-list li { font-size: 0.95rem; font-weight: 600; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+        .scope-list li i { color: var(--maroon-brand); font-size: 0.85rem; }
+        
+        .dark-stat-card { background: #0f172a; padding: 40px; border-radius: 8px; border-left: 4px solid var(--maroon-brand); color: #ffffff; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .dark-stat-card .stat-num { font-size: 4rem; font-weight: 800; color: #ffffff; line-height: 1; letter-spacing: -2px; margin-bottom: 5px; display: flex; align-items: baseline; gap: 5px; }
+        .dark-stat-card .stat-num span { color: var(--blue-accent); }
+        .dark-stat-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: #ffffff; }
+        .dark-stat-card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.6; }
+
+        /* ══ 3. MAIN SECTION: EXPANDABLE PROJECT CARDS ══ */
+        .main-portfolio { padding: 100px 6%; max-width: 1200px; margin: 0 auto; }
+        .section-title-bar { margin-bottom: 50px; }
+        .section-title-bar h3 { font-size: 1.8rem; font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; }
+        
+        .projects-stack { display: flex; flex-direction: column; gap: 60px; }
+        
+        /* Full-width Stacked Row Layout Layout */
+        .project-card {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01);
+            transition: var(--transition); position: relative;
+        }
+        .project-card:hover { box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08); border-color: #cbd5e1; }
+        
+        .card-top-block { display: grid; grid-template-columns: 1fr 340px; min-height: 320px; border-bottom: 1px solid #f1f5f9; }
+        .card-left-info { padding: 40px; display: flex; flex-direction: column; position: relative; }
+        
+        .ghost-number { position: absolute; top: 15px; left: 30px; font-size: 5.5rem; font-weight: 900; color: #f1f5f9; line-height: 1; z-index: 1; pointer-events: none; user-select: none; }
+        .card-header-meta { position: relative; z-index: 2; display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .status-badge { padding: 6px 14px; border-radius: 50px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; }
+        .status-badge.completed { background: #dcfce7; color: #166534; }
+        .status-badge::before { content: ''; width: 6px; height: 6px; background: currentColor; border-radius: 50%; }
+        
+        .project-title { position: relative; z-index: 2; font-size: 1.5rem; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; margin-bottom: 25px; line-height: 1.35; }
+        
+        /* Structured Parameter Grid Cells */
+        .data-matrix { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 30px; margin-bottom: auto; position: relative; z-index: 2; }
+        .matrix-node { display: flex; flex-direction: column; gap: 2px; }
+        .matrix-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .matrix-val { font-size: 0.9rem; font-weight: 600; color: var(--text-dark); line-height: 1.4; }
+        
+        /* Master Image Panel inside Top Grid */
+        .card-right-media { position: relative; height: 100%; overflow: hidden; background: #e2e8f0; }
+        .card-right-media img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Integrated 6-Image Thumbnail Grid Framework Framework */
+        .card-bottom-gallery { background: #fafafa; padding: 30px 40px; border-top: 1px solid #f1f5f9; display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center; }
+        .gallery-label-box h5 { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--navy-brand); margin-bottom: 4px; }
+        .gallery-label-box p { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+        
+        .thumb-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+        .thumb-item { position: relative; height: 75px; background: #e2e8f0; border-radius: 4px; overflow: hidden; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: block; }
+        .thumb-item img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .thumb-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 71, 128, 0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--transition); }
+        .thumb-overlay i { color: #ffffff; font-size: 0.9rem; transform: scale(0.8); transition: var(--transition); }
+        .thumb-item:hover img { transform: scale(1.08); }
+        .thumb-item:hover .thumb-overlay { opacity: 1; }
+        .thumb-item:hover .thumb-overlay i { transform: scale(1); }
+
+        /* Technical Complexity Tags Row */
+        .card-tags-footer { border-top: 1px solid #f1f5f9; background: #ffffff; padding: 20px 40px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .footer-tag-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-right: 10px; }
+        .tech-tag { background: var(--bg-light); border: 1px solid #e2e8f0; color: var(--navy-brand); padding: 6px 14px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; }
+        
+        /* ══ 4. WHY BELES SECTION (DARK CARDS) ══ */
+        .differentiators-section { background: #0b1329; padding: 100px 6%; color: #ffffff; }
+        .diff-container { max-width: 1200px; margin: 0 auto; }
+        .diff-header { text-align: center; margin-bottom: 60px; }
+        .diff-header h2 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 15px; }
+        .diff-header p { color: #94a3b8; font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+        
+        .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .diff-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); padding: 40px 35px; border-radius: 6px; transition: var(--transition); }
+        .diff-card:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--blue-accent); transform: translateY(-5px); }
+        .diff-card i { font-size: 2rem; color: var(--blue-accent); margin-bottom: 25px; display: block; }
+        .diff-card h4 { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: #ffffff; }
+        .diff-card p { font-size: 0.92rem; color: #94a3b8; line-height: 1.6; }
+
+        /* ══ 5. ENGAGE US CONVERSION ZONE ══ */
+        .engage-footer-zone { padding: 90px 6%; background: var(--bg-light); text-align: center; border-top: 1px solid #e2e8f0; }
+        .engage-wrap { max-width: 700px; margin: 0 auto; }
+        
+        .avatar-cluster { display: flex; justify-content: center; align-items: center; margin-bottom: 25px; position: relative; }
+        .avatar-node { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #ffffff; background: #e2e8f0; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); margin: 0 -8px; position: relative; z-index: 2; }
+        .avatar-node img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .pulse-indicator { position: absolute; right: calc(50% - 40px); top: 0; width: 14px; height: 14px; background: #22c55e; border: 2px solid #ffffff; border-radius: 50%; z-index: 3; }
+        .pulse-ring { position: absolute; right: calc(50% - 45px); top: -5px; width: 24px; height: 24px; border: 2px solid #22c55e; border-radius: 50%; opacity: 0; animation: pulseMotion 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1); z-index: 3; }
+
+        .engage-wrap h3 { font-size: 2.2rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 15px; letter-spacing: -0.5px; }
+        .engage-wrap p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 35px; line-height: 1.6; }
+        
+        .action-button-group { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; }
+        .action-btn { padding: 14px 32px; font-family: var(--font-main); font-size: 0.95rem; font-weight: 700; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: var(--transition); }
+        
+        .btn-whatsapp { background: #25d366; color: #ffffff; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.2); }
+        .btn-whatsapp:hover { background: #20ba5a; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); }
+        .btn-email { background: var(--navy-brand); color: #ffffff; box-shadow: 0 6px 20px rgba(22, 71, 128, 0.15); }
+        .btn-email:hover { background: var(--maroon-brand); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(127, 10, 28, 0.2); }
+        
+        .international-tagline { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .international-tagline i { color: var(--blue-accent); }
+
+        /* ══ PURE CSS MODAL LIGHTBOX SYSTEM ══ */
+        .lightbox-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.96); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
+        .lightbox-modal:target { display: flex; }
+        .lightbox-content { max-width: 900px; max-height: 85vh; position: relative; animation: zoomIn 0.25s ease-out; }
+        .lightbox-content img { width: 100%; height: 100%; object-fit: contain; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border-radius: 2px; }
+        .close-lightbox { position: absolute; top: -45px; right: 0; color: #ffffff; font-size: 1.8rem; text-decoration: none; font-weight: 400; transition: var(--transition); }
+        .close-lightbox:hover { color: var(--blue-accent); }
+
+        @keyframes zoomIn { from { transform: scale(0.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulseMotion { 0% { transform: scale(0.6); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+
+        /* Responsive Breakpoints Architecture */
+        @media (max-width: 1024px) {
+            .card-top-block { grid-template-columns: 1fr; }
+            .card-right-media { height: 240px; order: -1; }
+            .card-bottom-gallery { grid-template-columns: 1fr; gap: 15px; }
+            .thumb-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        }
+        @media (max-width: 768px) {
+            .intro-grid { grid-template-columns: 1fr; gap: 40px; }
+            .data-matrix { grid-template-columns: 1fr; gap: 15px; }
+            .diff-grid { grid-template-columns: 1fr; gap: 25px; }
+            .action-button-group { flex-direction: column; align-items: stretch; max-width: 350px; margin: 0 auto 25px auto; }
+            .hero-section h1 { font-size: 2.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ SLIM NAV ══ -->
+<nav class="slim-nav">
+    <a href="index.html" class="logo-area">BELES<span>CONSULT</span></a>
+    <div class="nav-right-cluster">
+        <a href="projects.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>
+        <a href="#engage" class="quote-pill">Get a Quote</a>
+    </div>
+</nav>
+
+<!-- ══ 1. HERO SECTION (DARK CINEMATIC) ══ -->
+<section class="hero-section">
+    <svg class="blueprint-watermark" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+        <path stroke-width="0.1" d="M0,50 H100 M50,0 V100 M10,10 L90,90 M90,10 L10,90"/>
+        <circle stroke-width="0.1" cx="50" cy="50" r="40"/>
+    </svg>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> / <a href="projects.html">Projects</a> / <span>Bridge Design</span>
+    </div>
+    
+    <h1>Structural Bridge &amp; Highway Corridor Engineering</h1>
+    
+    <div class="stat-pills-row">
+        <div class="stat-pill"><i class="fa-solid fa-vector-square"></i> Advanced Finite Element Modeling</div>
+        <div class="stat-pill"><i class="fa-solid fa-bridge-water"></i> Hydrological Hazard Mapping</div>
+        <div class="stat-pill"><i class="fa-solid fa-scroll"></i> AASHTO LRFD Compliant</div>
+    </div>
+</section>
+
+<!-- ══ 2. SECTION INTRO (LIGHT BACKGROUND) ══ -->
+<section class="intro-section">
+    <div class="intro-grid">
+        <div class="intro-left">
+            <h2>Bridging Complex Terrains With Elite Precision</h2>
+            <p>At Beles Consulting, our bridge engineering division specializes in transforming geographic challenges into seamless structural lifelines. We balance environmental resilience, geometric optimization, and life-cycle economics to engineer durable assets across diverse topographies.</p>
+            <ul class="scope-list">
+                <li><i class="fa-solid fa-circle-check"></i> Feasibility &amp; Route Selection</li>
+                <li><i class="fa-solid fa-circle-check"></i> Foundation &amp; Geotechnical Analysis</li>
+                <li><i class="fa-solid fa-circle-check"></i> Detailed Engineering Structural Design</li>
+                <li><i class="fa-solid fa-circle-check"></i> Tender Document Packaging</li>
+            </ul>
+        </div>
+        
+        <div class="dark-stat-card">
+            <div class="stat-num">22<span>+</span></div>
+            <h4>Structures Successfully Designed</h4>
+            <p>Representing 100% sole execution across major national logistical corridors under full institutional compliance parameters.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ 3. PROJECTS STACK / EXPANDABLE CARDS WITH GALLERIES ══ -->
+<main class="main-portfolio">
+    <div class="section-title-bar">
+        <h3>Registered Project Inventory</h3>
+    </div>
+
+    <div class="projects-stack">
+        
+        <!-- ======================= PROJECT CARD 01 ======================= -->
+        <article class="project-card">
+            <div class="card-top-block">
+                <div class="card-left-info">
+                    <div class="ghost-number">01.</div>
+                    <div class="card-header-meta">
+                        <span class="status-badge completed">100% Completed</span>
+                    </div>
+                    
+                    <h4 class="project-title">Alaba – Angacha – Wato and Dumboya – Durame Spur Road Project</h4>
+                    
+                    <div class="data-matrix">
+                        <div class="matrix-node">
+                            <span class="matrix-label">Employer / Client</span>
+                            <span class="matrix-val">Ethiopian Roads Administration</span>
+                        </div>
+                        <div class="matrix-node">
+                            <span class="matrix-label">Geographic Location</span>
+                            <span class="matrix-val">Southern Nations, Nationalities &amp; Peoples Region</span>
+                        </div>
+                        <div class="matrix-node">
+                            <span class="matrix-label">Client HQ Address</span>
+                            <span class="matrix-val">Ras Abebe Aregay Street, Head Office, P.O. Box: 1770, Addis Ababa, Ethiopia</span>
+                        </div>
+                        <div class="matrix-node">
+                            <span class="matrix-label">Lifecycle Duration</span>
+                            <span class="matrix-val">Sep 05, 2014 – Mar 05, 2021</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-right-media">
+                    <img src="images/projectsimages/bridge/44.jpg" alt="Alaba Route Structural Bridge Frame">
+                </div>
+            </div>
+            
+            <!-- Embedded Internal 6-Image Grid -->
+            <div class="card-bottom-gallery">
+                <div class="gallery-label-box">
+                    <h5>Project Gallery</h5>
+                    <!-- <p>Asset blueprints &amp; structural site surveys.</p> -->
+                </div>
+                <div class="thumb-grid">
+                    <a href="#p1-img1" class="thumb-item">
+                        <img src="images/projectsimages/bridge/44.jpg" alt="Survey View">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p1-img2" class="thumb-item">
+                        <img src="images/projectsimages/bridge/41.jpg" alt="Blueprint Plot">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <!-- <a href="#p1-img3" class="thumb-item">
+                        <img src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?q=80&w=200&auto=format&fit=crop" alt="Slab Layout">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p1-img4" class="thumb-item">
+                        <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=200&auto=format&fit=crop" alt="Foundation Run">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p1-img5" class="thumb-item">
+                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=200&auto=format&fit=crop" alt="Girder Detail">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p1-img6" class="thumb-item">
+                        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=200&auto=format&fit=crop" alt="Completed Corridor">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a> -->
+                </div>
+            </div>
+
+            <div class="card-tags-footer">
+                <span class="footer-tag-label">Engineered Complexity:</span>
+                <span class="tech-tag">Detailed Engineering Design</span>
+                <span class="tech-tag">Slab Bridge (2x12m)</span>
+                <span class="tech-tag">Slab Bridge (1x10m)</span>
+                <span class="tech-tag">Bridges (1x8m)</span>
+                <span class="tech-tag">Girder Bridge (1x30m)</span>
+                <span class="tech-tag">Box Culverts</span>
+            </div>
+        </article>
+
+        <!-- ======================= PROJECT CARD 02 ======================= -->
+        <article class="project-card">
+            <div class="card-top-block">
+                <div class="card-left-info">
+                    <div class="ghost-number">02.</div>
+                    <div class="card-header-meta">
+                        <span class="status-badge completed">100% Completed</span>
+                    </div>
+                    
+                    <h4 class="project-title">Detail Engineering Design Package -I Bridge Project (Kefo, Sheshe-02, Janjecho, Selele, Ameka, and Mite Jame)</h4>
+                    
+                    <div class="data-matrix">
+                        <div class="matrix-node">
+                            <span class="matrix-label">Employer / Client</span>
+                            <span class="matrix-val">Southern Nations, Nationalities &amp; Peoples Region Roads Authority</span>
+                        </div>
+                        <div class="matrix-node">
+                            <span class="matrix-label">Geographic Location</span>
+                            <span class="matrix-val">SNNP Region, Hawassa, Ethiopia</span>
+                        </div>
+                        <div class="matrix-node">
+                            <span class="matrix-label">Lead Engineer</span>
+                            <span class="matrix-val">BELES Consult P.L.C. (SOLE)</span>
+                        </div>
+                        <div class="matrix-node">
+                            <span class="matrix-label">Lifecycle Duration</span>
+                            <span class="matrix-val">June 15, 2017 – June 2018</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-right-media">
+                    <img src="images/projectsimages/bridge/49.jpg" alt="Package-I Bridge Project Site Image">
+                </div>
+            </div>
+            
+            <!-- Embedded Internal 6-Image Grid -->
+            <div class="card-bottom-gallery">
+                <div class="gallery-label-box">
+                    <h5>Project Gallery</h5>
+                    <!-- <p>Asset blueprints &amp; structural site surveys.</p> -->
+                </div>
+                <div class="thumb-grid">
+                    <a href="#p2-img1" class="thumb-item">
+                        <img src="images/projectsimages/bridge/49.jpg" alt="Kefo Plot">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p2-img2" class="thumb-item">
+                        <img src="images/projectsimages/bridge/50.jpg" alt="Sheshe-02 Span">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p2-img3" class="thumb-item">
+                        <img src="images/projectsimages/bridge/51.jpg" alt="Janjecho Blueprint">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p2-img4" class="thumb-item">
+                        <img src="images/projectsimages/bridge/52.jpg" alt="Selele Foundation">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p2-img5" class="thumb-item">
+                        <img src="images/projectsimages/bridge/54.jpg" alt="Ameka Profile">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                    <a href="#p2-img6" class="thumb-item">
+                        <img src="images/projectsimages/bridge/55.jpg" alt="Mite Jame Execution">
+                        <div class="thumb-overlay"><i class="fa-solid fa-plus"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-tags-footer">
+                <span class="footer-tag-label">Engineered Complexity:</span>
+                <span class="tech-tag">Detailed Engineering Design</span>
+                <span class="tech-tag">Bridge Span (1x9m)</span>
+                <span class="tech-tag">Bridge Span (1x14m)</span>
+                <span class="tech-tag">Two Bridges (1x12m)</span>
+                <span class="tech-tag">Girder Bridge (1x18m)</span>
+                <span class="tech-tag">Girder Bridge (1x20m)</span>
+            </div>
+        </article>
+
+    </div>
+</main>
+
+<!-- ══ LIGHTBOX MODAL CONFIGURATIONS FOR CARD 01 ══ -->
+<div id="p1-img1" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/44.jpg" alt="1"></div></div>
+<div id="p1-img2" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/41.jpg" alt="2"></div></div>
+<div id="p1-img3" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?q=80&w=1200" alt="3"></div></div>
+<div id="p1-img4" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=1200" alt="4"></div></div>
+<div id="p1-img5" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200" alt="5"></div></div>
+<div id="p1-img6" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200" alt="6"></div></div>
+
+<!-- ══ LIGHTBOX MODAL CONFIGURATIONS FOR CARD 02 ══ -->
+<div id="p2-img1" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/49.jpg" alt="1"></div></div>
+<div id="p2-img2" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/50.jpg" alt="2"></div></div>
+<div id="p2-img3" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/51.jpg" alt="3"></div></div>
+<div id="p2-img4" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/52.jpg" alt="4"></div></div>
+<div id="p2-img5" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/54.jpg" alt="5"></div></div>
+<div id="p2-img6" class="lightbox-modal"><div class="lightbox-content"><a href="#close" class="close-lightbox">&times; Close</a><img src="images/projectsimages/bridge/55.jpg" alt="6"></div></div>
+
+
+<!-- ══ 4. WHY BELES SECTION (DARK DIFFERENTIATOR CARDS) ══ -->
+<section class="differentiators-section">
+    <div class="diff-container">
+        <div class="diff-header">
+            <h2>The Engineering Edge</h2>
+            <p>Why national agencies and private entities choose Beles Consulting for high-consequence structural layout designs.</p>
+        </div>
+        
+        <div class="diff-grid">
+            <div class="diff-card">
+                <i class="fa-solid fa-award"></i>
+                <h4>100% Sole Execution</h4>
+                <p>We do not rely on speculative sub-consultancy networks. Every calculation, structural draw sheet, and hydrological plot is resolved internally.</p>
+            </div>
+            <div class="diff-card">
+                <i class="fa-solid fa-globe"></i>
+                <h4>International Standards</h4>
+                <p>Strict utilization of ERA Design Manuals and universal AASHTO structural criteria ensures seamless validation during safety audits.</p>
+            </div>
+            <div class="diff-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h4>Proven Track Record</h4>
+                <p>Over a decade of robust operational endurance across remote topographies with impeccable field resilience validation metrics.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ 5. ENGAGE US CONVERSION ZONE (IDENTICAL TO SERVICE DETAILS) ══ -->
+<section id="engage" class="engage-footer-zone">
+    <div class="engage-wrap">
+        <div class="avatar-cluster">
+            <div class="pulse-ring"></div>
+            <div class="pulse-indicator"></div>
+            <div class="avatar-node"><img src="images/male avator.png" alt="Principal Engineer"></div>
+            <div class="avatar-node"><img src="images/girl avator.png" alt="Design Lead"></div>
+        </div>
+
+        <h3>Initiate Technical Consultation</h3>
+        <p>Connect immediately with our structural coordinates team to exchange site data sheets, project timelines, or request tender briefing files.</p>
+        
+        <div class="action-button-group">
+            <a href="https://wa.me/#" class="action-btn btn-whatsapp">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Discuss on WhatsApp</span>
+            </a>
+            <a href="mailto:info@belesconsulting.com" class="action-btn btn-email">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Email Specifications</span>
+            </a>
+        </div>
+        
+        <div class="international-tagline">
+            <i class="fa-solid fa-earth-africa"></i>
+            <span>Coordinating global operations from our central offices in Addis Ababa, Ethiopia</span>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Design, Supervision & Contract Administration | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --bg-grey: #f2f4f7;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #ffffff; font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        /* ── REVEAL ── */
+        .reveal-element { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ══ SLIM NAV ══ */
+        .slim-nav { position: sticky; top: 0; z-index: 1000; background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%); border-bottom: 3px solid var(--maroon-brand); box-shadow: 0 4px 20px rgba(0,0,0,0.35); height: 58px; display: flex; align-items: center; padding: 0 6%; }
+        .slim-nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .slim-nav-logo { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .slim-nav-logo img { height: 34px; width: auto; }
+        .slim-nav-logo span { font-size: 0.85rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .slim-nav-logo span em { color: var(--blue-accent); font-style: normal; }
+        .slim-nav-right { display: flex; align-items: center; gap: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; transition: color 0.2s; }
+        .back-btn:hover { color: var(--blue-accent); }
+        .back-btn i { font-size: 0.7rem; transition: transform 0.2s; }
+        .back-btn:hover i { transform: translateX(-3px); }
+        .nav-cta-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--maroon-brand); color: #fff; text-decoration: none; padding: 8px 18px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; transition: background 0.2s, transform 0.2s; }
+        .nav-cta-pill:hover { background: #9e0d23; transform: translateY(-1px); }
+
+        /* ══ HERO ══ */
+        .page-hero { position: relative; min-height: 82vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--bg-dark); background-image: linear-gradient(to top, rgba(7,13,25,0.98) 0%, rgba(7,13,25,0.6) 50%, rgba(7,13,25,0.35) 100%), url('https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; border-bottom: 5px solid var(--maroon-brand); }
+        .hero-watermark { position: absolute; inset: 0; pointer-events: none; opacity: 0.06; background-repeat: no-repeat; background-position: right 8% center; background-size: 45%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 500' stroke='%23ffffff' stroke-width='0.6' fill='none'><rect x='50' y='50' width='500' height='400'/><rect x='80' y='80' width='440' height='340'/><rect x='110' y='110' width='380' height='280'/><line x1='50' y1='50' x2='550' y2='450'/><line x1='550' y1='50' x2='50' y2='450'/><rect x='230' y='200' width='140' height='200'/><rect x='260' y='160' width='80' height='40'/></svg>"); }
+        .hero-grid { position: absolute; inset: 0; display: flex; pointer-events: none; z-index: 1; }
+        .hero-grid-col { flex: 1; border-right: 1px solid rgba(255,255,255,0.04); }
+        .hero-content { position: relative; z-index: 5; max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 6% 80px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+        .breadcrumb a, .breadcrumb span { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--blue-accent); }
+        .breadcrumb i { font-size: 0.55rem; color: rgba(255,255,255,0.2); }
+        .breadcrumb span:last-child { color: var(--blue-accent); }
+        .hero-label { display: inline-flex; align-items: center; gap: 10px; background: rgba(21,135,210,0.15); border: 1px solid rgba(21,135,210,0.3); color: var(--blue-accent); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px; border-radius: 2px; margin-bottom: 20px; }
+        .hero-content h1 { font-size: clamp(2.6rem,5.5vw,4.5rem); font-weight: 800; color: #fff; line-height: 1.05; letter-spacing: -2px; margin-bottom: 18px; }
+        .hero-content h1 span { color: var(--blue-accent); }
+        .hero-content p { font-size: 1rem; color: #abbcd0; max-width: 580px; line-height: 1.75; margin-bottom: 36px; }
+        .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+        .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 50px; }
+        .hero-pill i { color: var(--blue-accent); font-size: 0.75rem; }
+
+        /* ══ DISCIPLINE INTRO BLOCKS ══ */
+        .discipline-section { background: #fff; padding: 90px 6%; }
+        .discipline-inner { max-width: 1200px; margin: 0 auto; }
+        .section-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--maroon-brand); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .section-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--maroon-brand); }
+        .discipline-intro-title { font-size: clamp(1.8rem,3vw,2.5rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 48px; max-width: 700px; line-height: 1.2; }
+        .discipline-intro-title span { color: var(--maroon-brand); }
+        .discipline-blocks { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(22,71,128,0.06); }
+        .disc-block { background: #fff; padding: 36px 28px; position: relative; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+        .disc-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .disc-block:nth-child(1)::before { background: var(--navy-brand); }
+        .disc-block:nth-child(2)::before { background: var(--maroon-brand); }
+        .disc-block:nth-child(3)::before { background: var(--blue-accent); }
+        .disc-block:hover { box-shadow: 0 12px 32px rgba(22,71,128,0.08); transform: translateY(-4px); }
+        .disc-block-num { font-size: 5rem; font-weight: 900; color: rgba(22,71,128,0.05); position: absolute; top: 8px; right: 16px; line-height: 1; pointer-events: none; }
+        .disc-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 18px; }
+        .disc-block:nth-child(1) .disc-icon { background: rgba(22,71,128,0.1); }
+        .disc-block:nth-child(2) .disc-icon { background: rgba(127,10,28,0.1); }
+        .disc-block:nth-child(3) .disc-icon { background: rgba(21,135,210,0.1); }
+        .disc-block:nth-child(1) .disc-icon i { color: var(--navy-brand); }
+        .disc-block:nth-child(2) .disc-icon i { color: var(--maroon-brand); }
+        .disc-block:nth-child(3) .disc-icon i { color: var(--blue-accent); }
+        .disc-icon i { font-size: 1.2rem; }
+        .disc-block h4 { font-size: 1rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; }
+        .disc-block p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* ══ SECTION HEADERS (shared) ══ */
+        .projects-listing { background: var(--bg-grey); padding: 100px 6%; }
+        .projects-listing-inner { max-width: 1200px; margin: 0 auto; }
+        .projects-listing-header { margin-bottom: 60px; }
+        .projects-listing-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 12px; }
+        .red-line { width: 52px; height: 3px; background: var(--maroon-brand); margin-bottom: 20px; }
+        .projects-listing-header p { font-size: 0.95rem; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+
+        /* ══ ASSIGNMENT CARDS (same as before) ══ */
+        .project-card { background: #fff; margin-bottom: 32px; position: relative; overflow: hidden; border: 1px solid #e2e8f0; transition: box-shadow 0.35s, border-color 0.35s; }
+        .project-card:hover { box-shadow: 0 20px 50px rgba(22,71,128,0.09); border-color: rgba(22,71,128,0.15); }
+        .project-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--maroon-brand); transform: scaleY(0); transform-origin: bottom; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .project-card:hover::before { transform: scaleY(1); }
+        .card-top-strip { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px 0 32px; flex-wrap: wrap; gap: 12px; }
+        .card-top-left { display: flex; align-items: center; gap: 16px; }
+        .card-ghost-num { font-size: 3.5rem; font-weight: 900; color: rgba(22,71,128,0.07); line-height: 1; letter-spacing: -2px; }
+        .card-status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 5px 12px; border-radius: 50px; }
+        .badge-completed { background: rgba(34,197,94,0.1); color: #16a34a; border: 1px solid rgba(34,197,94,0.2); }
+        .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; }
+        .discipline-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+        .disc-badge { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 2px; }
+        .disc-badge.supervision { background: rgba(100,116,139,0.08); color: #475569; border: 1px solid rgba(100,116,139,0.2); }
+        .disc-badge.design { background: rgba(21,135,210,0.08); color: var(--blue-accent); border: 1px solid rgba(21,135,210,0.15); }
+        .disc-badge.contract { background: rgba(127,10,28,0.08); color: var(--maroon-brand); border: 1px solid rgba(127,10,28,0.15); }
+        .disc-badge.qc { background: rgba(22,71,128,0.08); color: var(--navy-brand); border: 1px solid rgba(22,71,128,0.15); }
+        .card-main-body { padding: 20px 32px 0 32px; }
+        .card-project-title { font-size: clamp(1rem,1.8vw,1.25rem); font-weight: 800; color: var(--navy-brand); line-height: 1.35; margin-bottom: 20px; }
+        .card-content-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; }
+        .card-narrative { font-size: 0.95rem; font-weight: 600; color: var(--navy-brand); border-left: 4px solid var(--maroon-brand); padding-left: 16px; margin-bottom: 22px; line-height: 1.6; font-style: italic; }
+        .deliverables-title { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 12px; }
+        .deliverables-list { display: flex; flex-direction: column; gap: 7px; }
+        .deliverable-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.84rem; color: var(--text-dark); line-height: 1.45; }
+        .deliverable-item i { color: #16a34a; font-size: 0.75rem; margin-top: 3px; flex-shrink: 0; }
+        .card-data-panel { background: var(--bg-dark); padding: 28px; display: flex; flex-direction: column; }
+        .data-panel-title { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .data-row { display: flex; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 9px 0; }
+        .data-row:last-child { border-bottom: none; }
+        .data-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; width: 110px; flex-shrink: 0; padding-top: 1px; }
+        .data-value { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.8); line-height: 1.4; flex: 1; }
+        .data-value.highlight { color: var(--blue-accent); font-weight: 700; }
+        .data-value.gold { color: #C8A96E; font-weight: 700; }
+        .card-photo-strip { margin-top: 28px; position: relative; height: 220px; overflow: hidden; }
+        .card-photo-strip img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.75); transition: transform 0.5s ease, filter 0.4s ease; }
+        .project-card:hover .card-photo-strip img { transform: scale(1.04); filter: brightness(0.6); }
+        .photo-location-tag { position: absolute; bottom: 16px; left: 16px; background: rgba(7,13,25,0.82); backdrop-filter: blur(6px); border-left: 3px solid var(--maroon-brand); padding: 8px 14px; }
+        .photo-location-tag strong { font-size: 0.82rem; font-weight: 800; color: #fff; display: block; }
+        .photo-location-tag span { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+        .photo-sole-badge { position: absolute; top: 16px; right: 16px; background: var(--maroon-brand); color: #fff; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 5px 12px; }
+        .card-staff-footer { padding: 16px 32px 20px 32px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .staff-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .staff-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-light); border: 1px solid #e2e8f0; padding: 6px 14px; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); }
+        .staff-tag i { color: var(--navy-brand); font-size: 0.75rem; }
+        .staff-tag span { color: var(--text-muted); font-weight: 500; }
+        .card-contract-value { font-size: 0.78rem; font-weight: 800; color: var(--navy-brand); display: flex; align-items: center; gap: 8px; }
+        .card-contract-value i { color: var(--maroon-brand); }
+        .project-divider { display: flex; align-items: center; gap: 16px; margin: 8px 0 32px 0; }
+        .project-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--maroon-brand), transparent); }
+        .project-divider-label { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); white-space: nowrap; }
+
+        /* ══ FEATURED PROJECTS SECTION ══ */
+        .featured-section { background: #ffffff; padding: 100px 6%; border-top: 1px solid #e8ecf2; }
+        .featured-inner { max-width: 1200px; margin: 0 auto; }
+        .featured-header { margin-bottom: 60px; }
+        .featured-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 12px; }
+        .featured-header p { font-size: 0.95rem; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+
+        /* Showcase card grid */
+        .showcase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+
+        .showcase-card {
+            position: relative; overflow: hidden;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            display: flex; flex-direction: column;
+            transition: box-shadow 0.35s, transform 0.35s, border-color 0.35s;
+        }
+        .showcase-card:hover { box-shadow: 0 24px 56px rgba(22,71,128,0.12); transform: translateY(-6px); border-color: rgba(22,71,128,0.2); }
+
+        /* Top image zone */
+        .sc-image { position: relative; height: 200px; overflow: hidden; flex-shrink: 0; }
+        .sc-image img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.65); transition: transform 0.55s ease, filter 0.4s ease; }
+        .showcase-card:hover .sc-image img { transform: scale(1.06); filter: brightness(0.5); }
+
+        /* Value badge floating on image */
+        .sc-value-badge {
+            position: absolute; top: 16px; left: 16px;
+            background: var(--maroon-brand);
+            color: #fff; font-size: 0.68rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            padding: 6px 14px;
+        }
+        /* Completed badge top-right */
+        .sc-status {
+            position: absolute; top: 16px; right: 16px;
+            background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35);
+            color: #16a34a; font-size: 0.62rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1.2px;
+            padding: 5px 11px; border-radius: 50px;
+            display: flex; align-items: center; gap: 5px;
+            backdrop-filter: blur(4px);
+        }
+        .sc-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #16a34a; display: inline-block; }
+
+        /* Bottom overlay on image with location */
+        .sc-location {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 10px 16px;
+            background: linear-gradient(to top, rgba(7,13,25,0.92), transparent);
+            display: flex; align-items: flex-end; gap: 8px;
+        }
+        .sc-location i { color: var(--blue-accent); font-size: 0.75rem; margin-bottom: 2px; }
+        .sc-location span { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.8); }
+
+        /* Body */
+        .sc-body { padding: 24px 24px 0 24px; flex: 1; }
+        .sc-title { font-size: 1.05rem; font-weight: 800; color: var(--navy-brand); line-height: 1.3; margin-bottom: 12px; }
+        .sc-narrative { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 18px; }
+
+        /* Complexity tag row */
+        .sc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+        .sc-tag { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 2px; background: var(--bg-grey); color: var(--navy-brand); border: 1px solid #dde3ec; }
+        .sc-tag.arch { background: rgba(21,135,210,0.07); color: var(--blue-accent); border-color: rgba(21,135,210,0.2); }
+        .sc-tag.struct { background: rgba(22,71,128,0.07); color: var(--navy-brand); border-color: rgba(22,71,128,0.18); }
+        .sc-tag.elec { background: rgba(180,120,0,0.07); color: #92620a; border-color: rgba(180,120,0,0.2); }
+        .sc-tag.sanit { background: rgba(34,197,94,0.07); color: #16a34a; border-color: rgba(34,197,94,0.2); }
+        .sc-tag.feas { background: rgba(127,10,28,0.07); color: var(--maroon-brand); border-color: rgba(127,10,28,0.18); }
+        .sc-tag.admin { background: rgba(100,116,139,0.07); color: #475569; border-color: rgba(100,116,139,0.2); }
+
+        /* Divider line */
+        .sc-divider { height: 1px; background: #f1f5f9; margin: 0 24px; }
+
+        /* Footer meta row */
+        .sc-footer { padding: 14px 24px 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .sc-meta { display: flex; align-items: center; gap: 16px; }
+        .sc-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); }
+        .sc-meta-item i { color: var(--navy-brand); font-size: 0.7rem; }
+        .sc-employer { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+        .sc-employer i { color: var(--maroon-brand); }
+
+        /* Full-width showcase card (for large/complex projects) */
+        .showcase-card.full-width {
+            grid-column: 1 / -1;
+            flex-direction: row;
+        }
+        .showcase-card.full-width .sc-image { width: 380px; height: auto; min-height: 280px; flex-shrink: 0; }
+        .showcase-card.full-width .sc-body { padding: 32px 28px 0 28px; }
+        .showcase-card.full-width .sc-title { font-size: 1.2rem; }
+        .showcase-card.full-width .sc-narrative { font-size: 0.88rem; }
+        .showcase-card.full-width .sc-footer { padding: 16px 28px 28px 28px; }
+        .showcase-card.full-width .sc-divider { margin: 0 28px; }
+        .showcase-card.full-width .sc-content { display: flex; flex-direction: column; flex: 1; }
+
+        /* ══ WHY BELES ══ */
+        .why-section { background: var(--navy-brand); padding: 90px 6%; border-top: 4px solid var(--maroon-brand); }
+        .why-inner { max-width: 1200px; margin: 0 auto; }
+        .why-section .section-eyebrow { color: rgba(255,255,255,0.45); }
+        .why-section .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+        .why-section h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: #fff; margin-bottom: 48px; letter-spacing: -0.5px; }
+        .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+        .why-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid var(--maroon-brand); padding: 32px 28px; transition: background 0.3s, transform 0.3s; }
+        .why-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+        .why-icon { width: 44px; height: 44px; background: rgba(127,10,28,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; transition: background 0.3s; }
+        .why-card:hover .why-icon { background: var(--maroon-brand); }
+        .why-icon i { color: var(--maroon-brand); font-size: 1.1rem; transition: color 0.3s; }
+        .why-card:hover .why-icon i { color: #fff; }
+        .why-card h4 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .why-card p { font-size: 0.85rem; color: #abbcd0; line-height: 1.65; }
+
+        /* ══ ENGAGE ══ */
+        .engage-section { background: var(--bg-dark); padding: 100px 6%; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); }
+        .engage-inner { max-width: 540px; margin: 0 auto; }
+        .mascot-wrap { width: 120px; height: 120px; margin: 0 auto 28px auto; background: radial-gradient(circle, rgba(21,135,210,0.15) 0%, transparent 70%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .mascot-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(21,135,210,0.4); animation: spin 20s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .css-avatar { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .av-hat { position: absolute; top: 8px; width: 62px; height: 34px; background: var(--maroon-brand); border-radius: 36px 36px 6px 6px; z-index: 5; }
+        .av-hat-b { position: absolute; top: 8px; left: 24px; width: 13px; height: 13px; background: #e2e8f0; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--navy-brand); font-weight: 900; }
+        .av-brim { position: absolute; top: 38px; width: 74px; height: 5px; background: #630512; border-radius: 3px; z-index: 6; }
+        .av-face { position: absolute; top: 36px; width: 54px; height: 52px; background: #d1a17d; border-radius: 2px 2px 24px 24px; z-index: 3; }
+        .av-eye-l { position: absolute; top: 16px; left: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-eye-r { position: absolute; top: 16px; right: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-smile { position: absolute; bottom: 10px; left: 16px; width: 18px; height: 8px; border-bottom: 2.5px solid #2d3748; border-radius: 0 0 12px 12px; }
+        .av-body { position: absolute; bottom: 0; width: 88px; height: 28px; background: var(--navy-brand); border-radius: 14px 14px 3px 3px; z-index: 2; }
+        .av-shirt { position: absolute; top: 0; left: 35px; width: 18px; height: 11px; background: #fff; clip-path: polygon(0 0,100% 0,50% 100%); }
+        .engage-motto { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--blue-accent); margin-bottom: 10px; }
+        .engage-inner h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .engage-inner p { font-size: 0.9rem; color: #abbcd0; line-height: 1.7; margin-bottom: 32px; }
+        .engage-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+        .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; box-shadow: 0 4px 20px rgba(37,211,102,0.3); animation: pulse-wa 2.2s infinite; transition: transform 0.2s; }
+        .btn-wa:hover { transform: translateY(-2px); }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+        .btn-em { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+        .btn-em:hover { border-color: var(--blue-accent); background: rgba(21,135,210,0.1); transform: translateY(-2px); }
+        .intl-note { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 10px 20px; border-radius: 50px; font-size: 0.76rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+        .intl-note i { color: var(--blue-accent); }
+
+        /* ══ FOOTER ══ */
+        .corporate-footer { background: var(--bg-dark); color: #fff; padding: 70px 6% 36px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 48px; }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-col h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 18px; }
+        .footer-col p { color: #abbcd0; font-size: 0.88rem; line-height: 1.6; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .footer-links li a { color: #abbcd0; text-decoration: none; font-size: 0.88rem; transition: color 0.25s; }
+        .footer-links li a:hover { color: #fff; }
+        .footer-contact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; color: #abbcd0; font-size: 0.88rem; }
+        .footer-contact-list li { display: flex; align-items: center; gap: 10px; }
+        .footer-contact-list li i { color: var(--maroon-brand); }
+        .footer-bottom { max-width: 1200px; margin: 26px auto 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: #64748b; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .discipline-blocks { grid-template-columns: 1fr; }
+            .card-content-grid { grid-template-columns: 1fr; }
+            .showcase-grid { grid-template-columns: 1fr; }
+            .showcase-card.full-width { flex-direction: column; }
+            .showcase-card.full-width .sc-image { width: 100%; height: 220px; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+            .card-top-strip { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 640px) {
+            .why-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.4rem; }
+            .card-main-body, .card-top-strip, .card-staff-footer { padding-left: 20px; padding-right: 20px; }
+            .slim-nav-right .back-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ SLIM NAV ══ -->
+<nav class="slim-nav">
+    <div class="slim-nav-inner">
+        <a href="index.html" class="slim-nav-logo">
+            <img src="logos/beles.png" alt="Beles Consulting" onerror="this.onerror=null;this.src='https://placehold.co/120x34/164780/ffffff?text=Beles'">
+            <span>Beles <em>Consult</em></span>
+        </a>
+        <div class="slim-nav-right">
+            <a href="projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i><span>Back to Projects</span></a>
+            <a href="https://wa.me/251911281227" class="nav-cta-pill" target="_blank"><i class="fa-brands fa-whatsapp"></i> Get a Quote</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="page-hero">
+    <div class="hero-watermark"></div>
+    <div class="hero-grid">
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+    </div>
+    <div class="hero-content">
+        <div class="breadcrumb reveal-element">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="projects.html">Projects</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Building Design &amp; Supervision</span>
+        </div>
+        <div class="hero-label reveal-element delay-1"><i class="fa-solid fa-building"></i> Project Category</div>
+        <h1 class="reveal-element delay-1">Building Design,<br><span>Supervision</span> &amp;<br>Contract Administration</h1>
+        <p class="reveal-element delay-2">From large-scale condominium housing estates to mosques, agro-industrial facilities, and commercial buildings — Beles Consulting delivers full-cycle building consultancy: architectural design, structural engineering, supervision, quality control, and contract administration.</p>
+        <div class="hero-pills reveal-element delay-3">
+            <div class="hero-pill"><i class="fa-solid fa-building-columns"></i> Architectural Design</div>
+            <div class="hero-pill"><i class="fa-solid fa-helmet-safety"></i> Site Supervision</div>
+            <div class="hero-pill"><i class="fa-solid fa-file-contract"></i> Contract Administration</div>
+            <div class="hero-pill"><i class="fa-solid fa-magnifying-glass-chart"></i> Quality Control</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ DISCIPLINE INTRO BLOCKS ══ -->
+<section class="discipline-section">
+    <div class="discipline-inner">
+        <div class="section-eyebrow reveal-element">Our Building Disciplines</div>
+        <h2 class="discipline-intro-title reveal-element">Integrated Building <span>Consultancy Excellence</span></h2>
+        <div class="discipline-blocks">
+            <div class="disc-block reveal-element">
+                <div class="disc-block-num">01</div>
+                <div class="disc-icon"><i class="fa-solid fa-pencil-ruler"></i></div>
+                <h4>Architectural &amp; Structural Design</h4>
+                <p>Comprehensive building design covering architectural layouts, structural engineering, electrical systems, sanitary design, bill of quantities, and full construction documentation — from initial concept to approved drawings.</p>
+            </div>
+            <div class="disc-block reveal-element delay-1">
+                <div class="disc-block-num">02</div>
+                <div class="disc-icon"><i class="fa-solid fa-helmet-safety"></i></div>
+                <h4>Resident Supervision &amp; QC</h4>
+                <p>On-site resident supervision, quality assurance, material testing certification, measurement certificate verification, daily reporting, schedule monitoring, and safety inspection — keeping construction on time, on budget, and on specification.</p>
+            </div>
+            <div class="disc-block reveal-element delay-2">
+                <div class="disc-block-num">03</div>
+                <div class="disc-icon"><i class="fa-solid fa-file-signature"></i></div>
+                <h4>Contract Administration</h4>
+                <p>Pre- and post-construction contract management: bid document preparation, agreement drafting, contractor capacity building, financial control, cost management, variation orders, provisional and final acceptance — fully compliant with Ethiopian and international standards.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FORMAL ASSIGNMENT PORTFOLIO ══ -->
+<section class="projects-listing">
+    <div class="projects-listing-inner">
+        <div class="projects-listing-header reveal-element">
+            <h2>Formal Assignment Portfolio</h2>
+            <div class="red-line"></div>
+            <p>Large-scale formal consultancy assignments executed on a sole-contract basis for government and federal institutions — each with structured client data, defined deliverables, and measurable outcomes.</p>
+        </div>
+
+        <!-- ══ ASSIGNMENT 01 ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">01.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge supervision">Resident Supervision</span>
+                    <span class="disc-badge contract">Contract Administration</span>
+                    <span class="disc-badge qc">Quality Control</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Construction Supervision, Quality Control and Contract Administration — Addis Ababa Housing Construction Project Office, Nifas Silk Lafto Sub-City Branch (216 Blocks: G+4 &amp; G+2)</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — full-cycle supervision and contract administration for 216 residential blocks (G+4 and G+2) under the Nifas Silk Lafto Sub-City Branch of Addis Ababa Housing Development Project Office. A 19 million ETB assignment executed over 52 months.</div>
+                        <div class="deliverables-title">Key Services &amp; Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Resident Supervision &amp; Contract Administration</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Quality Control, Site Survey &amp; Setting Out</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Contractors Capacity Building &amp; Design Review</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Financial Control, Analysis &amp; Engineering Cost Management</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Issuance of Material Test Orders &amp; Certification</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Checking &amp; Certifying Take-off Sheets &amp; Measurement Certificates</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Monthly, Quarterly &amp; Annual Progress Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Construction Supervision Manual &amp; QA Manual</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Environmental Management, Contract &amp; Consultancy Completion Reports</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Addis Housing Corporation (Addis Ababa Housing Development Project Office)</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Nifas Silk Lafto Sub-City, Addis Ababa</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">January 2013</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">May 2017</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">52 Months</span></div>
+                        <div class="data-row"><span class="data-label">Blocks</span><span class="data-value gold">216 Blocks (G+4 &amp; G+2)</span></div>
+                        <div class="data-row"><span class="data-label">Contract</span><span class="data-value">19,181,979 ETB · 1,056,666 US$</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop" alt="Nifas Silk Lafto Housing">
+                <div class="photo-location-tag">
+                    <strong>Nifas Silk Lafto Housing Estate — 216 Blocks</strong>
+                    <span>Addis Ababa, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Adamu Kebede <span>— Project Coordinator &amp; Contract Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-building"></i> 216 Blocks · 19M ETB · 100% Completed</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Assignment</div>
+            <div class="project-divider-line" style="background: linear-gradient(to left, var(--maroon-brand), transparent);"></div>
+        </div>
+
+        <!-- ══ ASSIGNMENT 02 ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">02.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge supervision">Resident Supervision</span>
+                    <span class="disc-badge contract">Contract Administration</span>
+                    <span class="disc-badge qc">Quality Control</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Construction Supervision, Quality Control and Contract Administration — Addis Ababa Housing Construction Project Office, Bole Arabsa 3 &amp; 5 Project Sites (84 Blocks: G+7 &amp; G+4)</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — comprehensive supervision and contract administration for 84 residential blocks (66 × G+7 and 18 × G+4) at the Bole Arabsa 3 and 5 project sites under Addis Ababa Housing Development Project Office. A 21.7 million ETB assignment.</div>
+                        <div class="deliverables-title">Key Services &amp; Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Resident Supervision &amp; Contract Administration</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Quality Control, Site Survey &amp; Setting Out</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Engineering Cost Management of Bole Arabsa 3 &amp; 5</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Design Review &amp; Amendment</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Financial Control &amp; Analysis</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Material Test Order Issuance &amp; Result Certification</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Schedule Monitoring — Manpower, Materials, Machinery &amp; Cash Flow</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Monthly, Quarterly &amp; Annual Progress Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> QA Manual, Supervision Manual, Contract &amp; Completion Reports</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Addis Housing Corporation — Bole Arabsa 3 &amp; 5 Project Site</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Bole Arabsa, Addis Ababa</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">June 2015</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">July 2017</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">25 Months</span></div>
+                        <div class="data-row"><span class="data-label">Blocks</span><span class="data-value gold">84 Blocks (66×G+7 &amp; 18×G+4)</span></div>
+                        <div class="data-row"><span class="data-label">Contract</span><span class="data-value">21,740,157 ETB · 1,056,557 US$</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop" alt="Bole Arabsa Condominium">
+                <div class="photo-location-tag">
+                    <strong>Bole Arabsa Condominium — 84 Blocks</strong>
+                    <span>Bole Arabsa, Addis Ababa · G+7 &amp; G+4</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Adamu Kebede <span>— Project Coordinator &amp; Contract Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-building"></i> 84 Blocks · 21.7M ETB · 100% Completed</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Assignment</div>
+            <div class="project-divider-line" style="background: linear-gradient(to left, var(--maroon-brand), transparent);"></div>
+        </div>
+
+        <!-- ══ ASSIGNMENT 08 ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">03.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge design">Architectural Redesign</span>
+                    <span class="disc-badge contract">Contract Administration</span>
+                    <span class="disc-badge supervision">Construction Supervision</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Pre- and Post-Construction Supervision, Contract Administration, Specification &amp; Bill of Quantity Preparation — Ethiopian Commodity Exchange Authority Building (formerly Tea &amp; Coffee Authority)</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — comprehensive pre- and post-construction consultancy for the Ethiopian Commodity Exchange Authority building in Addis Ababa, covering architectural redesign, bid preparation, construction supervision, and final acceptance over a 28-month period.</div>
+                        <div class="deliverables-title">Pre-Construction Services</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Architectural Redesign Works &amp; Design Review Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Evaluation of Studied Documents</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Review &amp; Preparation of Bid Documents</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Bid Opening Attendance &amp; Construction Agreement Preparation</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Bill of Quantity Preparation</div>
+                        </div>
+                        <br>
+                        <div class="deliverables-title">Post-Construction Services</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Construction Supervision &amp; Contract Administration</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Construction Inspection &amp; Quality Assurance</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Provisional &amp; Final Acceptance Presentation</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Monthly, Quarterly &amp; Annual Progress Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Contract &amp; Consultancy Completion Reports</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Ethiopian Commodity Exchange Authority (formerly Tea &amp; Coffee Authority)</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Addis Ababa, Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">December 2008</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">April 2011</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">28 Months</span></div>
+                        <div class="data-row"><span class="data-label">Scope</span><span class="data-value gold">Pre &amp; Post Construction</span></div>
+                        <div class="data-row"><span class="data-label">Contract</span><span class="data-value">185,475 ETB · 19,724 US$</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop" alt="Ethiopian Commodity Exchange Building">
+                <div class="photo-location-tag">
+                    <strong>Ethiopian Commodity Exchange Authority Building</strong>
+                    <span>Addis Ababa, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Adamu Kebede <span>— Project Coordinator &amp; Contract Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-coins"></i> 185,475 ETB · Pre &amp; Post Construction · 100% Completed</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Assignment</div>
+            <div class="project-divider-line" style="background: linear-gradient(to left, var(--maroon-brand), transparent);"></div>
+        </div>
+
+        <!-- ══ ASSIGNMENT 09 ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">04.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge contract">Contract Administration</span>
+                    <span class="disc-badge supervision">Construction Supervision</span>
+                    <span class="disc-badge design">Design Review</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Contract Administration and Construction Supervision — Quarantine Station at Benishangul Gumuz Region, Almahal Metekel (Ministry of Agriculture)</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — end-to-end pre- and post-construction consultancy for the federal Ministry of Agriculture's quarantine station in Benishangul Gumuz Region, covering full design review, contract management, resident supervision, and final project acceptance over a 39-month assignment.</div>
+                        <div class="deliverables-title">Pre-Construction Services</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> All Design Review &amp; Architectural Redesign Works</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Evaluation &amp; Review of Contract Documents</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Bid Document Preparation &amp; Bid Opening Attendance</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Construction Agreement Preparation &amp; Bill of Quantity</div>
+                        </div>
+                        <br>
+                        <div class="deliverables-title">Post-Construction Services</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Resident Construction Supervision &amp; Quality Inspection</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Contract Administration throughout Build Phase</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Monthly, Quarterly &amp; Annual Progress Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> QA Manual, Environmental Assessment &amp; Special Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Provisional &amp; Final Acceptance — Contract Completion Report</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Federal Democratic Republic of Ethiopia — Ministry of Agriculture</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Almahal Metekel, Benishangul Gumuz Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">May 2011</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">August 2014</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">39 Months</span></div>
+                        <div class="data-row"><span class="data-label">Facility</span><span class="data-value gold">Federal Quarantine Station</span></div>
+                        <div class="data-row"><span class="data-label">Contract</span><span class="data-value">1,005,978 ETB · 59,620 US$</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <img src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?q=80&w=1200&auto=format&fit=crop" alt="Quarantine Station Benishangul Gumuz">
+                <div class="photo-location-tag">
+                    <strong>Quarantine Station — Almahal Metekel</strong>
+                    <span>Benishangul Gumuz Region, Ethiopia · Ministry of Agriculture</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Adamu Kebede <span>— Project Coordinator &amp; Contract Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-coins"></i> 1,005,978 ETB · Federal Contract · 100% Completed</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══ FEATURED PROJECT HIGHLIGHTS ══ -->
+<section class="featured-section">
+    <div class="featured-inner">
+        <div class="featured-header reveal-element">
+            <div class="section-eyebrow">Project Highlights</div>
+            <h2>Featured Building Projects</h2>
+            <div class="red-line"></div>
+            <p>A curated portfolio of notable building design and supervision projects — spanning religious institutions, agro-industrial facilities, commercial buildings, and mixed-use residential developments — all executed under sole contract by Beles Consulting.</p>
+        </div>
+
+        <div class="showcase-grid">
+
+            <!-- ── SHOWCASE: Lafto Billal Mosque (full-width) ── -->
+            <div class="showcase-card full-width reveal-element">
+                <div class="sc-image">
+                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=900&auto=format&fit=crop" alt="Lafto Billal Mosque">
+                    <div class="sc-value-badge">22 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Lafto Nifas Silk, Addis Ababa</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Lafto Billal Mosque — Full Structural, Electrical &amp; Sanitary Design</div>
+                        <div class="sc-narrative">A 22 million ETB mosque project in Lafto Nifas Silk, Addis Ababa, designed for the Muslim community of the sub-city. The project demanded a complex technical approach due to the unique spatial and structural requirements of mosque architecture — large open spans, elevated minaret structures, and integrated mechanical systems. Beles Consulting delivered the complete multi-discipline design package from structural concept through to supervision and contract close-out.</div>
+                        <div class="sc-tags">
+                            <span class="sc-tag struct">Structural Design</span>
+                            <span class="sc-tag elec">Electrical Design</span>
+                            <span class="sc-tag sanit">Sanitary Design</span>
+                            <span class="sc-tag admin">Contract Administration</span>
+                            <span class="sc-tag admin">Bill of Quantity</span>
+                            <span class="sc-tag admin">Supervision</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Oct 2007 – Apr 2008</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 22,000,000 ETB</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Muslim Community of Lafto Nifas Silk Sub-City</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SHOWCASE: Trisolo Flower Processing ── -->
+            <div class="showcase-card full-width reveal-element">
+                <div class="sc-image">
+                    <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=900&auto=format&fit=crop" alt="Trisolo Flower Processing Center">
+                    <div class="sc-value-badge">56 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Arsi Zone, Oromia — Upper Awash</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Trisolo Flower &amp; Vegetable Processing Center — Feasibility, Full Design &amp; Supervision</div>
+                        <div class="sc-narrative">A 56 million ETB agro-industrial facility in the Upper Awash Area of Arsi Zone, Oromia, comprising green flower processing, office buildings, and auxiliary accessories. As a technically demanding private-sector project, Beles Consulting led the full design chain from feasibility study through to architectural, structural, electrical, and sanitary design, culminating in construction supervision and contract administration.</div>
+                        <div class="sc-tags">
+                            <span class="sc-tag feas">Feasibility Study</span>
+                            <span class="sc-tag arch">Architectural Design</span>
+                            <span class="sc-tag struct">Structural Design</span>
+                            <span class="sc-tag elec">Electrical Design</span>
+                            <span class="sc-tag sanit">Sanitary Design</span>
+                            <span class="sc-tag admin">Bill of Quantity</span>
+                            <span class="sc-tag admin">Supervision</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Nov 2007 – Nov 2008</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 56,000,000 ETB</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Ato Solomon Wubetie</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SHOWCASE: Commercial Center ── -->
+            <div class="showcase-card reveal-element">
+                <div class="sc-image">
+                    <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?q=80&w=800&auto=format&fit=crop" alt="Commercial Center Arsi Zone">
+                    <div class="sc-value-badge">4 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Arsi Zone, Oromia</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Commercial Center — G+1 with Basement &amp; Recreational Top Floor</div>
+                        <div class="sc-narrative">A 4 million ETB commercial center in the Upper Awash Area, Arsi Zone, featuring a G+1 layout with basement floors and a recreational center at the top level. Beles Consulting delivered the complete design package from feasibility through to supervision and contract administration.</div>
+                        <div class="sc-tags">
+                            <span class="sc-tag feas">Feasibility Study</span>
+                            <span class="sc-tag arch">Architectural Design</span>
+                            <span class="sc-tag struct">Structural Design</span>
+                            <span class="sc-tag elec">Electrical Design</span>
+                            <span class="sc-tag sanit">Sanitary Design</span>
+                            <span class="sc-tag admin">Bill of Quantity</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Nov 2007 – May 2008</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 4,000,000 ETB</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Ato Solomon Wubetie</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SHOWCASE: Felege Yiwodanos Hotel ── -->
+            <div class="showcase-card reveal-element">
+                <div class="sc-image">
+                    <img src="https://images.unsplash.com/photo-1460574283810-2aab119d8511?q=80&w=800&auto=format&fit=crop" alt="Felege Yiwodanos Commercial Building">
+                    <div class="sc-value-badge">12–14 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Addis Ketema Sub-City, Addis Ababa</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Commercial Building G+6 — Felege Yiwodanos Hotel</div>
+                        <div class="sc-narrative">A G+6 commercial building in Addis Ketema Sub-City, Addis Ababa, estimated at 12–14 million ETB. Beles Consulting provided the complete multi-discipline design package including architectural, structural, electrical, and sanitary design, along with bill of quantities and supervision services.</div>
+                        <div class="sc-tags">
+                            <span class="sc-tag arch">Architectural Design</span>
+                            <span class="sc-tag struct">Structural Design</span>
+                            <span class="sc-tag elec">Electrical Design</span>
+                            <span class="sc-tag sanit">Sanitary Design</span>
+                            <span class="sc-tag admin">Bill of Quantity</span>
+                            <span class="sc-tag admin">Supervision</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Mar – Jul 2000</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-building"></i> G+6</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> Felege Yiwodanos Hotel</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SHOWCASE: Mixed Use Apartment (full-width) ── -->
+            <div class="showcase-card full-width reveal-element">
+                <div class="sc-image">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=900&auto=format&fit=crop" alt="Mixed Use Apartment Building">
+                    <div class="sc-value-badge">21 Million ETB</div>
+                    <div class="sc-status">Completed</div>
+                    <div class="sc-location"><i class="fa-solid fa-location-dot"></i><span>Nefas Silk Lafto, Addis Ababa</span></div>
+                </div>
+                <div class="sc-content">
+                    <div class="sc-body">
+                        <div class="sc-title">Mixed-Use Apartment Building — 1,200 m² Plot with Earthquake Design</div>
+                        <div class="sc-narrative">A 21 million ETB mixed-use apartment project on a 1,200 m² plot in Nefas Silk Lafto, Addis Ababa, developed for ANCOR Construction P.L.C. on behalf of BLACY SOLE &amp; SHOE P.L.C. The project required a technically complex approach including full seismic/earthquake design — a demanding structural engineering challenge for mixed-use residential development in an urban context. Beles Consulting led the complete architectural, structural, electrical, and sanitary design as well as bill of quantity preparation.</div>
+                        <div class="sc-tags">
+                            <span class="sc-tag arch">Architectural Design</span>
+                            <span class="sc-tag struct">Structural Design</span>
+                            <span class="sc-tag struct">Earthquake Design</span>
+                            <span class="sc-tag elec">Electrical Design</span>
+                            <span class="sc-tag sanit">Sanitary Design</span>
+                            <span class="sc-tag admin">Bill of Quantity</span>
+                        </div>
+                    </div>
+                    <div class="sc-divider"></div>
+                    <div class="sc-footer">
+                        <div class="sc-meta">
+                            <div class="sc-meta-item"><i class="fa-solid fa-calendar"></i> Jan – Aug 2009</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-tag"></i> 21,000,000 ETB</div>
+                            <div class="sc-meta-item"><i class="fa-solid fa-ruler-combined"></i> 1,200 m² Plot</div>
+                        </div>
+                        <div class="sc-employer"><i class="fa-solid fa-user"></i> ANCOR Construction P.L.C. / BLACY SOLE &amp; SHOE P.L.C.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ══ WHY BELES ══ -->
+<section class="why-section">
+    <div class="why-inner">
+        <div class="section-eyebrow reveal-element">Why Beles Consulting</div>
+        <h2 class="reveal-element">Our Edge in Building Design &amp; Supervision</h2>
+        <div class="why-grid">
+            <div class="why-card reveal-element delay-1">
+                <div class="why-icon"><i class="fa-solid fa-award"></i></div>
+                <h4>Proven at Scale</h4>
+                <p>We have supervised over 300 residential blocks across Addis Ababa — G+2, G+4, and G+7 condominium towers — under some of the largest housing programmes in Ethiopian history, all on a sole-contract basis with zero associated consultants.</p>
+            </div>
+            <div class="why-card reveal-element delay-2">
+                <div class="why-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <h4>Full-Discipline In-House Team</h4>
+                <p>From architectural design and earthquake structural engineering to electrical systems, sanitary works, and bill of quantities — our in-house team covers every building discipline, eliminating sub-contracting gaps and maintaining single-point technical accountability.</p>
+            </div>
+            <div class="why-card reveal-element delay-3">
+                <div class="why-icon"><i class="fa-solid fa-file-signature"></i></div>
+                <h4>Contract-to-Completion Reliability</h4>
+                <p>Beles Consulting has a consistent record of taking projects from initial concept and pre-construction contract administration all the way through to provisional and final acceptance — with full compliance on reporting, quality assurance, and cost management.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ENGAGE US ══ -->
+<section class="engage-section">
+    <div class="engage-inner">
+        <div class="mascot-wrap reveal-element">
+            <div class="mascot-ring"></div>
+            <div class="css-avatar">
+                <div class="av-hat"><div class="av-hat-b">B</div></div>
+                <div class="av-brim"></div>
+                <div class="av-face">
+                    <div class="av-eye-l"></div><div class="av-eye-r"></div><div class="av-smile"></div>
+                </div>
+                <div class="av-body"><div class="av-shirt"></div></div>
+            </div>
+        </div>
+        <p class="engage-motto reveal-element">Honest to Serve</p>
+        <h2 class="reveal-element">Planning a Building<br>Project?</h2>
+        <p class="reveal-element">Whether you need full architectural and structural design, resident supervision for a large housing programme, or pre- and post-construction contract administration — our experienced building consultancy team is ready to deliver.</p>
+        <div class="engage-btns reveal-element">
+            <a href="https://wa.me/251911281227" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="mailto:belesconsult@gmail.com" class="btn-em"><i class="fa-solid fa-envelope"></i> Send an Email</a>
+        </div>
+        <div class="intl-note reveal-element">
+            <i class="fa-solid fa-earth-africa"></i>
+            International consultancy available across East Africa, South Africa &amp; beyond
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="corporate-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Beles Consulting P.L.C.</h4>
+            <p>Providing premium feasibility studies, environmental assessments, resettlement planning, detailed engineering design, building supervision, and world-class consultancy since October 2007. Compliant with national and international standards.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Other Project Categories</h5>
+            <ul class="footer-links">
+                <li><a href="project-feasibility-eia.html">Feasibility, EIA &amp; Resettlement Studies</a></li>
+                <li><a href="project-detailed-engineering-design.html">Detailed Engineering Design</a></li>
+                <li><a href="project-bridge-design.html">Bridge Design</a></li>
+                <li><a href="project-road-pavement.html">Road &amp; Pavement Design</a></li>
+                <li><a href="project-supervision.html">Supervision &amp; Contract Admin</a></li>
+                <li><a href="project-water-supply.html">Water Supply &amp; Infrastructure</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact Channels</h5>
+            <ul class="footer-contact-list">
+                <li><i class="fa-solid fa-map-location-dot"></i> Gurd shola, Infront of Ethio Telecom , Addis Ababa, Ethiopia</li>
+                <li><i class="fa-solid fa-square-phone"></i> (+251) 911 281 227 / 911 459 248</li>
+                <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+        <span>Honest to Serve</span>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const reveals = document.querySelectorAll('.reveal-element');
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => obs.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('active'));
+    }
+});
+</script>
+</body>
+</html>

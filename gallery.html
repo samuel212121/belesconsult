@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --bg-grey: #f2f4f7;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #ffffff; font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+        body.lightbox-open { overflow: hidden; }
+
+        .reveal-element { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ══ FULL NAV ══ */
+        .main-nav { position: sticky; top: 0; z-index: 1000; background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%); border-bottom: 3px solid var(--maroon-brand); box-shadow: 0 4px 20px rgba(0,0,0,0.35); height: 64px; display: flex; align-items: center; padding: 0 6%; }
+        .main-nav-inner { width: 100%; max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .main-nav-logo { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .main-nav-logo img { height: 36px; width: auto; }
+        .main-nav-logo span { font-size: 0.9rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .main-nav-logo span em { color: var(--blue-accent); font-style: normal; }
+        .main-nav-links { display: flex; align-items: center; gap: 34px; }
+        .main-nav-links a { color: rgba(255,255,255,0.65); font-size: 0.82rem; font-weight: 700; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s; position: relative; padding: 6px 0; }
+        .main-nav-links a:hover { color: #fff; }
+        .main-nav-links a.active { color: #fff; }
+        .main-nav-links a.active::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 100%; height: 2px; background: var(--maroon-brand); }
+        .main-nav-right { display: flex; align-items: center; gap: 18px; }
+        .nav-cta-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--maroon-brand); color: #fff; text-decoration: none; padding: 9px 20px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; transition: background 0.2s, transform 0.2s; }
+        .nav-cta-pill:hover { background: #9e0d23; transform: translateY(-1px); }
+        .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 6px; }
+        .nav-burger span { width: 22px; height: 2px; background: #fff; display: block; }
+
+        /* ══ HERO ══ */
+        .gallery-hero { position: relative; min-height: 56vh; display: flex; align-items: center; overflow: hidden; background: var(--bg-dark); background-image: linear-gradient(135deg, rgba(7,13,25,0.95) 0%, rgba(22,71,128,0.88) 55%, rgba(7,13,25,0.95) 100%); border-bottom: 5px solid var(--maroon-brand); }
+        .gallery-hero-watermark { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; background-repeat: no-repeat; background-position: right 4% center; background-size: 38%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 500' stroke='%23ffffff' stroke-width='0.6' fill='none'><rect x='60' y='60' width='180' height='180'/><rect x='260' y='60' width='280' height='120'/><rect x='60' y='260' width='280' height='180'/><rect x='360' y='200' width='180' height='240'/></svg>"); }
+        .gallery-hero-content { position: relative; z-index: 5; max-width: 1280px; margin: 0 auto; width: 100%; padding: 70px 6%; text-align: center; }
+        .gallery-hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; background: rgba(21,135,210,0.15); border: 1px solid rgba(21,135,210,0.3); color: var(--blue-accent); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px; border-radius: 2px; margin-bottom: 22px; }
+        .gallery-hero-content h1 { font-size: clamp(2.4rem,5vw,3.8rem); font-weight: 800; color: #fff; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 18px; }
+        .gallery-hero-content h1 span { color: var(--blue-accent); }
+        .gallery-hero-content p { font-size: 1rem; color: #abbcd0; max-width: 560px; margin: 0 auto 36px auto; line-height: 1.75; }
+
+        /* Filter pills */
+        .filter-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .filter-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 10px 20px; border-radius: 50px; cursor: pointer; transition: background 0.25s, border-color 0.25s, transform 0.2s; }
+        .filter-pill:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+        .filter-pill.active { background: var(--maroon-brand); border-color: var(--maroon-brand); }
+        .filter-pill i { font-size: 0.75rem; }
+
+        /* ══ SPOTLIGHT BAND ══ */
+        .spotlight-section { background: #fff; padding: 64px 6% 0 6%; }
+        .spotlight-inner { max-width: 1280px; margin: 0 auto; }
+        .spotlight-frame { position: relative; width: 100%; aspect-ratio: 16/6.2; overflow: hidden; background: var(--bg-dark); }
+        .spotlight-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+        .spotlight-slide.active { opacity: 1; }
+        .spotlight-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .spotlight-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,13,25,0.92) 0%, rgba(7,13,25,0.25) 45%, transparent 70%); display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; }
+        .spotlight-tag { display: inline-block; background: var(--maroon-brand); color: #fff; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 5px 12px; margin-bottom: 14px; width: fit-content; }
+        .spotlight-overlay h2 { font-size: clamp(1.5rem,3vw,2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.5px; max-width: 700px; line-height: 1.2; }
+        .spotlight-dots { position: absolute; bottom: 24px; right: 32px; display: flex; gap: 8px; z-index: 5; }
+        .spotlight-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.35); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+        .spotlight-dot.active { background: var(--blue-accent); transform: scale(1.3); }
+
+        /* ══ BENTO GALLERY ══ */
+        .bento-section { background: #fff; padding: 70px 6% 100px 6%; }
+        .bento-inner { max-width: 1280px; margin: 0 auto; }
+        .bento-section-header { margin-bottom: 40px; }
+        .section-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--maroon-brand); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .section-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--maroon-brand); }
+        .bento-section-header h2 { font-size: clamp(1.6rem,2.6vw,2.1rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; }
+
+        .bento-block { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 220px); gap: 14px; margin-bottom: 14px; }
+        .bento-tile { position: relative; overflow: hidden; cursor: pointer; background: var(--bg-dark); }
+        .bento-tile.big { grid-column: span 2; grid-row: span 2; }
+        .bento-tile.wide { grid-column: span 2; grid-row: span 1; }
+        .bento-tile.tall { grid-column: span 1; grid-row: span 2; }
+        .bento-tile.small { grid-column: span 1; grid-row: span 1; }
+
+        .bento-tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.5s ease; filter: saturate(1) brightness(1); }
+        .bento-tile:hover img { transform: scale(1.07); filter: saturate(0.85) brightness(0.55); }
+
+        .bento-frame { position: absolute; inset: 10px; border: 1px solid transparent; pointer-events: none; transition: border-color 0.4s ease, inset 0.4s ease; z-index: 3; }
+        .bento-tile:hover .bento-frame { inset: 6px; border-color: rgba(255,255,255,0.55); }
+        .bento-frame::before, .bento-frame::after { content: ''; position: absolute; width: 22px; height: 22px; border: 2px solid var(--maroon-brand); opacity: 0; transition: opacity 0.4s ease 0.1s; }
+        .bento-frame::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .bento-frame::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+        .bento-tile:hover .bento-frame::before, .bento-tile:hover .bento-frame::after { opacity: 1; }
+
+        .bento-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 20px; z-index: 4; background: linear-gradient(to top, rgba(7,13,25,0.88), transparent); transform: translateY(8px); opacity: 0; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease; }
+        .bento-tile:hover .bento-caption { transform: translateY(0); opacity: 1; }
+        .bento-cat { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--blue-accent); display: block; margin-bottom: 4px; }
+        .bento-name { font-size: 0.88rem; font-weight: 800; color: #fff; line-height: 1.3; }
+
+        .bento-zoom-hint { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: rgba(7,13,25,0.55); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; z-index: 4; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+        .bento-tile:hover .bento-zoom-hint { opacity: 1; }
+        .bento-zoom-hint i { color: #fff; font-size: 0.72rem; }
+
+        .bento-tile.hidden-tile { display: none; }
+
+        /* ══ STATS STRIP ══ */
+        .stats-strip { background: var(--navy-brand); border-top: 4px solid var(--maroon-brand); border-bottom: 4px solid var(--maroon-brand); padding: 56px 6%; }
+        .stats-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 30px; text-align: center; }
+        .stat-item { padding: 0 10px; }
+        .stat-num { font-size: clamp(2rem,3.5vw,2.8rem); font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 6px; }
+        .stat-num span { color: var(--blue-accent); }
+        .stat-label { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #abbcd0; }
+        .stat-divider { width: 1px; background: rgba(255,255,255,0.12); }
+
+        /* ══ LIGHTBOX ══ */
+        .lightbox-overlay { position: fixed; inset: 0; background: rgba(4,7,14,0.96); z-index: 5000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+        .lightbox-overlay.open { opacity: 1; pointer-events: all; }
+        .lightbox-stage { position: relative; max-width: 88vw; max-height: 82vh; display: flex; flex-direction: column; align-items: center; transform: scale(0.94); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+        .lightbox-overlay.open .lightbox-stage { transform: scale(1); }
+        .lightbox-stage img { max-width: 88vw; max-height: 70vh; object-fit: contain; display: block; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+        .lightbox-caption-bar { margin-top: 18px; text-align: center; }
+        .lightbox-cat { display: inline-block; background: var(--maroon-brand); color: #fff; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; padding: 4px 12px; margin-bottom: 8px; }
+        .lightbox-name { font-size: 1rem; font-weight: 700; color: #fff; }
+        .lightbox-close { position: absolute; top: -50px; right: 0; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s; }
+        .lightbox-close:hover { background: var(--maroon-brand); transform: rotate(90deg); }
+        .lightbox-nav { position: fixed; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.25s, transform 0.2s; z-index: 5001; }
+        .lightbox-nav:hover { background: var(--maroon-brand); }
+        .lightbox-prev { left: 28px; }
+        .lightbox-next { right: 28px; }
+        .lightbox-counter { position: fixed; top: 28px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.5); font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; z-index: 5001; }
+
+        /* ══ WHY BELES ══ */
+        .why-section { background: var(--bg-dark); padding: 90px 6%; }
+        .why-inner { max-width: 1280px; margin: 0 auto; text-align: center; }
+        .why-inner .section-eyebrow { justify-content: center; color: rgba(255,255,255,0.45); }
+        .why-inner .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+        .why-inner h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: #fff; margin: 14px auto 18px auto; letter-spacing: -0.5px; max-width: 620px; }
+        .why-inner p { font-size: 0.95rem; color: #abbcd0; max-width: 560px; margin: 0 auto 36px auto; line-height: 1.75; }
+        .why-cta-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; box-shadow: 0 4px 20px rgba(37,211,102,0.3); animation: pulse-wa 2.2s infinite; transition: transform 0.2s; }
+        .btn-wa:hover { transform: translateY(-2px); }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+        .btn-em { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+        .btn-em:hover { border-color: var(--blue-accent); background: rgba(21,135,210,0.1); transform: translateY(-2px); }
+
+        /* ══ FOOTER ══ */
+        .corporate-footer { background: var(--bg-dark); color: #fff; padding: 70px 6% 36px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 48px; }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-col h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 18px; }
+        .footer-col p { color: #abbcd0; font-size: 0.88rem; line-height: 1.6; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .footer-links li a { color: #abbcd0; text-decoration: none; font-size: 0.88rem; transition: color 0.25s; }
+        .footer-links li a:hover { color: #fff; }
+        .footer-contact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; color: #abbcd0; font-size: 0.88rem; }
+        .footer-contact-list li { display: flex; align-items: center; gap: 10px; }
+        .footer-contact-list li i { color: var(--maroon-brand); }
+        .footer-bottom { max-width: 1280px; margin: 26px auto 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: #64748b; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .main-nav-links { display: none; }
+            .nav-burger { display: flex; }
+            .bento-block { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 180px); }
+            .bento-tile.big { grid-column: span 2; grid-row: span 1; }
+            .bento-tile.wide { grid-column: span 2; }
+            .bento-tile.tall { grid-row: span 1; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); gap: 24px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+            .spotlight-frame { aspect-ratio: 16/9; }
+        }
+        @media (max-width: 640px) {
+            .bento-block { grid-template-columns: 1fr; grid-template-rows: none; gap: 12px; }
+            .bento-tile, .bento-tile.big, .bento-tile.wide, .bento-tile.tall, .bento-tile.small { grid-column: span 1 !important; grid-row: span 1 !important; height: 240px; }
+            .filter-row { gap: 8px; }
+            .filter-pill { padding: 8px 14px; font-size: 0.72rem; }
+            .lightbox-nav { width: 40px; height: 40px; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     IMAGE GUIDE — replace the src= URLs below with your own photos.
+     Each tile keeps its aspect ratio automatically via object-fit:
+     cover, so any image you drop in will crop cleanly — no other
+     edits needed. Tile sizes are set by class: big / wide / tall / small.
+     ══════════════════════════════════════════════════════════════ -->
+
+<!-- ══ FULL NAV ══ -->
+<nav class="main-nav">
+    <div class="main-nav-inner">
+        <a href="index.html" class="main-nav-logo">
+            <img src="logos/beles.png" alt="Beles Consulting" onerror="this.onerror=null;this.src='https://placehold.co/120x36/164780/ffffff?text=Beles'">
+            <span>Beles <em>Consult</em></span>
+        </a>
+        <div class="main-nav-links">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="services.html">Services</a>
+            <a href="gallery.html" class="active">Gallery</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="main-nav-right">
+            <a href="https://wa.me/251911281227" class="nav-cta-pill" target="_blank"><i class="fa-brands fa-whatsapp"></i> Get a Quote</a>
+            <button class="nav-burger" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="gallery-hero">
+    <div class="gallery-hero-watermark"></div>
+    <div class="gallery-hero-content">
+        <div class="gallery-hero-eyebrow reveal-element"><i class="fa-solid fa-camera"></i> Visual Portfolio</div>
+        <h1 class="reveal-element delay-1">Our Work, <span>In Focus</span></h1>
+        <p class="reveal-element delay-2">Bridges, roads, housing estates, water infrastructure, and airfields — a visual record of nearly two decades of sole-contract engineering consultancy across Ethiopia.</p>
+        <div class="filter-row reveal-element delay-3">
+            <div class="filter-pill active" data-filter="all"><i class="fa-solid fa-grip"></i> All Work</div>
+            <div class="filter-pill" data-filter="bridges"><i class="fa-solid fa-bridge"></i> Bridges</div>
+            <div class="filter-pill" data-filter="roads"><i class="fa-solid fa-road"></i> Roads</div>
+            <div class="filter-pill" data-filter="buildings"><i class="fa-solid fa-building"></i> Buildings</div>
+            <div class="filter-pill" data-filter="water"><i class="fa-solid fa-droplet"></i> Water</div>
+            <div class="filter-pill" data-filter="airfields"><i class="fa-solid fa-plane-departure"></i> Airfields</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ SPOTLIGHT BAND ══ -->
+<section class="spotlight-section">
+    <div class="spotlight-inner">
+        <div class="spotlight-frame reveal-element" id="spotlightFrame">
+            <div class="spotlight-slide active" data-index="0">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1600&auto=format&fit=crop" alt="Bridge Projects">
+                <div class="spotlight-overlay">
+                    <div class="spotlight-tag">Bridge Design</div>
+                    <h2>9 Bridges. 6 Regions. One Sole Contractor.</h2>
+                </div>
+            </div>
+            <div class="spotlight-slide" data-index="1">
+                <img src="https://images.unsplash.com/photo-1515162305285-0293e4767cc2?q=80&w=1600&auto=format&fit=crop" alt="Road Projects">
+                <div class="spotlight-overlay">
+                    <div class="spotlight-tag">Road &amp; Pavement</div>
+                    <h2>Hundreds of Kilometers, Designed and Supervised End-to-End.</h2>
+                </div>
+            </div>
+            <div class="spotlight-slide" data-index="2">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1600&auto=format&fit=crop" alt="Housing Projects">
+                <div class="spotlight-overlay">
+                    <div class="spotlight-tag">Building &amp; Supervision</div>
+                    <h2>Over 300 Housing Blocks Delivered Across Addis Ababa.</h2>
+                </div>
+            </div>
+            <div class="spotlight-slide" data-index="3">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop" alt="Water Infrastructure">
+                <div class="spotlight-overlay">
+                    <div class="spotlight-tag">Water Infrastructure</div>
+                    <h2>275M+ ETB in Wells, Springs &amp; Supply Systems.</h2>
+                </div>
+            </div>
+            <div class="spotlight-dots">
+                <div class="spotlight-dot active" data-index="0"></div>
+                <div class="spotlight-dot" data-index="1"></div>
+                <div class="spotlight-dot" data-index="2"></div>
+                <div class="spotlight-dot" data-index="3"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ BENTO GALLERY ══ -->
+<section class="bento-section">
+    <div class="bento-inner">
+        <div class="bento-section-header reveal-element">
+            <div class="section-eyebrow">Browse the Portfolio</div>
+            <h2>Every Project Tells a Structural Story</h2>
+        </div>
+
+        <!-- BLOCK 1 -->
+        <div class="bento-block reveal-element">
+            <div class="bento-tile big" data-cat="bridges" data-img="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1200&auto=format&fit=crop" data-name="Package I — Six Bridge Projects" data-cat-label="Bridge Design">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1200&auto=format&fit=crop" alt="Bridge Package I">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Bridge Design</span><span class="bento-name">Package I — Six Bridge Projects, SNNP</span></div>
+            </div>
+            <div class="bento-tile wide" data-cat="roads" data-img="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop" data-name="Package 6 — Five Road Segments" data-cat-label="Road Design">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop" alt="Road Package 6">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Road Design</span><span class="bento-name">Package 6 — Oromia &amp; SNNP Region</span></div>
+            </div>
+            <div class="bento-tile small" data-cat="airfields" data-img="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop" data-name="Mizan Aman Airfield" data-cat-label="Airfield Design">
+                <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop" alt="Mizan Aman Airfield">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Airfield Design</span><span class="bento-name">Mizan Aman Airfield</span></div>
+            </div>
+            <div class="bento-tile small" data-cat="water" data-img="https://images.unsplash.com/photo-1495547670517-0066b9fcf514?q=80&w=1200&auto=format&fit=crop" data-name="Wabishebele Deep Wells" data-cat-label="Water Infrastructure">
+                <img src="https://images.unsplash.com/photo-1495547670517-0066b9fcf514?q=80&w=1200&auto=format&fit=crop" alt="Wabishebele Deep Wells">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Water Infrastructure</span><span class="bento-name">Wabishebele — 4 Deep Wells</span></div>
+            </div>
+        </div>
+
+        <!-- BLOCK 2 -->
+        <div class="bento-block reveal-element">
+            <div class="bento-tile tall" data-cat="buildings" data-img="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop" data-name="Bole Arabsa Condominium" data-cat-label="Building Supervision">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop" alt="Bole Arabsa Condominium">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Building Supervision</span><span class="bento-name">Bole Arabsa Condominium — 84 Blocks</span></div>
+            </div>
+            <div class="bento-tile small" data-cat="bridges" data-img="https://images.unsplash.com/photo-1592833167665-ec0a4798e8f8?q=80&w=1200&auto=format&fit=crop" data-name="Kefo Bridge" data-cat-label="Bridge Design">
+                <img src="https://images.unsplash.com/photo-1592833167665-ec0a4798e8f8?q=80&w=1200&auto=format&fit=crop" alt="Kefo Bridge">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Bridge Design</span><span class="bento-name">Kefo Bridge Project</span></div>
+            </div>
+            <div class="bento-tile small" data-cat="roads" data-img="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop" data-name="Beles–Mekane Birhan Road" data-cat-label="Road Design">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop" alt="Beles Mekane Birhan Road">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Road Design</span><span class="bento-name">Beles – Mekane Birhan, 39km AC</span></div>
+            </div>
+            <div class="bento-tile wide" data-cat="water" data-img="https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop" data-name="Gode Water Supply" data-cat-label="Water Infrastructure">
+                <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop" alt="Gode Water Supply">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Water Infrastructure</span><span class="bento-name">Gode — Springs &amp; Deep Wells</span></div>
+            </div>
+        </div>
+
+        <!-- BLOCK 3 -->
+        <div class="bento-block reveal-element">
+            <div class="bento-tile wide" data-cat="buildings" data-img="https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=1200&auto=format&fit=crop" data-name="Lafto Billal Mosque" data-cat-label="Building Design">
+                <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=1200&auto=format&fit=crop" alt="Lafto Billal Mosque">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Building Design</span><span class="bento-name">Lafto Billal Mosque</span></div>
+            </div>
+            <div class="bento-tile small" data-cat="roads" data-img="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop" data-name="Denegoro–Kingi–Mekebilla" data-cat-label="Road Design">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop" alt="Denegoro Kingi Mekebilla">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Road Design</span><span class="bento-name">Denegoro – Kingi – Mekebilla</span></div>
+            </div>
+            <div class="bento-tile big" data-cat="water" data-img="https://images.unsplash.com/photo-1538300342682-cf57afb97285?q=80&w=1200&auto=format&fit=crop" data-name="Asaita Water Infrastructure" data-cat-label="Water Infrastructure">
+                <img src="https://images.unsplash.com/photo-1538300342682-cf57afb97285?q=80&w=1200&auto=format&fit=crop" alt="Asaita Water Infrastructure">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Water Infrastructure</span><span class="bento-name">Asaita Water Infrastructure, Afar</span></div>
+            </div>
+        </div>
+
+        <!-- BLOCK 4 -->
+        <div class="bento-block reveal-element">
+            <div class="bento-tile small" data-cat="buildings" data-img="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop" data-name="Ethiopian Commodity Exchange" data-cat-label="Building Supervision">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop" alt="Ethiopian Commodity Exchange Building">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Building Supervision</span><span class="bento-name">Ethiopian Commodity Exchange</span></div>
+            </div>
+            <div class="bento-tile wide" data-cat="roads" data-img="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=1200&auto=format&fit=crop" data-name="Alaba–Angacha–Wato Road" data-cat-label="Road Design">
+                <img src="https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=1200&auto=format&fit=crop" alt="Alaba Angacha Wato Road">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Road Design</span><span class="bento-name">Alaba – Angacha – Wato Road</span></div>
+            </div>
+            <div class="bento-tile small" data-cat="bridges" data-img="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?q=80&w=1200&auto=format&fit=crop" data-name="Selele Bridge" data-cat-label="Bridge Design">
+                <img src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?q=80&w=1200&auto=format&fit=crop" alt="Selele Bridge">
+                <div class="bento-frame"></div>
+                <div class="bento-zoom-hint"><i class="fa-solid fa-expand"></i></div>
+                <div class="bento-caption"><span class="bento-cat">Bridge Design</span><span class="bento-name">Selele Bridge Project</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ STATS STRIP ══ -->
+<section class="stats-strip">
+    <div class="stats-inner">
+        <div class="stat-item reveal-element">
+            <div class="stat-num"><span>9+</span></div>
+            <div class="stat-label">Bridges Delivered</div>
+        </div>
+        <div class="stat-item reveal-element delay-1">
+            <div class="stat-num"><span>300+</span></div>
+            <div class="stat-label">Housing Blocks Supervised</div>
+        </div>
+        <div class="stat-item reveal-element delay-2">
+            <div class="stat-num"><span>275M+</span></div>
+            <div class="stat-label">ETB in Water Infrastructure</div>
+        </div>
+        <div class="stat-item reveal-element delay-3">
+            <div class="stat-num"><span>18</span></div>
+            <div class="stat-label">Years of Sole-Contract Delivery</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ WHY / ENGAGE ══ -->
+<section class="why-section">
+    <div class="why-inner">
+        <div class="section-eyebrow reveal-element">Honest to Serve</div>
+        <h2 class="reveal-element">Want Your Project Featured Here Next?</h2>
+        <p class="reveal-element">Every image in this gallery represents a sole-contract delivery — no subcontracting, no diluted accountability. Let's talk about what we can build for you.</p>
+        <div class="why-cta-row reveal-element">
+            <a href="https://wa.me/251911281227" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="mailto:belesconsult@gmail.com" class="btn-em"><i class="fa-solid fa-envelope"></i> Send an Email</a>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="corporate-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Beles Consulting P.L.C.</h4>
+            <p>Providing premium feasibility studies, environmental assessments, resettlement planning, detailed engineering design, building supervision, water infrastructure, and world-class consultancy since October 2007.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Project Categories</h5>
+            <ul class="footer-links">
+                <li><a href="project-feasibility-eia.html">Feasibility, EIA &amp; Resettlement Studies</a></li>
+                <li><a href="project-detailed-engineering-design.html">Detailed Engineering Design</a></li>
+                <li><a href="project-building-design.html">Building Design &amp; Supervision</a></li>
+                <li><a href="project-water-production.html">Water Supply &amp; Well Production</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact Channels</h5>
+            <ul class="footer-contact-list">
+                <li><i class="fa-solid fa-map-location-dot"></i>  Gurd shola, Infront of Ethio Telecom , Addis Ababa, Ethiopia</li>
+                <li><i class="fa-solid fa-square-phone"></i> (+251) 911 281 227 / 911 459 248</li>
+                <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+        <span>Honest to Serve</span>
+    </div>
+</footer>
+
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox-overlay" id="lightboxOverlay">
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+    <div class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fa-solid fa-chevron-left"></i></div>
+    <div class="lightbox-stage">
+        <div class="lightbox-close" id="lightboxClose"><i class="fa-solid fa-xmark"></i></div>
+        <img src="" alt="" id="lightboxImage">
+        <div class="lightbox-caption-bar">
+            <div class="lightbox-cat" id="lightboxCat"></div>
+            <div class="lightbox-name" id="lightboxName"></div>
+        </div>
+    </div>
+    <div class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fa-solid fa-chevron-right"></i></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    /* Reveal on scroll */
+    const reveals = document.querySelectorAll('.reveal-element');
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => obs.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('active'));
+    }
+
+    /* ── Spotlight auto-rotate ── */
+    const slides = document.querySelectorAll('.spotlight-slide');
+    const dots = document.querySelectorAll('.spotlight-dot');
+    let spotIndex = 0;
+    function showSpotlight(i) {
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[i].classList.add('active');
+        dots[i].classList.add('active');
+        spotIndex = i;
+    }
+    let spotTimer = setInterval(() => { showSpotlight((spotIndex + 1) % slides.length); }, 5000);
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            showSpotlight(parseInt(dot.dataset.index));
+            clearInterval(spotTimer);
+            spotTimer = setInterval(() => { showSpotlight((spotIndex + 1) % slides.length); }, 5000);
+        });
+    });
+
+    /* ── Filter ── */
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const tiles = document.querySelectorAll('.bento-tile');
+    filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            filterPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            const filter = pill.dataset.filter;
+            tiles.forEach(tile => {
+                if (filter === 'all' || tile.dataset.cat === filter) {
+                    tile.classList.remove('hidden-tile');
+                } else {
+                    tile.classList.add('hidden-tile');
+                }
+            });
+        });
+    });
+
+    /* ── Lightbox ── */
+    const overlay = document.getElementById('lightboxOverlay');
+    const lbImage = document.getElementById('lightboxImage');
+    const lbCat = document.getElementById('lightboxCat');
+    const lbName = document.getElementById('lightboxName');
+    const lbCounter = document.getElementById('lightboxCounter');
+    const lbClose = document.getElementById('lightboxClose');
+    const lbPrev = document.getElementById('lightboxPrev');
+    const lbNext = document.getElementById('lightboxNext');
+
+    let currentSet = [];
+    let currentIdx = 0;
+
+    function getVisibleTiles() {
+        return Array.from(tiles).filter(t => !t.classList.contains('hidden-tile'));
+    }
+
+    function openLightbox(tile) {
+        currentSet = getVisibleTiles();
+        currentIdx = currentSet.indexOf(tile);
+        renderLightbox();
+        overlay.classList.add('open');
+        document.body.classList.add('lightbox-open');
+    }
+
+    function renderLightbox() {
+        const tile = currentSet[currentIdx];
+        lbImage.src = tile.dataset.img;
+        lbImage.alt = tile.dataset.name;
+        lbCat.textContent = tile.dataset.catLabel;
+        lbName.textContent = tile.dataset.name;
+        lbCounter.textContent = (currentIdx + 1) + ' / ' + currentSet.length;
+    }
+
+    function closeLightbox() {
+        overlay.classList.remove('open');
+        document.body.classList.remove('lightbox-open');
+    }
+
+    function showPrev() {
+        currentIdx = (currentIdx - 1 + currentSet.length) % currentSet.length;
+        renderLightbox();
+    }
+    function showNext() {
+        currentIdx = (currentIdx + 1) % currentSet.length;
+        renderLightbox();
+    }
+
+    tiles.forEach(tile => {
+        tile.addEventListener('click', () => openLightbox(tile));
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', showPrev);
+    lbNext.addEventListener('click', showNext);
+
+    /* Close on clicking outside the stage */
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeLightbox();
+    });
+
+    /* Keyboard controls */
+    document.addEventListener('keydown', (e) => {
+        if (!overlay.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+    });
+});
+</script>
+</body>
+</html>

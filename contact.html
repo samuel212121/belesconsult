@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --bg-grey: #f2f4f7;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #ffffff; font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        .reveal-element { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ══ SLIM NAV ══ */
+        .slim-nav { position: sticky; top: 0; z-index: 1000; background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%); border-bottom: 3px solid var(--maroon-brand); box-shadow: 0 4px 20px rgba(0,0,0,0.35); height: 58px; display: flex; align-items: center; padding: 0 6%; }
+        .slim-nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .slim-nav-logo { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .slim-nav-logo img { height: 34px; width: auto; }
+        .slim-nav-logo span { font-size: 0.85rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .slim-nav-logo span em { color: var(--blue-accent); font-style: normal; }
+        .slim-nav-right { display: flex; align-items: center; gap: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; transition: color 0.2s; }
+        .back-btn:hover { color: var(--blue-accent); }
+        .back-btn i { font-size: 0.7rem; transition: transform 0.2s; }
+        .back-btn:hover i { transform: translateX(-3px); }
+        .nav-cta-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--maroon-brand); color: #fff; text-decoration: none; padding: 8px 18px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; transition: background 0.2s, transform 0.2s; }
+        .nav-cta-pill:hover { background: #9e0d23; transform: translateY(-1px); }
+
+        /* ══ HERO ══ */
+        .page-hero { position: relative; min-height: 64vh; display: flex; align-items: center; overflow: hidden; background: var(--bg-dark); background-image: linear-gradient(135deg, rgba(7,13,25,0.97) 0%, rgba(22,71,128,0.82) 60%, rgba(7,13,25,0.97) 100%); border-bottom: 5px solid var(--maroon-brand); }
+.hero-watermark {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05; /* Increased slightly for detail, up from 0.06 */
+    background-repeat: no-repeat;
+    background-position: center; /* Move to center for a hero backdrop */
+    background-size: contain; /* Ensure the whole complex diagram fits */
+    background-image: url('images/beles\ contact.png'); /* Replaced with new image_9.png */
+}        .hero-grid { position: absolute; inset: 0; display: flex; pointer-events: none; z-index: 1; }
+        .hero-grid-col { flex: 1; border-right: 1px solid rgba(255,255,255,0.04); }
+        .hero-content { position: relative; z-index: 5; max-width: 1200px; margin: 0 auto; width: 100%; padding: 70px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+        .breadcrumb a, .breadcrumb span { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--blue-accent); }
+        .breadcrumb i { font-size: 0.55rem; color: rgba(255,255,255,0.2); }
+        .breadcrumb span:last-child { color: var(--blue-accent); }
+        .hero-label { display: inline-flex; align-items: center; gap: 10px; background: rgba(21,135,210,0.15); border: 1px solid rgba(21,135,210,0.3); color: var(--blue-accent); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px; border-radius: 2px; margin-bottom: 20px; }
+        .hero-content h1 { font-size: clamp(2.4rem,5vw,4rem); font-weight: 800; color: #fff; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 18px; max-width: 760px; }
+        .hero-content h1 span { color: var(--blue-accent); }
+        .hero-content p { font-size: 1rem; color: #abbcd0; max-width: 580px; line-height: 1.75; }
+
+        /* ══ QUICK INFO CARDS ══ */
+        .info-cards-section { background: #fff; padding: 0 6%; position: relative; margin-top: -56px; z-index: 10; }
+        .info-cards-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: rgba(22,71,128,0.06); box-shadow: 0 20px 50px rgba(22,71,128,0.1); }
+        .info-card { background: #fff; padding: 32px 26px; position: relative; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+        .info-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--maroon-brand); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .info-card:hover::before { transform: scaleX(1); }
+        .info-card:hover { box-shadow: 0 16px 36px rgba(22,71,128,0.1); transform: translateY(-4px); }
+        .info-card-num { font-size: 3.2rem; font-weight: 900; color: rgba(22,71,128,0.06); position: absolute; top: 4px; right: 14px; line-height: 1; pointer-events: none; }
+        .info-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(22,71,128,0.08); margin-bottom: 16px; }
+        .info-icon i { color: var(--navy-brand); font-size: 1.15rem; }
+        .info-card h3 { font-size: 0.95rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-card p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; }
+        .info-card a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .info-card a:hover { color: var(--blue-accent); }
+
+        /* ══ CONTACT PANEL SECTION ══ */
+        .contact-panel-section { background: var(--bg-grey); padding: 110px 6% 100px 6%; }
+        .contact-panel-inner { max-width: 1200px; margin: 0 auto; }
+        .section-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--maroon-brand); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .section-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--maroon-brand); }
+        .contact-panel-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 48px; max-width: 600px; }
+
+        .contact-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 0; box-shadow: 0 24px 60px rgba(22,71,128,0.1); }
+
+        /* Left: dark info panel */
+        .contact-info-panel { background: var(--bg-dark); color: #fff; padding: 48px 40px; position: relative; overflow: hidden; }
+        .contact-info-panel::before { content: ''; position: absolute; inset: 0; opacity: 0.05; background-repeat: no-repeat; background-position: bottom right; background-size: 70%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' stroke='%23ffffff' stroke-width='0.6' fill='none'><circle cx='200' cy='200' r='150'/><circle cx='200' cy='200' r='100'/><path d='M50 200 h300 M200 50 v300' stroke-dasharray='6,4'/></svg>"); }
+        .contact-info-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(21,135,210,0.15); border: 1px solid rgba(21,135,210,0.3); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; position: relative; z-index: 2; }
+        .contact-info-icon i { color: var(--blue-accent); font-size: 1.4rem; }
+        .contact-info-panel h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 14px; position: relative; z-index: 2; }
+        .contact-info-panel > p { font-size: 0.88rem; color: #abbcd0; line-height: 1.75; margin-bottom: 36px; position: relative; z-index: 2; }
+        .contact-detail-list { display: flex; flex-direction: column; gap: 22px; position: relative; z-index: 2; margin-bottom: 36px; }
+        .contact-detail-item { display: flex; gap: 14px; align-items: flex-start; }
+        .contact-detail-item i { color: var(--blue-accent); font-size: 0.95rem; margin-top: 3px; width: 18px; flex-shrink: 0; }
+        .contact-detail-item div { font-size: 0.85rem; color: #cdd9e8; line-height: 1.6; }
+        .contact-detail-item strong { display: block; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+        .contact-detail-item a { color: #cdd9e8; text-decoration: none; transition: color 0.2s; }
+        .contact-detail-item a:hover { color: var(--blue-accent); }
+        .contact-social-row { display: flex; gap: 10px; position: relative; z-index: 2; }
+        .contact-social-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+        .contact-social-btn:hover { background: var(--maroon-brand); transform: translateY(-2px); }
+
+        /* Right: form panel */
+        .contact-form-panel { background: #fff; padding: 48px 44px; }
+        .contact-form-panel h3 { font-size: 1.3rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 6px; }
+        .contact-form-panel > p.form-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 32px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .field-group { margin-bottom: 20px; position: relative; }
+        .field-group label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--navy-brand); margin-bottom: 8px; }
+        .field-group input, .field-group select, .field-group textarea {
+            width: 100%; padding: 13px 16px; font-family: var(--font-main); font-size: 0.9rem; color: var(--text-dark);
+            border: 1.5px solid #e2e8f0; border-radius: 3px; background: var(--bg-light);
+            transition: border-color 0.2s, background 0.2s; outline: none;
+        }
+        .field-group input:focus, .field-group select:focus, .field-group textarea:focus { border-color: var(--blue-accent); background: #fff; }
+        .field-group select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat: no-repeat; background-position: right 16px center; cursor: pointer; }
+        .field-group textarea { resize: vertical; min-height: 110px; }
+        .submit-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--maroon-brand); color: #fff; border: none; padding: 15px 32px; font-family: var(--font-main); font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+        .submit-btn:hover { background: #9e0d23; transform: translateY(-2px); }
+        .submit-btn i { font-size: 0.85rem; }
+        .form-note { font-size: 0.76rem; color: var(--text-muted); margin-top: 16px; display: flex; align-items: center; gap: 8px; }
+        .form-note i { color: var(--blue-accent); }
+
+        /* ══ EXPERTISE (discipline blocks) ══ */
+        .discipline-section { background: #fff; padding: 100px 6%; }
+        .discipline-inner { max-width: 1200px; margin: 0 auto; }
+        .discipline-intro-title { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 48px; max-width: 700px; line-height: 1.2; }
+        .discipline-intro-title span { color: var(--maroon-brand); }
+        .discipline-blocks { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(22,71,128,0.06); }
+        .disc-block { background: #fff; padding: 36px 28px; position: relative; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+        .disc-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .disc-block:nth-child(1)::before, .disc-block:nth-child(4)::before { background: var(--navy-brand); }
+        .disc-block:nth-child(2)::before, .disc-block:nth-child(5)::before { background: var(--maroon-brand); }
+        .disc-block:nth-child(3)::before, .disc-block:nth-child(6)::before { background: var(--blue-accent); }
+        .disc-block:hover { box-shadow: 0 12px 32px rgba(22,71,128,0.08); transform: translateY(-4px); }
+        .disc-block-num { font-size: 5rem; font-weight: 900; color: rgba(22,71,128,0.05); position: absolute; top: 8px; right: 16px; line-height: 1; pointer-events: none; }
+        .disc-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 18px; }
+        .disc-block:nth-child(1) .disc-icon, .disc-block:nth-child(4) .disc-icon { background: rgba(22,71,128,0.1); }
+        .disc-block:nth-child(2) .disc-icon, .disc-block:nth-child(5) .disc-icon { background: rgba(127,10,28,0.1); }
+        .disc-block:nth-child(3) .disc-icon, .disc-block:nth-child(6) .disc-icon { background: rgba(21,135,210,0.1); }
+        .disc-block:nth-child(1) .disc-icon i, .disc-block:nth-child(4) .disc-icon i { color: var(--navy-brand); }
+        .disc-block:nth-child(2) .disc-icon i, .disc-block:nth-child(5) .disc-icon i { color: var(--maroon-brand); }
+        .disc-block:nth-child(3) .disc-icon i, .disc-block:nth-child(6) .disc-icon i { color: var(--blue-accent); }
+        .disc-icon i { font-size: 1.2rem; }
+        .disc-block h4 { font-size: 1rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; }
+        .disc-block p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* ══ PROCESS TIMELINE ══ */
+        .process-section { background: var(--navy-brand); padding: 100px 6%; border-top: 4px solid var(--maroon-brand); position: relative; overflow: hidden; }
+        .process-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+        .process-section .section-eyebrow { color: rgba(255,255,255,0.45); }
+        .process-section .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+        .process-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: #fff; margin-bottom: 56px; letter-spacing: -0.5px; max-width: 600px; }
+        .process-flow { display: grid; grid-template-columns: repeat(5,1fr); gap: 0; position: relative; }
+        .process-flow::before { content: ''; position: absolute; top: 26px; left: 5%; right: 5%; height: 1px; background: rgba(255,255,255,0.18); z-index: 1; }
+        .process-step { position: relative; padding: 0 14px; text-align: left; z-index: 2; }
+        .process-step-num { width: 52px; height: 52px; border-radius: 50%; background: var(--bg-dark); border: 2px solid var(--maroon-brand); color: #fff; font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+        .process-step h4 { font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .process-step p { font-size: 0.78rem; color: #abbcd0; line-height: 1.6; }
+
+        /* ══ LOCATION / MAP SECTION ══ */
+        .location-section { background: #fff; padding: 100px 6%; }
+        .location-inner { max-width: 1200px; margin: 0 auto; }
+        .location-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 0; border: 1px solid #e2e8f0; }
+        .map-frame { position: relative; height: 100%; min-height: 420px; }
+        .map-frame iframe { width: 100%; height: 100%; min-height: 420px; border: 0; display: block; filter: grayscale(0.15) contrast(1.05); }
+        .map-pin-overlay { position: absolute; bottom: 20px; left: 20px; background: rgba(7,13,25,0.85); backdrop-filter: blur(6px); border-left: 3px solid var(--maroon-brand); padding: 12px 18px; color: #fff; }
+        .map-pin-overlay strong { font-size: 0.85rem; display: block; }
+        .map-pin-overlay span { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+        .location-detail-panel { background: var(--bg-dark); color: #fff; padding: 44px 38px; display: flex; flex-direction: column; justify-content: center; }
+        .location-detail-panel h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 24px; }
+        .location-detail-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 22px; }
+        .location-detail-row:last-child { margin-bottom: 0; }
+        .location-detail-row i { color: var(--blue-accent); font-size: 1rem; margin-top: 3px; width: 20px; flex-shrink: 0; }
+        .location-detail-row strong { display: block; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+        .location-detail-row div { font-size: 0.86rem; color: #cdd9e8; line-height: 1.6; }
+        .location-detail-row a { color: #cdd9e8; text-decoration: none; transition: color 0.2s; }
+        .location-detail-row a:hover { color: var(--blue-accent); }
+
+        /* ══ ENGAGE / CTA ══ */
+        .engage-section { background: var(--bg-dark); padding: 100px 6%; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); }
+        .engage-inner { max-width: 560px; margin: 0 auto; }
+        .mascot-wrap { width: 120px; height: 120px; margin: 0 auto 28px auto; background: radial-gradient(circle, rgba(21,135,210,0.15) 0%, transparent 70%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .mascot-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(21,135,210,0.4); animation: spin 20s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .css-avatar { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .av-hat { position: absolute; top: 8px; width: 62px; height: 34px; background: var(--maroon-brand); border-radius: 36px 36px 6px 6px; z-index: 5; }
+        .av-hat-b { position: absolute; top: 8px; left: 24px; width: 13px; height: 13px; background: #e2e8f0; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--navy-brand); font-weight: 900; }
+        .av-brim { position: absolute; top: 38px; width: 74px; height: 5px; background: #630512; border-radius: 3px; z-index: 6; }
+        .av-face { position: absolute; top: 36px; width: 54px; height: 52px; background: #d1a17d; border-radius: 2px 2px 24px 24px; z-index: 3; }
+        .av-eye-l { position: absolute; top: 16px; left: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-eye-r { position: absolute; top: 16px; right: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-smile { position: absolute; bottom: 10px; left: 16px; width: 18px; height: 8px; border-bottom: 2.5px solid #2d3748; border-radius: 0 0 12px 12px; }
+        .av-body { position: absolute; bottom: 0; width: 88px; height: 28px; background: var(--navy-brand); border-radius: 14px 14px 3px 3px; z-index: 2; }
+        .av-shirt { position: absolute; top: 0; left: 35px; width: 18px; height: 11px; background: #fff; clip-path: polygon(0 0,100% 0,50% 100%); }
+        .engage-motto { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--blue-accent); margin-bottom: 10px; }
+        .engage-inner h2 { font-size: 1.9rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .engage-inner p { font-size: 0.9rem; color: #abbcd0; line-height: 1.7; margin-bottom: 32px; }
+        .engage-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; box-shadow: 0 4px 20px rgba(37,211,102,0.3); animation: pulse-wa 2.2s infinite; transition: transform 0.2s; }
+        .btn-wa:hover { transform: translateY(-2px); }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+        .btn-em { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+        .btn-em:hover { border-color: var(--blue-accent); background: rgba(21,135,210,0.1); transform: translateY(-2px); }
+
+        /* ══ FOOTER ══ */
+        .corporate-footer { background: var(--bg-dark); color: #fff; padding: 70px 6% 36px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 48px; }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-col h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 18px; }
+        .footer-col p { color: #abbcd0; font-size: 0.88rem; line-height: 1.6; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .footer-links li a { color: #abbcd0; text-decoration: none; font-size: 0.88rem; transition: color 0.25s; }
+        .footer-links li a:hover { color: #fff; }
+        .footer-contact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; color: #abbcd0; font-size: 0.88rem; }
+        .footer-contact-list li { display: flex; align-items: center; gap: 10px; }
+        .footer-contact-list li i { color: var(--maroon-brand); }
+        .footer-bottom { max-width: 1200px; margin: 26px auto 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: #64748b; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .info-cards-inner { grid-template-columns: repeat(2,1fr); }
+            .contact-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .discipline-blocks { grid-template-columns: 1fr; }
+            .process-flow { grid-template-columns: 1fr; gap: 28px; }
+            .process-flow::before { display: none; }
+            .location-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+        }
+        @media (max-width: 640px) {
+            .info-cards-inner { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .contact-form-panel, .contact-info-panel { padding: 36px 24px; }
+            .slim-nav-right .back-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ SLIM NAV ══ -->
+<nav class="slim-nav">
+    <div class="slim-nav-inner">
+        <a href="index.html" class="slim-nav-logo">
+            <img src="logos/beles.png" alt="Beles Consulting" onerror="this.onerror=null;this.src='https://placehold.co/120x34/164780/ffffff?text=Beles'">
+            <span>Beles <em>Consult</em></span>
+        </a>
+        <div class="slim-nav-right">
+            <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i><span>Back to Home</span></a>
+            <a href="https://wa.me/251911281227" class="nav-cta-pill" target="_blank"><i class="fa-brands fa-whatsapp"></i> Get a Quote</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="page-hero">
+    <div class="hero-watermark"></div>
+    <div class="hero-grid">
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+    </div>
+    <div class="hero-content">
+        <div class="breadcrumb reveal-element">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span>Contact Us</span>
+        </div>
+        <div class="hero-label reveal-element delay-1"><i class="fa-solid fa-comments"></i> Get In Touch</div>
+        <h1 class="reveal-element delay-1">Engineering Vision.<br><span>Infrastructure Excellence.</span><br>National Impact.</h1>
+        <p class="reveal-element delay-2">Connect with Beles Consulting's multidisciplinary engineering, transportation, environmental and infrastructure consulting experts.</p>
+    </div>
+</section>
+
+<!-- ══ QUICK INFO CARDS ══ -->
+<section class="info-cards-section">
+    <div class="info-cards-inner reveal-element">
+        <div class="info-card">
+            <div class="info-card-num">01</div>
+            <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <h3>Office</h3>
+            <p>Addis Ababa, Gurd Shola<br>In Front of Ethio Telecom</p>
+        </div>
+        <div class="info-card">
+            <div class="info-card-num">02</div>
+            <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+            <h3>Call Us</h3>
+            <p>
+                <a href="tel:+251911279850">+251 911 279 850</a><br>
+                <a href="tel:+251911281227">+251 911 281 227</a><br>
+                <a href="tel:+251911459248">+251 911 459 248</a><br>
+                <a href="tel:+251911258615">+251 911 258 615</a>
+            </p>
+        </div>
+        <div class="info-card">
+            <div class="info-card-num">03</div>
+            <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+            <h3>Email</h3>
+            <p>
+                <a href="mailto:belesconsult@gmail.com">belesconsult@gmail.com</a><br>
+                <a href="mailto:belescons@gmail.com">belescons@gmail.com</a>
+            </p>
+        </div>
+        <div class="info-card">
+            <div class="info-card-num">04</div>
+            <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+            <h3>Working Hours</h3>
+            <p>Monday – Saturday<br>09:00 AM – 06:00 PM</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ CONTACT PANEL ══ -->
+<section class="contact-panel-section">
+    <div class="contact-panel-inner">
+        <div class="contact-panel-header reveal-element">
+            <div class="section-eyebrow">Project Inquiry</div>
+            <h2>Tell Us About Your Project</h2>
+        </div>
+
+        <div class="contact-grid reveal-element">
+            <div class="contact-info-panel">
+                <div class="contact-info-icon"><i class="fa-solid fa-helmet-safety"></i></div>
+                <h3>Welcome to Beles Consulting</h3>
+                <p>Share your project requirements and our technical team will review the scope and get back to you with the right specialists for the job — usually within one business day.</p>
+                <div class="contact-detail-list">
+                    <div class="contact-detail-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div><strong>Address</strong>Addis Ababa, Gurd Shola — In Front of Ethio Telecom</div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div><strong>Phone</strong><a href="tel:+251911279850">+251 911 279 850</a></div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div><strong>Email</strong><a href="mailto:belesconsult@gmail.com">belesconsult@gmail.com</a></div>
+                    </div>
+                </div>
+                <div class="contact-social-row">
+                    <a href="https://wa.me/251911281227" target="_blank" class="contact-social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="mailto:belesconsult@gmail.com" class="contact-social-btn"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="tel:+251911279850" class="contact-social-btn"><i class="fa-solid fa-phone"></i></a>
+                    <a href="#" class="contact-social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-form-panel">
+                <h3>Project Inquiry Form</h3>
+                <p class="form-sub">Fill in the details below and our engineers will follow up with a tailored response.</p>
+                <form>
+                    <div class="form-row">
+                        <div class="field-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" placeholder="e.g. Abebe Tesfaye">
+                        </div>
+                        <div class="field-group">
+                            <label for="company">Company Name</label>
+                            <input type="text" id="company" placeholder="Your organization">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="field-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="you@email.com">
+                        </div>
+                        <div class="field-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="+251 9XX XXX XXX">
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label for="service">Service Required</label>
+                        <select id="service">
+                            <option>Road Design</option>
+                            <option>Bridge Engineering</option>
+                            <option>Detailed Engineering Design</option>
+                            <option>Building Design &amp; Supervision</option>
+                            <option>Water Resources &amp; Well Production</option>
+                            <option>Environmental Impact Assessment</option>
+                            <option>Contract Administration</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="location">Project Location</label>
+                        <input type="text" id="location" placeholder="e.g. Oromia Region, Ethiopia">
+                    </div>
+                    <div class="field-group">
+                        <label for="description">Project Description</label>
+                        <textarea id="description" rows="5" placeholder="Tell us a bit about the scope, scale, and timeline of your project..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn"><i class="fa-solid fa-paper-plane"></i> Send Inquiry</button>
+                    <div class="form-note"><i class="fa-solid fa-shield-halved"></i> Your information is kept confidential and used only to respond to your inquiry.</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ OUR EXPERTISE ══ -->
+<section class="discipline-section">
+    <div class="discipline-inner">
+        <div class="section-eyebrow reveal-element">What We Do</div>
+        <h2 class="discipline-intro-title reveal-element">Areas of <span>Technical Expertise</span></h2>
+        <div class="discipline-blocks">
+            <div class="disc-block reveal-element">
+                <div class="disc-block-num">01</div>
+                <div class="disc-icon"><i class="fa-solid fa-road"></i></div>
+                <h4>Highway Engineering</h4>
+                <p>Route selection, feasibility studies, and detailed pavement design for rural and trunk roads across Ethiopia.</p>
+            </div>
+            <div class="disc-block reveal-element delay-1">
+                <div class="disc-block-num">02</div>
+                <div class="disc-icon"><i class="fa-solid fa-bridge"></i></div>
+                <h4>Bridge Engineering</h4>
+                <p>Structural design, material investigation, and full tender documentation for bridge infrastructure.</p>
+            </div>
+            <div class="disc-block reveal-element delay-2">
+                <div class="disc-block-num">03</div>
+                <div class="disc-icon"><i class="fa-solid fa-building"></i></div>
+                <h4>Building Structures</h4>
+                <p>Architectural, structural, electrical and sanitary design for residential, commercial, and institutional buildings.</p>
+            </div>
+            <div class="disc-block reveal-element">
+                <div class="disc-block-num">04</div>
+                <div class="disc-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                <h4>Airfield Engineering</h4>
+                <p>Detailed design and supervision for airfield infrastructure, including pavement and alignment modeling.</p>
+            </div>
+            <div class="disc-block reveal-element delay-1">
+                <div class="disc-block-num">05</div>
+                <div class="disc-icon"><i class="fa-solid fa-droplet"></i></div>
+                <h4>Water Resources</h4>
+                <p>Deep well production, spring development, and water supply system design across multiple regions.</p>
+            </div>
+            <div class="disc-block reveal-element delay-2">
+                <div class="disc-block-num">06</div>
+                <div class="disc-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h4>Environmental Assessment</h4>
+                <p>Environmental and social impact assessments integrated into every infrastructure design from the outset.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ PROCESS TIMELINE ══ -->
+<section class="process-section">
+    <div class="process-inner">
+        <div class="process-header">
+            <div class="section-eyebrow reveal-element">How We Work</div>
+            <h2 class="reveal-element">Project Engagement Process</h2>
+        </div>
+        <div class="process-flow">
+            <div class="process-step reveal-element">
+                <div class="process-step-num">01</div>
+                <h4>Submit Inquiry</h4>
+                <p>Share your project details through our form, phone, or WhatsApp.</p>
+            </div>
+            <div class="process-step reveal-element delay-1">
+                <div class="process-step-num">02</div>
+                <h4>Technical Assessment</h4>
+                <p>Our engineers review scope, location, and complexity.</p>
+            </div>
+            <div class="process-step reveal-element delay-2">
+                <div class="process-step-num">03</div>
+                <h4>Expert Consultation</h4>
+                <p>A specialist consultation to align on goals and constraints.</p>
+            </div>
+            <div class="process-step reveal-element delay-3">
+                <div class="process-step-num">04</div>
+                <h4>Proposal &amp; Scope</h4>
+                <p>A clear proposal defining deliverables, timeline, and cost.</p>
+            </div>
+            <div class="process-step reveal-element delay-3">
+                <div class="process-step-num">05</div>
+                <h4>Project Delivery</h4>
+                <p>Sole-contract execution from design through to completion.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ LOCATION / MAP ══ -->
+<section class="location-section">
+    <div class="location-inner">
+        <div class="contact-panel-header reveal-element">
+            <div class="section-eyebrow">Find Us</div>
+            <h2 class="discipline-intro-title" style="margin-bottom:48px;">Visit Our Office</h2>
+        </div>
+        <div class="location-grid reveal-element">
+            <div class="map-frame">
+                <iframe src="https://maps.google.com/maps?q=addis%20ababa&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+                <div class="map-pin-overlay">
+                    <strong>Beles Consulting P.L.C.</strong>
+                    <span>Gurd Shola, Addis Ababa</span>
+                </div>
+            </div>
+            <div class="location-detail-panel">
+                <h3>Beles Consulting P.L.C.</h3>
+                <div class="location-detail-row">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div><strong>Address</strong>Addis Ababa, Gurd Shola, In Front of Ethio Telecom</div>
+                </div>
+                <div class="location-detail-row">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <strong>Phones</strong>
+                        <a href="tel:+251911279850">+251 911 279 850</a><br>
+                        <a href="tel:+251911281227">+251 911 281 227</a><br>
+                        <a href="tel:+251911459248">+251 911 459 248</a><br>
+                        <a href="tel:+251911258615">+251 911 258 615</a>
+                    </div>
+                </div>
+                <div class="location-detail-row">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <strong>Email</strong>
+                        <a href="mailto:belesconsult@gmail.com">belesconsult@gmail.com</a><br>
+                        <a href="mailto:belescons@gmail.com">belescons@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ENGAGE / CTA ══ -->
+<section class="engage-section">
+    <div class="engage-inner">
+        <div class="mascot-wrap reveal-element">
+            <div class="mascot-ring"></div>
+            <div class="css-avatar">
+                <div class="av-hat"><div class="av-hat-b">B</div></div>
+                <div class="av-brim"></div>
+                <div class="av-face">
+                    <div class="av-eye-l"></div><div class="av-eye-r"></div><div class="av-smile"></div>
+                </div>
+                <div class="av-body"><div class="av-shirt"></div></div>
+            </div>
+        </div>
+        <p class="engage-motto reveal-element">Honest to Serve</p>
+        <h2 class="reveal-element">Ready to Build Ethiopia's<br>Next Landmark?</h2>
+        <p class="reveal-element">Partner with experienced engineering, transportation, and infrastructure consultants who deliver on a sole-contract, single-point-accountability basis.</p>
+        <div class="engage-btns reveal-element">
+            <a href="https://wa.me/251911281227" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="mailto:belesconsult@gmail.com" class="btn-em"><i class="fa-solid fa-envelope"></i> Send an Email</a>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="corporate-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Beles Consulting P.L.C.</h4>
+            <p>Providing premium feasibility studies, environmental assessments, resettlement planning, detailed engineering design, and world-class consultancy since October 2007.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Project Categories</h5>
+            <ul class="footer-links">
+                <li><a href="project-feasibility-eia.html">Feasibility, EIA &amp; Resettlement Studies</a></li>
+                <li><a href="project-detailed-engineering-design.html">Detailed Engineering Design</a></li>
+                <li><a href="project-building-design.html">Building Design &amp; Supervision</a></li>
+                <li><a href="project-water-production.html">Water Supply &amp; Well Production</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact Channels</h5>
+            <ul class="footer-contact-list">
+                <li><i class="fa-solid fa-map-location-dot"></i> Gurd Shola, Addis Ababa, Ethiopia</li>
+                <li><i class="fa-solid fa-square-phone"></i> (+251) 911 279 850 / 911 281 227</li>
+                <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+        <span>Honest to Serve</span>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const reveals = document.querySelectorAll('.reveal-element');
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => obs.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('active'));
+    }
+});
+</script>
+</body>
+</html>

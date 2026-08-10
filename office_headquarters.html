@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office & Headquarters | Beles Consulting P.L.C</title>
+    <!-- Font Awesome Icons for authoritative engineering UI indicators -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Plus Jakarta Sans integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyBrand: '#164780',
+                        maroonBrand: '#7F0A1C',
+                        blueAccent: '#1587D2',
+                        bgDark: '#070d19',
+                        bgLight: '#faf9f6',
+                        textDark: '#1e293b',
+                        textMuted: '#64748b',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        /* =style-override: Standard CSS transitions for the document context */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Subtle tactile drafting blueprint watermark overlay */
+        .paper-sketch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03; /* Soft blueprint watermark background */
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            background-size: contain;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23164780' stroke-width='0.7' fill='none'><path d='M50 50 h700 v500 h-700 Z M100 100 h600 v400 h-600 Z M50 150 h700 M50 450 h700 M250 50 v500 M550 50 v500' stroke-dasharray='10,10'/><circle cx='400' cy='300' r='120'/><path d='M300 300 Q400 200 500 300' stroke-width='1.5'/></svg>");
+            z-index: -1;
+        }
+
+        /* Responsive Hover Animations for the main navigation panel */
+        .social-lnk {
+            transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .social-lnk:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(21, 135, 210, 0.15);
+        }
+
+        /* Dropdown transition structures */
+        .dropdown-standard-panel,
+        .dropdown-mega-panel {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        @media (min-width: 1025px) {
+            .dropdown-wrapper:hover .dropdown-standard-panel,
+            .dropdown-wrapper:hover .dropdown-mega-panel {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+            .dropdown-wrapper:hover .chevron-indicator {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* High-fidelity dropdown link styling & animations */
+        .dropdown-standard-panel a, 
+        .dropdown-mega-panel a {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            padding: 8px 12px !important;
+            color: #4a5568 !important;
+            text-decoration: none !important;
+            font-size: 0.85rem !important;
+            font-weight: 500 !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            border-radius: 4px !important;
+            background-color: transparent !important;
+            transition: background-color 0.25s ease, color 0.25s ease, padding-left 0.25s ease !important;
+        }
+
+        .dropdown-standard-panel a i, 
+        .dropdown-mega-panel a i {
+            color: #94a3b8 !important;
+            font-size: 0.85rem !important;
+            width: 16px !important;
+            text-align: center !important;
+            transition: color 0.25s ease, transform 0.25s ease !important;
+        }
+
+        /* Hover animations: turning into brand maroon and shifting slightly to the right */
+        .dropdown-standard-panel a:hover, 
+        .dropdown-mega-panel a:hover {
+            background-color: #f8fafc !important;
+            color: #7F0A1C !important; /* Maroon color */
+            padding-left: 18px !important; /* Animated slide shift */
+        }
+
+        .dropdown-standard-panel a:hover i, 
+        .dropdown-mega-panel a:hover i {
+            color: #7F0A1C !important; /* Maroon icon */
+            transform: translateX(3px) !important;
+        }
+
+        /* Mobile drawer specific overrides to handle layouts smoothly */
+        @media (max-width: 1024px) {
+            header {
+                height: 80px !important;
+            }
+            .menu-navigation-bar {
+                position: static !important;
+                height: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: hidden !important;
+            }
+            .nav-links-list {
+                position: fixed !important;
+                top: 80px !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: calc(100vh - 80px) !important;
+                background-color: #ffffff !important;
+                max-height: 0 !important;
+                overflow-y: auto !important;
+                visibility: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important;
+                padding: 20px 6% !important;
+                transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease !important;
+                z-index: 2000 !important;
+                box-shadow: 0 15px 30px rgba(10, 20, 36, 0.15) !important;
+            }
+            .nav-links-list.is-active {
+                max-height: calc(100vh - 80px) !important;
+                visibility: visible !important;
+            }
+            .nav-link-item {
+                width: 100% !important;
+                border-bottom: 1px solid #edf2f7 !important;
+            }
+            .nav-link-item a, 
+            .dropdown-trigger {
+                color: #1a202c !important;
+                width: 100% !important;
+                padding: 16px 0 !important;
+                font-size: 0.95rem !important;
+                display: flex !important;
+                justify-content: space-between !important;
+            }
+            .dropdown-standard-panel,
+            .dropdown-mega-panel {
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                background-color: #f8fafc !important;
+                padding: 10px 15px !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+            .dropdown-standard-panel.mobile-open,
+            .dropdown-mega-panel.mobile-open {
+                max-height: 800px !important;
+            }
+            .nav-link-item.dropdown-wrapper.chevron-active .chevron-indicator {
+                transform: rotate(180deg) !important;
+                color: #7F0A1C !important;
+            }
+            /* Reset columns inside mega-menus for mobile */
+            .dropdown-mega-panel .grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+            
+            /* Clean responsive hamburger transformation classes */
+            .mobile-menu-toggle span {
+                width: 100%;
+                height: 2.5px;
+                background-color: #164780 !important;
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                transform-origin: left center;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -1px);
+                background-color: #7F0A1C !important;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(2) {
+                width: 0%;
+                opacity: 0;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(3) {
+                transform: rotate(-45deg) translate(2px, 1px);
+                background-color: #7F0A1C !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-bgLight text-textDark font-sans relative overflow-x-hidden">
+
+    <div class="paper-sketch-overlay"></div>
+
+    <header class="w-full h-[90px] bg-white flex justify-between items-center px-[6%] border-b border-[#eef2f6] relative z-[1002]">
+        <a href="index.html" class="inline-flex items-center h-full">
+            <img src="logos/beles.png" alt="Beles Consulting P.L.C. Logo" class="max-h-[60px] w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/180x60/ffffff/164780?text=Beles+Consulting'">
+        </a>
+
+        <!-- Kinetic Hamburger Toggle -->
+        <button class="mobile-menu-toggle lg:hidden flex flex-col justify-between w-[28px] h-[20px] bg-transparent border-none cursor-pointer z-[2005] outline-none" id="menuToggleTrigger" aria-label="Toggle Navigation Menu">
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300 origin-left"></span>
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300"></span>
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300 origin-left"></span>
+        </button>
+
+        <!-- Right Side Contact Utilities -->
+        <div class="hidden lg:flex items-center h-full gap-[30px]">
+            <div class="flex items-center gap-[35px]">
+                <div class="flex items-center gap-[10px] text-[0.85rem] font-bold text-[#4a5568]">
+                    <i class="fa-regular fa-clock text-maroonBrand text-[1rem]"></i> Mon - Sat 9AM - 6PM
+                </div>
+                <div class="flex items-center gap-[10px] text-[0.85rem] font-bold text-[#4a5568]">
+                    <i class="fa-solid fa-phone-flip text-maroonBrand text-[1rem]"></i> (+251) 9-11279850 / 911 25 86 15 
+                </div>
+            </div>
+
+            <!-- Social Group -->
+            <div class="flex items-center gap-[12px] border-l border-[#e2e8f0] pl-[30px]">
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="Facebook"><i class="fa-brands fa-facebook-f text-[0.9rem]"></i></a>
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="Instagram"><i class="fa-brands fa-instagram text-[0.9rem]"></i></a>
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in text-[0.9rem]"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-navigation-bar w-full bg-gradient-to-r from-navyBrand via-[#113866] to-[#070d14] flex justify-center items-center h-[55px] sticky top-0 z-[1000] border-b border-[rgba(0,229,255,0.1)] shadow-lg px-[6%]">
+        <a href="index.html" class="sticky-nav-logo-wrap inline-flex items-center h-full absolute left-[6%] opacity-0 invisible transition-all duration-300">
+            <img src="logos/beles.png" alt="Beles Navbar Brand Logo" class="max-h-[36px] w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/120x36/164780/ffffff?text=Beles'">
+        </a>
+        
+        <nav class="main-nav-container w-full flex justify-center items-center">
+            <ul class="nav-links-list flex lg:flex-row flex-col gap-[40px] list-none lg:p-0 p-[20px] lg:w-auto w-full lg:static fixed">
+                
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="index.html" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Home</a></li>
+                
+                <!-- Dropdown: About -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                   <a href="about.html" class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">About <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-standard-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[280px] bg-white border-t-[3px] border-maroonBrand shadow-xl p-[12px] z-[1100] rounded-b-[4px]">
+                        <ul class="flex flex-col gap-[2px] list-none">
+                            <li><a href="compbg.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-circle-info text-[#94a3b8]"></i> Company Background</a></li>
+                            <li><a href="compbg.html#vision-mission" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-bullseye text-[#94a3b8]"></i> Vision & Mission</a></li>
+                            <li><a href="compbg.html#leadership" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-user-tie text-[#94a3b8]"></i> Leadership & Ownership</a></li>
+                            <li><a href="gov2.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-sitemap text-[#94a3b8]"></i> Organizational Structure</a></li>
+                            <li><a href="legislation_certificates.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-file-signature text-[#94a3b8]"></i> Legislation & Certificates</a></li>
+                            <li><a href="legislation_certificates.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-trophy text-[#94a3b8]"></i> Awards & Accreditations</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Mega Menu: Services -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <a href="services.html" class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Services <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-mega-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[90vw] lg:max-w-[1000px] bg-white border-t-[3px] border-maroonBrand shadow-2xl p-[30px] z-[1100] rounded-b-[6px]">
+                        <div class="grid lg:grid-cols-3 grid-cols-1 gap-[25px]">
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Heavy Infrastructure</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-roads.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-road text-[#94a3b8]"></i> Roads & Highways</a></li>
+                                    <li><a href="service-railroads.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-train text-[#94a3b8]"></i> Railroad Networks</a></li>
+                                    <li><a href="service-bridges.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-bridge text-[#94a3b8]"></i> Bridge Structures</a></li>
+                                    <li><a href="service-airfields.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-plane text-[#94a3b8]"></i> Airfield Structures</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Civil & Geotechnical</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-tunnel.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-mountain text-[#94a3b8]"></i> Tunnel & Geotechnical</a></li>
+                                    <li><a href="service-buildings.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building text-[#94a3b8]"></i> Building Structures</a></li>
+                                    <li><a href="service-dams.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-water-ladder text-[#94a3b8]"></i> Dam & Irrigation</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Planning & Diagnostics</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-feasibility.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-magnifying-glass-chart text-[#94a3b8]"></i> Feasibility Studies</a></li>
+                                    <li><a href="service-feasibility.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-leaf text-[#94a3b8]"></i> Environmental (EIA)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Mega Menu: Projects -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                  <a href="projects.html"class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Projects <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-mega-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[90vw] lg:max-w-[1000px] bg-white border-t-[3px] border-maroonBrand shadow-2xl p-[30px] z-[1100] rounded-b-[6px]">
+                        <div class="grid lg:grid-cols-3 grid-cols-1 gap-[25px]">
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Detailed Engineering</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="project-bridge-design.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-compass-drafting text-[#94a3b8]"></i> Bridge Design</a></li>
+                                    <li><a href="project-road-pavement.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-road text-[#94a3b8]"></i> Pavement & Road Design</a></li>
+                                    <li><a href="project-detailed-engineering.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-pen-ruler text-[#94a3b8]"></i> Detailed Structural Design</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Supervision & Admin</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="project-supervision.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building-shield text-[#94a3b8]"></i> Supervision & Contract Admin</a></li>
+                                    <li><a href="project-buliding design&supervision.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-city text-[#94a3b8]"></i> Building Supervision</a></li>
+                                    <li><a href="project-water-production.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-faucet-drip text-[#94a3b8]"></i> Water Supply & Infrastructure</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Feasibility & Safeguards</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="project-feasibility-eia.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-file-invoice text-[#94a3b8]"></i> Feasibility Studies</a></li>
+                                    <li><a href="project-feasibility-eia.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-users-viewfinder text-[#94a3b8]"></i> Socio-Environmental EIA</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Dropdown: Company -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <span class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Company <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></span>
+                    <div class="dropdown-standard-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[280px] bg-white border-t-[3px] border-maroonBrand shadow-xl p-[12px] z-[1100] rounded-b-[4px]">
+                        <ul class="flex flex-col gap-[2px] list-none">
+                            <li><a href="office_headquarters.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building text-[#94a3b8]"></i> Office & Headquarters</a></li>
+                            <li><a href="geotechnical&labortaory.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-vial-virus text-[#94a3b8]"></i> Geotechnical Laboratory</a></li>
+                            <li><a href="equpimnet&facilites.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-truck-monster text-[#94a3b8]"></i> Equipment & Facilities</a></li>
+                            <li><a href="fincalstanding2.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-scale-balanced text-[#94a3b8]"></i> Financial Standing</a></li>
+                            <li><a href="tech.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-laptop-code text-[#94a3b8]"></i> Technology & R&D</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="gallery.html" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Gallery</a></li>
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="contact.html" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Contact</a></li>
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="beles-blog/blog.php" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Blog</a></li>
+
+
+                <li class="mobile-drawer-socials flex lg:hidden items-center justify-center gap-[20px] py-[30px] border-t border-[#edf2f7] mt-auto w-full">
+                    <a href="#" class="social-lnk w-[36px] h-[36px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-lnk w-[36px] h-[36px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-lnk w-[36px] h-[36px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent"><i class="fa-brands fa-linkedin-in"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <section class="relative py-[130px] lg:px-[8%] px-[6%] border-b-[5px] border-maroonBrand overflow-hidden bg-bgDark bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(7, 13, 25, 0.94), rgba(7, 13, 25, 0.85)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop');">
+        <div class="relative z-[5] max-w-[1200px] mx-auto">
+            <div class="reveal-element">
+                <span class="text-[0.75rem] uppercase tracking-[3px] text-blueAccent font-extrabold mb-[15px] block">Corporate Infrastructure</span>
+                <h1 class="text-white lg:text-[3.2rem] text-[2.4rem] font-extrabold leading-[1.1] tracking-[-1px] mb-[20px]">Office & Headquarters</h1>
+                <p class="text-[#abbcd0] text-[1.1rem] leading-[1.6] max-w-[750px]">Establishing corporate administrative dominance and long-term planning frameworks to steer our central engineering departments with absolute control.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-[1200px] mx-auto my-[80px] px-[4%]">
+        <div class="grid lg:grid-cols-12 grid-cols-1 gap-[50px] items-center reveal-element">
+            
+            <!-- Left Side Details -->
+            <div class="lg:col-span-7">
+                <span class="inline-flex items-center gap-[8px] text-maroonBrand text-[0.8rem] font-extrabold uppercase tracking-[2px] mb-[12px]">
+                    <i class="fa-solid fa-city"></i> Architectural Planning Board
+                </span>
+                <h2 class="text-[2rem] font-extrabold text-navyBrand leading-[1.25] mb-[20px]">Planned G+8 Head Office</h2>
+                
+                <p class="text-textDark text-[1.05rem] leading-[1.7] mb-[20px] text-justify">
+                    BELES Consulting P.L.C. has meticulously planned the construction of a <strong class="text-navyBrand">G+8 mixed-use building</strong> for its permanent head office in Addis Ababa, Ethiopia. This strategic decision takes into account prevailing cost advantages and aims to achieve highly efficient administrative performance and elite-quality output across all infrastructure projects undertaken by the company.
+                </p>
+
+                <p class="text-textDark text-[1.05rem] leading-[1.7] mb-[20px] text-justify">
+                    The land for this proposed development is currently in the final stages of acquisition. Once completed, the newly constructed headquarters will serve as the permanent, fully controlled seat of our management team. It will house our core administrative departments, accounting systems, financial hubs, and detailed technical engineering divisions together under a unified, state-of-the-art workspace.
+                </p>
+
+                <p class="text-textDark text-[1.05rem] leading-[1.7] text-justify">
+                    This spatial integration ensures that our team operates in a highly organized, completely transparent, and professional manner. It guarantees complete operational control and robust, streamlined communications between design offices and on-site field engineers.
+                </p>
+            </div>
+
+            <!-- Right Side Visual Presentation Frame -->
+            <div class="lg:col-span-5 w-full">
+                <div class="relative w-full h-[480px] rounded-[4px] border border-[#cbd5e1] overflow-hidden shadow-2xl bg-bgDark group">
+                    <!-- Absolute coordinate blueprint badge labels -->
+                    <div class="absolute bottom-[20px] left-[20px] bg-[rgba(255,255,255,0.95)] backdrop-blur-[5px] p-[10px_18px] border-l-[3px] border-maroonBrand font-mono text-[0.75rem] text-textDark shadow-lg z-[10]">
+                        MODEL PROJECTION: BL-G8 / COORD: 9.01 N, 38.75 E
+                    </div>
+
+                    <!-- Modern High Rise Graphic Representation -->
+                    <img src="images/building complex.jpg" alt="Planned G+8 Head Office Tower Mockup Projection" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" onerror="this.onerror=null; this.src='https://placehold.co/1000x480/070d19/ffffff?text=G%2B8+Concept+Render'">
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <section class="bg-white border-t border-[#cbd5e1] py-[90px] px-[4%] relative">
+        <div class="max-w-[1200px] mx-auto reveal-element">
+            <span class="inline-flex items-center gap-[8px] text-maroonBrand text-[0.8rem] font-extrabold uppercase tracking-[2px] mb-[12px]">
+                <i class="fa-solid fa-compass-drafting"></i> Spatial Specifications
+            </span>
+            <h3 class="text-[1.8rem] font-extrabold text-navyBrand mb-[25px]">Structural Planning Parameters</h3>
+
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[25px]">
+                
+                <!-- Card 1 -->
+                <div class="bg-bgLight border border-[#e2e8f0] p-[30px] rounded-[4px] relative before:content-['+'] before:absolute before:top-[12px] before:left-[12px] before:font-mono before:text-[#94a3b8]">
+                    <i class="fa-solid fa-map-location-dot text-blueAccent text-[1.5rem] mb-[15px] block"></i>
+                    <h4 class="text-[1.1rem] font-extrabold text-navyBrand mb-[8px]">Urban Land Acquisition</h4>
+                    <p class="text-textMuted text-[0.88rem] leading-[1.6]">Active legal mechanisms are underway to finalize the acquisition of premium commercial real estate in the heart of Addis Ababa, optimized for heavy transit access.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-bgLight border border-[#e2e8f0] p-[30px] rounded-[4px] relative before:content-['+'] before:absolute before:top-[12px] before:left-[12px] before:font-mono before:text-[#94a3b8]">
+                    <i class="fa-solid fa-bezier-curve text-blueAccent text-[1.5rem] mb-[15px] block"></i>
+                    <h4 class="text-[1.1rem] font-extrabold text-navyBrand mb-[8px]">Unified Control Seat</h4>
+                    <p class="text-textMuted text-[0.88rem] leading-[1.6]">By hosting our core managing, financial, and complex engineering departments in a single structural space, we minimize bottlenecks and maximize throughput.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-bgLight border border-[#e2e8f0] p-[30px] rounded-[4px] relative before:content-['+'] before:absolute before:top-[12px] before:left-[12px] before:font-mono before:text-[#94a3b8]">
+                    <i class="fa-solid fa-leaf text-blueAccent text-[1.5rem] mb-[15px] block"></i>
+                    <h4 class="text-[1.1rem] font-extrabold text-navyBrand mb-[8px]">Eco-Efficient Performance</h4>
+                    <p class="text-textMuted text-[0.88rem] leading-[1.6]">Our structural draft outlines eco-friendly building parameters, maximizing natural ventilation and solar insulation profiles to achieve class-one environmental certification.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // 1. MOBILE RESPONSIVE HAMBURGER & DROPDOWN ACCORDION ENGINE
+            const menuToggle = document.getElementById('menuToggleTrigger');
+            const navLinksList = document.querySelector('.nav-links-list');
+            const dropdownTriggers = document.querySelectorAll('.dropdown-trigger');
+
+            if (menuToggle && navLinksList) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('is-open');
+                    navLinksList.classList.toggle('is-active');
+                });
+            }
+
+            // Close mobile menu drawer when clicking outside bounds
+            document.addEventListener('click', function(event) {
+                if (navLinksList && navLinksList.classList.contains('is-active')) {
+                    const isClickInside = navLinksList.contains(event.target) || menuToggle.contains(event.target);
+                    if (!isClickInside) {
+                        menuToggle.classList.remove('is-open');
+                        navLinksList.classList.remove('is-active');
+                    }
+                }
+            });
+
+            dropdownTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 1024) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const parent = this.parentElement;
+                        const panel = this.nextElementSibling;
+                        
+                        parent.classList.toggle('chevron-active');
+                        panel.classList.toggle('mobile-open');
+                    }
+                });
+            });
+
+            // Sticky header navigation logo scroll indicator control
+            const stickyLogo = document.querySelector('.sticky-nav-logo-wrap');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 90) {
+                    if (stickyLogo) {
+                        stickyLogo.style.opacity = '1';
+                        stickyLogo.style.visibility = 'visible';
+                    }
+                } else {
+                    if (stickyLogo) {
+                        stickyLogo.style.opacity = '0';
+                        stickyLogo.style.visibility = 'hidden';
+                    }
+                }
+            });
+            
+            // 2. SCROLL REVEAL OBSERVATIONAL ENGINE
+            const revealElements = document.querySelectorAll('.reveal-element');
+            if ('IntersectionObserver' in window) {
+                const scrollObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                revealElements.forEach(el => scrollObserver.observe(el));
+            } else {
+                revealElements.forEach(el => el.classList.add('active'));
+            }
+        });
+    </script>
+</body>
+</html>

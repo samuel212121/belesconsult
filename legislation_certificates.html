@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislation & Credentials | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        .top-main-header {
+            width: 100%; height: 90px; background-color: #ffffff;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; border-bottom: 1px solid #eef2f6; position: relative; z-index: 1002;
+        }
+        .corporate-logo-frame { display: inline-flex; align-items: center; height: 100%; text-decoration: none; }
+        .corporate-logo-frame img { max-height: 60px; width: auto; object-fit: contain; display: block; }
+        .header-right-utilities { display: flex; align-items: center; height: 100%; gap: 30px; }
+        .header-contact-info { display: flex; align-items: center; gap: 35px; }
+        .contact-node { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 700; color: #4a5568; white-space: nowrap; }
+        .contact-node i { color: var(--maroon-brand); font-size: 1rem; }
+        .header-social-group { display: flex; align-items: center; gap: 12px; border-left: 1px solid #e2e8f0; padding-left: 30px; }
+        .social-lnk { color: #94a3b8; font-size: 0.9rem; text-decoration: none; width: 32px; height: 32px; border: 1px solid #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1); background: #ffffff; }
+        .social-lnk:hover { color: var(--blue-accent); border-color: var(--blue-accent); transform: translateY(-2px); background: rgba(21, 135, 210, 0.05); box-shadow: 0 4px 10px rgba(21, 135, 210, 0.15); }
+
+        .menu-navigation-bar {
+            width: 100%; background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%);
+            display: flex; justify-content: center; align-items: center; height: 55px;
+            position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35); padding: 0 6%;
+        }
+        .sticky-nav-logo-wrap { display: inline-flex; align-items: center; height: 100%; text-decoration: none; opacity: 0; visibility: hidden; position: absolute; left: 6%; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .sticky-nav-logo-wrap img { max-height: 36px; width: auto; object-fit: contain; }
+        .main-nav-container { width: 100%; display: flex; justify-content: center; align-items: center; }
+        .nav-links-list { display: flex; list-style: none; gap: 40px; }
+        .nav-link-item a, .dropdown-trigger { text-decoration: none; color: #ffffff; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 18px 0; position: relative; transition: color 0.25s; display: flex; align-items: center; cursor: pointer; }
+        .nav-link-item a:hover, .dropdown-trigger:hover { color: var(--blue-accent); }
+        .chevron-indicator { font-size: 0.65rem; margin-left: 6px; transition: transform 0.25s ease; color: rgba(255,255,255,0.6); }
+        .dropdown-trigger:hover .chevron-indicator { color: var(--blue-accent); }
+        .dropdown-wrapper { position: relative; }
+        .dropdown-standard-panel { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); width: 280px; background-color: rgba(255,255,255,0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 3px solid var(--maroon-brand); box-shadow: 0 15px 35px rgba(10,20,36,0.1); padding: 12px; opacity: 0; visibility: hidden; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, visibility 0.3s ease; z-index: 1100; border-radius: 0 0 4px 4px; }
+        .dropdown-mega-panel { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); width: 90vw; max-width: 1000px; background-color: rgba(255,255,255,0.98); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 3px solid var(--maroon-brand); box-shadow: 0 20px 45px rgba(10,20,36,0.12); padding: 30px; opacity: 0; visibility: hidden; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, visibility 0.3s ease; z-index: 1100; border-radius: 0 0 6px 6px; }
+        .mega-menu-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 25px; }
+        .mega-column { display: flex; flex-direction: column; gap: 8px; }
+        .mega-column:not(:last-child) { border-right: 1px solid #f1f5f9; padding-right: 25px; }
+        .mega-col-title { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
+        .dropdown-links-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+        .dropdown-links-list li a { display: flex; align-items: center; gap: 12px; padding: 8px 12px; color: #4a5568 !important; text-decoration: none !important; font-size: 0.85rem; font-weight: 500; text-transform: none !important; letter-spacing: normal !important; border-radius: 4px; transition: background-color 0.2s, color 0.2s, padding-left 0.2s; }
+        .dropdown-links-list li a i { color: #94a3b8; font-size: 0.85rem; width: 16px; text-align: center; transition: color 0.2s, transform 0.2s; }
+        .dropdown-links-list li a:hover { background-color: #f8fafc; color: var(--blue-accent) !important; padding-left: 16px; }
+        .dropdown-links-list li a:hover i { color: var(--maroon-brand); transform: translateX(2px); }
+
+        @media (min-width: 1025px) {
+            .dropdown-wrapper:hover .dropdown-standard-panel,
+            .dropdown-wrapper:hover .dropdown-mega-panel { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+            .dropdown-wrapper:hover .chevron-indicator { transform: rotate(180deg); color: var(--blue-accent); }
+        }
+
+        .mobile-menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 26px; height: 18px; background: transparent; border: none; cursor: pointer; z-index: 2005; outline: none; }
+        .mobile-menu-toggle span { width: 100%; height: 2px; background-color: var(--navy-brand); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); transform-origin: left center; }
+        .mobile-menu-toggle.is-open span:nth-child(1) { transform: rotate(45deg) translate(2px,-1px); background-color: var(--maroon-brand); }
+        .mobile-menu-toggle.is-open span:nth-child(2) { width: 0%; opacity: 0; }
+        .mobile-menu-toggle.is-open span:nth-child(3) { transform: rotate(-45deg) translate(2px,1px); background-color: var(--maroon-brand); }
+        .mobile-drawer-socials { display: none !important; }
+
+        .credentials-hero {
+            position: relative; padding: 130px 8% 150px 8%; border-bottom: 5px solid var(--maroon-brand);
+            overflow: hidden; background-color: var(--bg-dark);
+            background-image: linear-gradient(to bottom, rgba(7,13,25,0.4), rgba(7,13,25,0.5)), url('images/awrd2.jpg');
+            background-size: cover; background-position: center;
+        }
+        .hero-layout-wrap { position: relative; z-index: 5; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px; }
+        .hero-lead-details { max-width: 750px; }
+        .hero-lead-details span { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: var(--blue-accent); font-weight: 800; margin-bottom: 15px; display: block; }
+        .hero-lead-details h1 { color: #ffffff; font-size: 3.2rem; font-weight: 800; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+        .hero-lead-details p { color: #abbcd0; font-size: 1.1rem; line-height: 1.6; }
+        .blueprint-sketch-watermark { position: absolute; top: 0; right: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.12; background-repeat: no-repeat; background-position: center right; background-size: contain; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23ffffff' stroke-width='0.7' fill='none' stroke-linecap='round' stroke-linejoin='round'><circle cx='400' cy='300' r='180'/><circle cx='400' cy='300' r='120'/><path d='M400 50 v500 M50 300 h700' stroke-width='0.8' stroke-dasharray='8,4'/></svg>"); z-index: 2; }
+
+        .filter-rail-container { max-width: 1200px; margin: -30px auto 60px auto; background: #ffffff; border-radius: 50px; padding: 10px; box-shadow: 0 15px 35px rgba(10,20,36,0.08); position: relative; z-index: 20; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .filter-button { border: none; outline: none; background: transparent; color: var(--text-muted); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 12px 30px; border-radius: 50px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+        .filter-button:hover { color: var(--navy-brand); }
+        .filter-button.is-active { background-color: var(--navy-brand); color: #ffffff; box-shadow: 0 6px 15px rgba(22,71,128,0.2); }
+
+        .credentials-grid-system { max-width: 1200px; margin: 0 auto 100px auto; padding: 0 4%; display: grid; grid-template-columns: repeat(3,1fr); gap: 30px; }
+
+        .legislation-blueprint-card { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 24px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; }
+        .blueprint-coordinate-tag { font-family: monospace; font-size: 0.65rem; color: #94a3b8; letter-spacing: 1px; display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px; }
+        .legislation-blueprint-card::before, .legislation-blueprint-card::after { content: '+'; position: absolute; font-family: monospace; font-size: 1rem; color: #cbd5e1; line-height: 1; pointer-events: none; }
+        .legislation-blueprint-card::before { top: 10px; left: 10px; }
+        .legislation-blueprint-card::after { bottom: 10px; right: 10px; }
+
+        /* ==============================================
+           CHANGE 1: IMAGE FIT — fills frame perfectly
+           ============================================== */
+        .blueprint-preview-frame {
+            width: 100%;
+            height: 180px;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            /* removed flex centering so img fills 100% naturally */
+        }
+
+        .blueprint-preview-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+            cursor: zoom-in;
+        }
+
+        .certificate-preview-frame {
+            width: 100%;
+            height: 200px;
+            background: #fafaf9;
+            border: 1px solid #e5e5e0;
+            overflow: hidden;
+            position: relative;
+            /* removed flex centering so img fills 100% naturally */
+        }
+
+        .certificate-preview-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+            cursor: zoom-in;
+        }
+
+        /* ==============================================
+           CHANGE 2: LIGHTBOX OVERLAY
+           ============================================== */
+        .img-lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 13, 25, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .img-lightbox-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .img-lightbox-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            transform: scale(0.90);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .img-lightbox-overlay.is-open .img-lightbox-inner {
+            transform: scale(1);
+        }
+
+        .img-lightbox-inner img {
+            max-width: 88vw;
+            max-height: 72vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+        }
+
+        .img-lightbox-title {
+            color: #ffffff;
+            font-family: var(--font-main);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+            max-width: 600px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .img-lightbox-close {
+            position: fixed;
+            top: 22px;
+            right: 28px;
+            width: 46px;
+            height: 46px;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.3s;
+            z-index: 10000;
+        }
+
+        .img-lightbox-close:hover {
+            background: var(--maroon-brand);
+            border-color: var(--maroon-brand);
+            transform: rotate(90deg);
+        }
+
+        /* rest of original styles unchanged */
+        .blueprint-watermark-icon { position: absolute; font-size: 6rem; color: rgba(22,71,128,0.02); bottom: 20px; left: 20px; pointer-events: none; }
+        .blueprint-content-brief { margin-top: 20px; flex-grow: 1; }
+        .blueprint-content-brief h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; line-height: 1.3; }
+        .blueprint-content-brief p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; text-align: justify; }
+        .legislation-blueprint-card:hover { border-color: var(--blue-accent); box-shadow: 0 15px 35px rgba(21,135,210,0.12); transform: translateY(-5px); }
+        .legislation-blueprint-card:hover .blueprint-preview-frame img { transform: scale(1.05); }
+
+        .certificate-prestige-card { background: #ffffff; border: 1.5px solid transparent; border-image: var(--gold-gradient) 1; padding: 30px; position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; justify-content: space-between; min-height: 440px; box-shadow: 0 10px 30px rgba(10,20,36,0.02); }
+        .prestige-stamp-seal { position: absolute; top: 20px; right: 20px; width: 54px; height: 54px; border: 2px dashed rgba(191,149,63,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: rotateStamp 18s linear infinite; pointer-events: none; z-index: 10; }
+        .prestige-stamp-seal::before { content: 'OK'; font-family: var(--font-main); font-size: 0.65rem; font-weight: 800; color: #bf953f; letter-spacing: 1px; }
+        @keyframes rotateStamp { 100% { transform: rotate(360deg); } }
+        .certificate-prestige-card .badge-overlay { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #b38728; margin-bottom: 8px; display: block; }
+        .certificate-content-brief { margin-top: 20px; flex-grow: 1; }
+        .certificate-content-brief h3 { font-size: 1.2rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; }
+        .certificate-content-brief p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+        .certificate-prestige-card::after { content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.45), transparent); transform: skewX(-25deg); transition: 0.75s cubic-bezier(0.16,1,0.3,1); pointer-events: none; }
+        .certificate-prestige-card:hover::after { left: 150%; }
+        .certificate-prestige-card:hover { box-shadow: 0 20px 45px rgba(179,135,40,0.15); transform: translateY(-5px); }
+        .certificate-prestige-card:hover .certificate-preview-frame img { transform: scale(1.05); }
+
+        .corporate-footer { background-color: var(--bg-dark); color: #ffffff; padding: 80px 6% 40px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 50px; }
+        .footer-about-block h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-about-block p { color: #abbcd0; font-size: 0.92rem; line-height: 1.6; }
+        .footer-links-block h5, .footer-contact-block h5 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 20px; }
+        .footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-links-list li a { color: #abbcd0; text-decoration: none; font-size: 0.9rem; transition: color 0.25s; }
+        .footer-links-list li a:hover { color: #ffffff; }
+        .footer-contact-info-list { list-style: none; display: flex; flex-direction: column; gap: 12px; color: #abbcd0; font-size: 0.9rem; }
+        .footer-contact-info-list li { display: flex; align-items: center; gap: 12px; }
+        .footer-contact-info-list li i { color: var(--maroon-brand); }
+        .footer-bottom-bar { max-width: 1200px; margin: 30px auto 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 0.8rem; color: #64748b; }
+
+        @media (max-width: 1024px) {
+            .top-main-header { width: 100% !important; padding: 0 5% !important; display: flex !important; justify-content: space-between !important; align-items: center !important; background-color: #ffffff !important; height: 80px !important; border-bottom: 1px solid #eef2f6; }
+            .header-right-utilities { display: none !important; }
+            .mobile-menu-toggle { display: flex !important; position: relative !important; width: 28px; height: 20px; flex-direction: column; justify-content: space-between; background: transparent; border: none; cursor: pointer; z-index: 2005; outline: none; }
+            .mobile-menu-toggle span { width: 100%; height: 2.5px; background-color: var(--navy-brand) !important; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); transform-origin: left center; }
+            .mobile-menu-toggle.is-open span:nth-child(1) { transform: rotate(45deg) translate(2px,-1px); background-color: var(--maroon-brand) !important; }
+            .mobile-menu-toggle.is-open span:nth-child(2) { width: 0%; opacity: 0; }
+            .mobile-menu-toggle.is-open span:nth-child(3) { transform: rotate(-45deg) translate(2px,1px); background-color: var(--maroon-brand) !important; }
+            .menu-navigation-bar { position: static; height: 0; padding: 0; border: none; box-shadow: none; }
+            .nav-links-list { position: fixed !important; top: 80px; left: 0; width: 100vw !important; height: calc(100vh - 80px); background-color: #ffffff !important; box-shadow: 0 15px 30px rgba(10,20,36,0.15); display: flex; flex-direction: column; gap: 0; padding: 20px 6% !important; max-height: 0; overflow-y: auto !important; overflow-x: hidden !important; visibility: hidden; transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), visibility 0.4s ease; z-index: 2000; }
+            .nav-links-list.is-active { max-height: calc(100vh - 80px) !important; visibility: visible !important; }
+            .nav-link-item { width: 100%; border-bottom: 1px solid #edf2f7; }
+            .nav-link-item a, .dropdown-trigger { color: #1a202c !important; width: 100%; padding: 16px 0; font-size: 0.95rem; }
+            .dropdown-trigger { display: flex; justify-content: space-between; }
+            .dropdown-standard-panel, .dropdown-mega-panel { position: relative !important; top: 0 !important; left: 0 !important; transform: none !important; width: 100% !important; max-width: 100% !important; box-shadow: none !important; border-top: none !important; background-color: #f8fafc !important; padding: 10px 15px !important; max-height: 0; overflow: hidden; opacity: 1 !important; visibility: visible !important; transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1); }
+            .mega-menu-grid { grid-template-columns: 1fr; gap: 15px; }
+            .mega-column { padding-right: 0 !important; border-right: none !important; }
+            .dropdown-standard-panel.mobile-open, .dropdown-mega-panel.mobile-open { max-height: 800px !important; }
+            .nav-link-item.dropdown-wrapper.chevron-active .chevron-indicator { transform: rotate(180deg); color: var(--maroon-brand); }
+            .mobile-drawer-socials { display: flex !important; align-items: center; justify-content: center; gap: 20px; padding: 30px 0; border-top: 1px solid #edf2f7; margin-top: auto; width: 100%; }
+            .credentials-hero { padding: 80px 6% 100px 6%; text-align: center; }
+            .hero-layout-wrap { justify-content: center; }
+            .filter-rail-container { margin: -20px 4% 40px 4%; border-radius: 20px; padding: 15px; }
+            .credentials-grid-system { grid-template-columns: repeat(2,1fr); gap: 20px; }
+            .footer-grid-container { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-lead-details h1 { font-size: 2.2rem; }
+            .credentials-grid-system { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LIGHTBOX MODAL -->
+    <div class="img-lightbox-overlay" id="imgLightbox" role="dialog" aria-modal="true" aria-label="Image zoom view">
+        <button class="img-lightbox-close" id="lightboxClose" aria-label="Close zoom">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="img-lightbox-inner">
+            <img src="" alt="" id="lightboxImg">
+            <p class="img-lightbox-title" id="lightboxTitle"></p>
+        </div>
+    </div>
+
+    <header class="top-main-header">
+        <a href="#" class="corporate-logo-frame">
+            <img src="logos/beles.png" alt="Beles Consulting P.L.C. Logo" onerror="this.onerror=null; this.src='https://placehold.co/180x60/ffffff/164780?text=Beles+Consulting'">
+        </a>
+        <button class="mobile-menu-toggle" id="menuToggleTrigger" aria-label="Toggle Navigation Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="header-right-utilities">
+            <div class="header-contact-info">
+                <div class="contact-node"><i class="fa-regular fa-clock"></i> Mon - Sat 9AM - 6PM</div>
+                <div class="contact-node"><i class="fa-solid fa-phone-flip"></i> (+251) 9-11279850/911 25 86 15</div>
+            </div>
+            <div class="header-social-group">
+                <a href="#" class="social-lnk" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-lnk" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-lnk" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-navigation-bar">
+        <a href="#" class="sticky-nav-logo-wrap">
+            <img src="logos/beles.png" alt="Beles Navbar Brand Logo" onerror="this.onerror=null; this.src='https://placehold.co/120x36/164780/ffffff?text=Beles+Consulting'">
+        </a>
+        <nav class="main-nav-container">
+            <ul class="nav-links-list">
+                <li class="nav-link-item"><a href="index.html">Home</a></li>
+                <li class="nav-link-item dropdown-wrapper">
+                    <a href="about.html" class="dropdown-trigger">About <i class="fa-solid fa-chevron-down chevron-indicator"></i></a>
+                    <div class="dropdown-standard-panel">
+                        <ul class="dropdown-links-list">
+                            <li><a href="compbg.html"><i class="fa-solid fa-circle-info"></i> Company Background</a></li>
+                            <li><a href="compbg.html#vision-mission"><i class="fa-solid fa-bullseye"></i> Vision & Mission</a></li>
+                            <li><a href="compbg.html#leadership"><i class="fa-solid fa-user-tie"></i> Leadership & Ownership</a></li>
+                            <li><a href="gov2.html"><i class="fa-solid fa-sitemap"></i> Organizational Structure</a></li>
+                            <li><a href="legislation_certificates.html"><i class="fa-solid fa-file-signature"></i> Legislation & Certificates</a></li>
+                            <li><a href="legislation_certificates.html"><i class="fa-solid fa-trophy"></i> Awards & Accreditations</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-link-item dropdown-wrapper">
+                   <a href="services.html"class="dropdown-trigger">Services <i class="fa-solid fa-chevron-down chevron-indicator"></i></a>
+                    <div class="dropdown-mega-panel">
+                        <div class="mega-menu-grid">
+                            <div class="mega-column">
+                                <span class="mega-col-title">Heavy Infrastructure</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="service-roads.html"><i class="fa-solid fa-road"></i> Roads & Highways</a></li>
+                                    <li><a href="service-railroads.html"><i class="fa-solid fa-train"></i> Railroad Networks</a></li>
+                                    <li><a href="service-bridges.html"><i class="fa-solid fa-bridge"></i> Bridge Structures</a></li>
+                                    <li><a href="service-airfields.html"><i class="fa-solid fa-plane"></i> Airfield Structures</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Civil & Geotechnical</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="service-tunnel.html"><i class="fa-solid fa-mountain"></i> Tunnel & Geotechnical</a></li>
+                                    <li><a href="service-buildings.html"><i class="fa-solid fa-building"></i> Building Structures</a></li>
+                                    <li><a href="service-dams.html"><i class="fa-solid fa-water-ladder"></i> Dam & Irrigation</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Planning & Diagnostics</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="service-feasibility.html"><i class="fa-solid fa-magnifying-glass-chart"></i> Feasibility Studies</a></li>
+                                    <li><a href="service-feasibility.html"><i class="fa-solid fa-leaf"></i> Environmental (EIA)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-link-item dropdown-wrapper">
+                    <a href="projects.html" class="dropdown-trigger">Projects <i class="fa-solid fa-chevron-down chevron-indicator"></i></a>
+                    <div class="dropdown-mega-panel">
+                        <div class="mega-menu-grid">
+                            <div class="mega-column">
+                                <span class="mega-col-title">Detailed Engineering</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="project-bridge-design.html"><i class="fa-solid fa-compass-drafting"></i> Bridge Design</a></li>
+                                    <li><a href="project-road-pavement.html"><i class="fa-solid fa-road"></i> Pavement & Road Design</a></li>
+                                    <li><a href="project-detailed-engineering.html"><i class="fa-solid fa-pen-ruler"></i> Detailed Structural Design</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Supervision & Admin</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="project-supervision.html"><i class="fa-solid fa-building-shield"></i> Supervision & Contract Admin</a></li>
+                                    <li><a href="project-buliding design&supervision.html"><i class="fa-solid fa-city"></i> Building Supervision</a></li>
+                                    <li><a href="project-water-production.html"><i class="fa-solid fa-faucet-drip"></i> Water Supply & Infrastructure</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Feasibility & Safeguards</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="project-feasibility-eia.html"><i class="fa-solid fa-file-invoice"></i> Feasibility Studies</a></li>
+                                    <li><a href="project-feasibility-eia.html"><i class="fa-solid fa-users-viewfinder"></i> Socio-Environmental EIA</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-link-item dropdown-wrapper">
+                    <span class="dropdown-trigger">Company <i class="fa-solid fa-chevron-down chevron-indicator"></i></span>
+                    <div class="dropdown-standard-panel">
+                        <ul class="dropdown-links-list">
+                            <li><a href="office_headquarters.html"><i class="fa-solid fa-building"></i> Office & Headquarters</a></li>
+                            <li><a href="geotechnical&labortaory.html"><i class="fa-solid fa-vial-virus"></i> Geotechnical Laboratory</a></li>
+                            <li><a href="equpimnet&facilites.html"><i class="fa-solid fa-truck-monster"></i> Equipment & Facilities</a></li>
+                            <li><a href="fincalstanding2.html"><i class="fa-solid fa-scale-balanced"></i> Financial Standing</a></li>
+                            <li><a href="tech.html"><i class="fa-solid fa-laptop-code"></i> Technology & R&D</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-link-item"><a href="gallery.html">Gallery</a></li>
+                <li class="nav-link-item"><a href="contact.html">Contact</a></li>
+                <li class="nav-link-item"><a href="beles-blog/blog.php">Blog</a></li>
+
+                <li class="mobile-drawer-socials">
+                    <a href="#" class="social-lnk"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-lnk"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-lnk"><i class="fa-brands fa-linkedin-in"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <section class="credentials-hero">
+        <div class="blueprint-sketch-watermark"></div>
+        <div class="hero-layout-wrap">
+            <div class="hero-lead-details reveal-element">
+                <span>REPRESENTATIVE ACCREDITATIONS</span>
+                <h1>Legislation, Credentials & Compliance Framework</h1>
+                <p>Fully registered, certified, and compliant with all federal and international engineering regulatory standards. Backed by authorized operational licenses, transparent audit disclosers, and corporate declarations.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="filter-rail-container reveal-element">
+        <button class="filter-button is-active" data-filter="all">View All (19)</button>
+        <button class="filter-button" data-filter="legislation">Legal Legislations (14)</button>
+        <button class="filter-button" data-filter="certificate">Certifications & Accreditations (5)</button>
+    </div>
+
+    <main class="credentials-grid-system">
+
+        <!-- Blueprint Card 1 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A101</span><span>COORD: X-104 / Y-902</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/constrcution ministry.jpg" alt="Federal Registration Certificate" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-file-invoice blueprint-watermark-icon"></i>
+                <h3>Certificate Of Competence For Consultant</h3>
+                <!-- <p>Official registration record issued under Commercial Code Article 45, authorizing executive civil planning and consulting operations across federal states.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 2 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A102</span><span>COORD: X-115 / Y-844</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/tax paper.jpg" alt="Tax Compliance Declaration" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-scale-balanced blueprint-watermark-icon"></i>
+                <h3>Tax Payer Registrtaion Certificate</h3>
+                <!-- <p>Taxpayer Identification Number (TIN) registries and certified annual clearances confirming total compliance with the Revenue Administration.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 3 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A103</span><span>COORD: X-220 / Y-112</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/addis baba registrtaion berue.jpg" alt="Consultancy License Registry" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-user-shield blueprint-watermark-icon"></i>
+                <h3>Addis Ababa City Administration Bureau Business License</h3>
+                <!-- <p>Authorized legal deed validating our capacity as a class-one engineering consultancy firm under the Ministry of Urban Development and Infrastructure.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 4 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A104</span><span>COORD: X-304 / Y-505</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/uganda.jpg" alt="Chamber of Commerce Registry" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-building-columns blueprint-watermark-icon"></i>
+                <h3>The Republic Of Uganda Certificate Registration Under Foreign Company Act</h3>
+                <!-- <p>Corporate status registry certifying Beles Consulting as a recognized member of the National Chamber of Commerce & Sectoral Associations.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 5 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A105</span><span>COORD: X-411 / Y-301</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/procrumnet and property .jpg" alt="External Audit Charter" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-file-shield blueprint-watermark-icon"></i>
+                <h3>The FDRE Public Procrumnet and Property Administration Agency</h3>
+                <!-- <p>Legally bound external audits from the past five years indicating financial liquidity and capacity parameters exceeding 14M+ ETB turnover.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 6 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A106</span><span>COORD: X-109 / Y-720</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/tax clerance certifiacte.jpg" alt="Authorized Representative Deed" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-signature blueprint-watermark-icon"></i>
+                <h3>FEDRAL DEMOCRATIC REPUBLIC OF ETHIOPIA ETHIOPIAN REVENUES AND CUSTOM AUTHORITY Tax Clearance Certificates</h3>
+                <!-- <p>Notarized legal declaration verifying the authority of General Manager Engineer Adamu Kebede as the sole signatory of contract partnerships.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 7 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A107</span><span>COORD: X-512 / Y-413</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/procrument2.jpg" alt="Labor Safety Accord" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-users-gear blueprint-watermark-icon"></i>
+                <h3>The Federal Public Procrument & Property Administration Agency</h3>
+                <!-- <p>Certified operational clearance confirming field works align perfectly with standard worker safety legislations and health mandates.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 8 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A108</span><span>COORD: X-610 / Y-224</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/value added tax.jpg" alt="Social Impact Agreement" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-people-roof blueprint-watermark-icon"></i>
+                <h3>Value Added Tax Registration Certificate</h3>
+                <!-- <p>Legal standard framework detailing our authority to draft Resettlement Action Plans (RAP) for properties within development paths.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 9 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A109</span><span>COORD: X-180 / Y-119</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/rawanda.jpg" alt="Trade Name Registration" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-trademark blueprint-watermark-icon"></i>
+                <h3>Rwanda Development Borad Registration Certificate Under Foregin Company Act</h3>
+                <!-- <p>Certified legal registration securing 'Beles Consulting P.L.C.' as a protected commercial corporate brand in the engineering domain.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 10 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A110</span><span>COORD: X-290 / Y-680</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/commercial registrtain cerficate.jpg" alt="Joint Venture Statute" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-handshake-simple blueprint-watermark-icon"></i>
+                <h3>Commercial Registration Certificate</h3>
+                <!-- <p>Legally approved bylaws outlining the framework for undertaking joint ventures with international partners on high-capacity projects.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 11 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A111</span><span>COORD: X-315 / Y-412</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="images/legislation cericate/procrument3.jpg" alt="Procurement Agency Clearance" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-gavel blueprint-watermark-icon"></i>
+                <h3>The Federal Public Procrument & Property Administration Agency</h3>
+                <!-- <p>Verified status issued by the Federal Public Procurement Agency (PPPAA), validating active registration for public sector bids.</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 12 -->
+        <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A112</span><span>COORD: X-420 / Y-190</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="" alt="Environmental License" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-leaf blueprint-watermark-icon"></i>
+                <h3>EPA Environmental Assessment License</h3>
+                <!-- <p>Environmental Protection Authority legal clearance, certifying our competence to author Environmental Impact Assessments (EIA).</p> -->
+            </div>
+        </article>
+
+        <!-- Blueprint Card 13 -->
+        <!-- <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A113</span><span>COORD: X-580 / Y-340</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?q=80&w=400&auto=format&fit=crop" alt="Laboratory Certification Document" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-vial-virus blueprint-watermark-icon"></i>
+                <h3>Materials Lab License</h3>
+            </div>
+        </article> -->
+
+        <!-- Blueprint Card 14 -->
+        <!-- <article class="legislation-blueprint-card reveal-element" data-category="legislation">
+            <div class="blueprint-coordinate-tag"><span>REF: LE-A114</span><span>COORD: X-710 / Y-280</span></div>
+            <div class="blueprint-preview-frame">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop" alt="Commercial Register Record" onerror="this.onerror=null; this.src='https://placehold.co/400x180/070d19/ffffff?text=Deed+Document'">
+            </div>
+            <div class="blueprint-content-brief">
+                <i class="fa-solid fa-folder-closed blueprint-watermark-icon"></i>
+                <h3>Ministry of Trade Register</h3>
+                <p>Official commercial registration ledger record verifying current status as an active, law-abiding business enterprise.</p>
+            </div>
+        </article> -->
+
+        <!-- Certificate Card 1 -->
+        <article id="certificates" class="certificate-prestige-card reveal-element" data-category="certificate">
+            <div class="prestige-stamp-seal"></div>
+            <span class="badge-overlay">ACCREDITATION</span>
+            <div class="certificate-preview-frame">
+                <img src="images/certificate/waghmra woreda cerfucate.jpg" alt="Quality Management Certificate" onerror="this.onerror=null; this.src='https://placehold.co/400x200/fafaf9/b38728?text=ISO+9001+Framework'">
+            </div>
+            <div class="certificate-content-brief">
+                <h3>Certificate of Appreciation and Recognition From Waghmara Worada Amhara Region</h3>
+                <!-- <p>Validates that our design drafting, geotechnical evaluations, and client support processes meet international quality systems.</p> -->
+            </div>
+        </article>
+
+        <!-- Certificate Card 2 -->
+        <article class="certificate-prestige-card reveal-element" data-category="certificate">
+            <div class="prestige-stamp-seal"></div>
+            <span class="badge-overlay">ACCREDITATION</span>
+            <div class="certificate-preview-frame">
+                <img src="images/certificate/tax accoplismnet.jpg" alt="Environmental Management" onerror="this.onerror=null; this.src='https://placehold.co/400x200/fafaf9/b38728?text=ISO+14001+Framework'">
+            </div>
+            <div class="certificate-content-brief">
+                <h3>Certificate of Appreciation and Recognition For Successful of Tax Collection Acomplishemnet</h3>
+                <!-- <p>Validates structural designs reduce environmental footprint, aligned with climate action objectives and sustainable resource utilization.</p> -->
+            </div>
+        </article>
+
+        <!-- Certificate Card 3 -->
+        <article class="certificate-prestige-card reveal-element" data-category="certificate">
+            <div class="prestige-stamp-seal"></div>
+            <span class="badge-overlay">ACCREDITATION</span>
+            <div class="certificate-preview-frame">
+                <img src="images/certificate/addis ababa housing berue.jpg" alt="Occupational Health and Safety" onerror="this.onerror=null; this.src='https://placehold.co/400x200/fafaf9/b38728?text=ISO+45001+Framework'">
+            </div>
+            <div class="certificate-content-brief">
+                <h3> Certificate of Appreciation and Recognition From Addis Ababa Housing Development Corporation</h3>
+                <!-- <p>Verifies strict on-site work safe parameters and technical precautions, protecting both our core staff and associated contractors.</p> -->
+            </div>
+        </article>
+
+        <!-- Certificate Card 4 -->
+        <article class="certificate-prestige-card reveal-element" data-category="certificate">
+            <div class="prestige-stamp-seal"></div>
+            <span class="badge-overlay"> ACCREDITATION</span>
+            <div class="certificate-preview-frame">
+                <img src="images/certificate/nifas selk.jpg" alt="Roads Administration Certificate" onerror="this.onerror=null; this.src='https://placehold.co/400x200/fafaf9/b38728?text=ERA+Design+Audit'">
+            </div>
+            <div class="certificate-content-brief">
+                <h3>Certificate of Appreciation and Recognition From Addis Ababa Housing Development Corporation With Nifas Selk Lafto Administration</h3>
+                <!-- <p>Official engineering design audit accreditation issued by the Ethiopian Roads Administration, qualifying us for major highway designs.</p> -->
+            </div>
+        </article>
+
+        <!-- Certificate Card 5 -->
+        <!-- <article class="certificate-prestige-card reveal-element" data-category="certificate">
+            <div class="prestige-stamp-seal"></div>
+            <span class="badge-overlay">FIDIC MEMBER</span>
+            <div class="certificate-preview-frame">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=400&auto=format&fit=crop" alt="FIDIC Contract Standards" onerror="this.onerror=null; this.src='https://placehold.co/400x200/fafaf9/b38728?text=FIDIC+Accreditation'">
+            </div>
+            <div class="certificate-content-brief">
+                <h3>FIDIC Standard Compliance</h3>
+                <p>Accredited alignment with FIDIC conditions of contract, ensuring project supervision structures comply with global funding bodies.</p>
+            </div>
+        </article> -->
+
+    </main>
+
+    <footer class="corporate-footer">
+        <div class="footer-grid-container">
+            <div class="footer-about-block">
+                <h4>Beles Consulting</h4>
+                <p>Providing premium structural designs, detailed blueprint drawings, materials geotechnical testings, and world-class technical consulting services since October 2007 G.C. Aligned strictly with national and international compliance systems.</p>
+            </div>
+            <div class="footer-links-block">
+                <h5>Useful Gateways</h5>
+                <ul class="footer-links-list">
+                    <li><a href="index.html">Corporate Background</a></li>
+                    <li><a href="governance.html">Organizational Structure</a></li>
+                    <li><a href="legislation_certificates.html">Legislation & Certificates</a></li>
+                    <li><a href="index.html#background">Average Turnovers</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact-block">
+                <h5>Contact Channels</h5>
+                <ul class="footer-contact-info-list">
+                    <li><i class="fa-solid fa-map-location-dot"></i> Gurd Shola Infront of Tele, Addis Ababa - Ethiopia</li>
+                    <li><i class="fa-solid fa-square-phone"></i> (+251) 9-11279850 / 911 25 86 15</li>
+                    <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom-bar">
+            <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+            <span>Honest to Serve</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // 1. MOBILE HAMBURGER & DROPDOWN ACCORDION
+            const menuToggle = document.getElementById('menuToggleTrigger');
+            const navLinksList = document.querySelector('.nav-links-list');
+            const dropdownTriggers = document.querySelectorAll('.dropdown-trigger');
+
+            if (menuToggle && navLinksList) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('is-open');
+                    navLinksList.classList.toggle('is-active');
+                });
+            }
+
+            document.addEventListener('click', function(event) {
+                if (navLinksList && navLinksList.classList.contains('is-active')) {
+                    const isClickInside = navLinksList.contains(event.target) || menuToggle.contains(event.target);
+                    if (!isClickInside) {
+                        menuToggle.classList.remove('is-open');
+                        navLinksList.classList.remove('is-active');
+                    }
+                }
+            });
+
+            dropdownTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 1024) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const parent = this.parentElement;
+                        const panel = this.nextElementSibling;
+                        parent.classList.toggle('chevron-active');
+                        panel.classList.toggle('mobile-open');
+                    }
+                });
+            });
+
+            // Sticky logo scroll
+            const stickyLogo = document.querySelector('.sticky-nav-logo-wrap');
+            window.addEventListener('scroll', function() {
+                if (stickyLogo) {
+                    stickyLogo.style.opacity = window.scrollY > 90 ? '1' : '0';
+                    stickyLogo.style.visibility = window.scrollY > 90 ? 'visible' : 'hidden';
+                }
+            });
+
+            // 2. SCROLL REVEAL
+            const revealElements = document.querySelectorAll('.reveal-element');
+            if ('IntersectionObserver' in window) {
+                const scrollObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) entry.target.classList.add('active');
+                    });
+                }, { threshold: 0.1 });
+                revealElements.forEach(el => scrollObserver.observe(el));
+            } else {
+                revealElements.forEach(el => el.classList.add('active'));
+            }
+
+            // 3. CATEGORY FILTER RAIL
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const cards = document.querySelectorAll('article[data-category]');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('is-active'));
+                    this.classList.add('is-active');
+                    const filterValue = this.getAttribute('data-filter');
+                    cards.forEach(card => {
+                        card.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'flex';
+                            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0) scale(1)'; }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px) scale(0.95)';
+                            setTimeout(() => { card.style.display = 'none'; }, 400);
+                        }
+                    });
+                });
+            });
+
+            // ==============================================
+            // 4. IMAGE LIGHTBOX — click image to zoom + title
+            // ==============================================
+            const lightbox      = document.getElementById('imgLightbox');
+            const lightboxImg   = document.getElementById('lightboxImg');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            const lightboxClose = document.getElementById('lightboxClose');
+
+            function openLightbox(src, alt, title) {
+                lightboxImg.src = src;
+                lightboxImg.alt = alt;
+                lightboxTitle.textContent = title;
+                lightbox.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('is-open');
+                document.body.style.overflow = '';
+                setTimeout(() => { lightboxImg.src = ''; }, 350);
+            }
+
+            // Attach click to every card image
+            document.querySelectorAll(
+                '.blueprint-preview-frame img, .certificate-preview-frame img'
+            ).forEach(img => {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card   = this.closest('article');
+                    const titleEl = card ? card.querySelector('h3') : null;
+                    openLightbox(this.src, this.alt, titleEl ? titleEl.textContent : this.alt);
+                });
+            });
+
+            // Close via X button
+            lightboxClose.addEventListener('click', closeLightbox);
+
+            // Close by clicking the dark overlay background
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) closeLightbox();
+            });
+
+            // Close with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeLightbox();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1484 @@
+:root {
+            /* Rigid Corporate Color Guidelines */
+            --navy-brand: #164780;      /* Deep Industry Navy */
+            --maroon-brand: #7F0A1C;    /* Precision Maroon Accent */
+            --maroon-light: #ff4057;    /* High-contrast brand maroon for dark backgrounds */
+            --blue-accent: #1587D2;     /* Technical Structural Details */
+            --bg-dark: #070d19;         /* Rich dark canvas backing */
+            --bg-light: #f8fafc;        /* High-contrast neutral light layout background */
+            --text-dark: #1e293b;       /* Premium layout body typography color */
+            --text-muted: #64748b;      /* Secondary reading contrast */
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           SCROLL REVEAL ANIMATION SYSTEM
+           ========================================================================== */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* ==========================================================================
+           TECHNICAL SKETCH CANVAS BACKGROUNDS
+           ========================================================================== */
+        .sketch-canvas-dark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.15;
+            background-repeat: no-repeat;
+            background-position: center right;
+            background-size: contain;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23ffffff' stroke-width='0.7' fill='none' stroke-linecap='round' stroke-linejoin='round'><path d='M100 500 h600 M150 500 V150 M650 500 V150' stroke-width='1.5'/><path d='M150 150 Q400 30 A250 250 0 0 1 650 150' stroke-width='1.5'/><path d='M170 160 Q400 55 630 160'/><path d='M190 500 V230 Q400 130 610 230 V500'/><path d='M250 500 V290 A150 150 0 0 1 550 290 V500'/><path d='M300 500 V340 Q400 270 500 340 V500'/><circle cx='400' cy='140' r='15' stroke-dasharray='4,4'/><circle cx='150' cy='150' r='8'/><circle cx='650' cy='150' r='8'/><path d='M120 150 h60 M620 150 h60 M400 30 v520' stroke-dasharray='5,5'/><text x='385' y='80' fill='%23ffffff' font-family='monospace' font-size='10' stroke='none'>R-2030</text></svg>");
+            z-index: 2;
+        }
+
+        .sketch-canvas-light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.04;
+            background-repeat: no-repeat;
+            background-position: center left;
+            background-size: contain;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23164780' stroke-width='0.6' fill='none'><circle cx='400' cy='300' r='180'/><circle cx='400' cy='300' r='120'/><path d='M400 50 v500 M50 300 h700' stroke-width='0.8' stroke-dasharray='8,4'/></svg>");
+            z-index: 1;
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling the dual-row master navigation header...
+           ========================================================================== */
+        .top-main-header {
+            width: 100%;
+            height: 90px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6%; 
+            border-bottom: 1px solid #eef2f6;
+            position: relative;
+            z-index: 1002;
+        }
+
+        .corporate-logo-frame {
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .corporate-logo-frame img {
+            max-height: 60px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-right-utilities {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            gap: 30px;
+        }
+
+        .header-contact-info {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .contact-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #4a5568;
+            white-space: nowrap;
+        }
+
+        .contact-node i {
+            color: var(--maroon-brand);
+            font-size: 1rem;
+        }
+
+        .header-social-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 1px solid #e2e8f0;
+            padding-left: 30px;
+        }
+
+        .social-lnk {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-decoration: none;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #ffffff;
+        }
+
+        .social-lnk:hover {
+            color: var(--blue-accent);
+            border-color: var(--blue-accent);
+            transform: translateY(-2px);
+            background: rgba(21, 135, 210, 0.05);
+            box-shadow: 0 4px 10px rgba(21, 135, 210, 0.15);
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling navigation bar and dropdown states...
+           ========================================================================== */
+        .menu-navigation-bar {
+            width: 100%;
+            background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 55px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+            padding: 0 6%;
+        }
+
+        .sticky-nav-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            left: 6%;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sticky-nav-logo-wrap img {
+            max-height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .main-nav-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-links-list {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-link-item a, .dropdown-trigger {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 18px 0;
+            position: relative;
+            transition: color 0.25s;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link-item a:hover, .dropdown-trigger:hover {
+            color: var(--blue-accent);
+        }
+
+        .chevron-indicator {
+            font-size: 0.65rem;
+            margin-left: 6px;
+            transition: transform 0.25s ease;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .dropdown-trigger:hover .chevron-indicator {
+            color: var(--blue-accent);
+        }
+
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        /* Dropdown Box Settings */
+        .dropdown-standard-panel {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 3px solid var(--maroon-brand);
+            box-shadow: 0 15px 35px rgba(10, 20, 36, 0.1);
+            padding: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1100;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .dropdown-mega-panel {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            width: 90vw;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 3px solid var(--maroon-brand);
+            box-shadow: 0 20px 45px rgba(10, 20, 36, 0.12);
+            padding: 30px;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1100;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .mega-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .mega-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mega-column:not(:last-child) {
+            border-right: 1px solid #f1f5f9;
+            padding-right: 25px;
+        }
+
+        .mega-col-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 6px;
+        }
+
+        .dropdown-links-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dropdown-links-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            color: #4a5568 !important;
+            text-decoration: none !important;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s, padding-left 0.2s;
+        }
+
+        .dropdown-links-list li a i {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            width: 16px;
+            text-align: center;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .dropdown-links-list li a:hover {
+            background-color: #f8fafc;
+            color: var(--blue-accent) !important;
+            padding-left: 16px;
+        }
+
+        .dropdown-links-list li a:hover i {
+            color: var(--maroon-brand);
+            transform: translateX(2px);
+        }
+
+        /* Hover Display Settings for Desktop Devices */
+        @media (min-width: 1025px) {
+            .dropdown-wrapper:hover .dropdown-standard-panel,
+            .dropdown-wrapper:hover .dropdown-mega-panel {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            .dropdown-wrapper:hover .chevron-indicator {
+                transform: rotate(180deg);
+                color: var(--blue-accent);
+            }
+        }
+
+        /* Hamburger Styles */
+        .mobile-menu-toggle {
+            display: none; 
+            flex-direction: column;
+            justify-content: space-between;
+            width: 26px;
+            height: 18px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 2005;
+            outline: none;
+        }
+
+        .mobile-menu-toggle span {
+            width: 100%;
+            height: 2px;
+            background-color: var(--navy-brand); 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: left center;
+        }
+
+        .mobile-menu-toggle.is-open span:nth-child(1) {
+            transform: rotate(45deg) translate(2px, -1px);
+            background-color: var(--maroon-brand);
+        }
+
+        .mobile-menu-toggle.is-open span:nth-child(2) {
+            width: 0%;
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.is-open span:nth-child(3) {
+            transform: rotate(-45deg) translate(2px, 1px);
+            background-color: var(--maroon-brand);
+        }
+
+        .mobile-drawer-socials {
+            display: none !important;
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling the main page sections and visual heroes...
+           ========================================================================== */
+        .corporate-identity-hero {
+            position: relative;
+            padding: 140px 8% 180px 8%;
+            border-bottom: 5px solid var(--maroon-brand);
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            /* Blended background layout mapping */
+            background-image: linear-gradient(to bottom, rgba(7, 13, 25, 0.5), rgba(7, 13, 25, 0.88)), 
+                              url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-layout-header {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .identity-meta-branding h2 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--blue-accent);
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .identity-meta-branding h1 {
+            color: #ffffff;
+            font-size: 3.4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+
+        .corporate-motto-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(127, 10, 28, 0.2);
+            border: 1px solid var(--maroon-brand);
+            padding: 8px 18px;
+            border-radius: 4px;
+            color: #ffffff;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .profile-action-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .download-profile-anchor {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--maroon-brand);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 28px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(127, 10, 28, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .download-profile-anchor:hover {
+            background-color: #990d23;
+            transform: translateY(-2px);
+        }
+
+        .operational-est-tag {
+            font-size: 0.8rem;
+            color: #abbcd0;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .capabilities-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 5;
+            max-width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .capability-pill-item {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .capability-pill-item i {
+            color: var(--blue-accent);
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling the narrative content grids and sidebars...
+           ========================================================================== */
+        .profile-narrative-block {
+            max-width: 1300px;
+            margin: -100px auto 0 auto;
+            padding: 0 4%;
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        /* Highly Scannable Narrative Redesign */
+        .narrative-card-wrapper {
+            background: #ffffff;
+            padding: 50px;
+            border-radius: 6px;
+            box-shadow: 0 30px 60px rgba(10, 20, 36, 0.1);
+            position: relative;
+            border-top: 4px solid var(--navy-brand);
+        }
+
+        .narrative-pullquote {
+            border-left: 4px solid var(--maroon-brand);
+            padding: 0 0 0 20px;
+            margin-bottom: 30px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--navy-brand);
+            line-height: 1.4;
+        }
+
+        .narrative-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .narrative-feature-node {
+            background: var(--bg-light);
+            padding: 24px;
+            border-radius: 4px;
+            border-left: 3px solid var(--blue-accent);
+        }
+
+        .narrative-feature-node i {
+            color: var(--blue-accent);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .narrative-feature-node h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--navy-brand);
+            margin-bottom: 8px;
+        }
+
+        .narrative-feature-node p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .narrative-accomplishments-panel {
+            background: rgba(22, 71, 128, 0.03);
+            border: 1px dashed rgba(22, 71, 128, 0.2);
+            padding: 24px;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+
+        .narrative-accomplishments-panel h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--navy-brand);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .narrative-accomplishments-panel h4 i {
+            color: var(--maroon-brand);
+        }
+
+        .narrative-accomplishments-panel p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .financial-capacity-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 100px;
+        }
+
+        .financial-metric-card {
+            background-color: var(--bg-dark);
+            border-left: 5px solid var(--maroon-brand);
+            padding: 40px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(10, 20, 36, 0.15);
+        }
+
+        .financial-card-header-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--blue-accent);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .kinetic-counter-flex-group {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .metric-big-number {
+            font-size: 3.8rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .metric-unit-suffix {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--maroon-brand);
+            margin-left: 8px;
+        }
+
+        .financial-metric-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .financial-metric-card p {
+            font-size: 0.88rem;
+            color: #abbcd0;
+        }
+
+        .trust-compliance-widget {
+            background-color: var(--bg-light);
+            border: 1px solid #e2e8f0;
+            padding: 30px;
+            border-radius: 4px;
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling leadership profiles and executive grids...
+           ========================================================================== */
+        .executive-leadership-section {
+            max-width: 1300px;
+            margin: 120px auto 0 auto;
+            padding: 0 4%;
+            position: relative;
+        }
+
+        .executive-cards-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+            margin-bottom: 45px;
+        }
+
+        .corporate-executive-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 40px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(10, 20, 36, 0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .corporate-executive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(22, 71, 128, 0.08);
+            border-color: rgba(22, 71, 128, 0.2);
+        }
+
+        .executive-graphic-frame {
+            position: relative;
+            width: 130px;
+            height: 150px;
+            flex-shrink: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+
+        .executive-graphic-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .executive-graphic-frame::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+
+        .executive-bio-details {
+            flex-grow: 1;
+        }
+
+        .exec-role-pill {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--maroon-brand);
+            margin-bottom: 6px;
+        }
+
+        .executive-bio-details h4 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--navy-brand);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .exec-stats-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .exec-badge-indicator {
+            background-color: var(--bg-light);
+            border: 1px solid #e2e8f0;
+            padding: 4px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-transform: uppercase;
+        }
+
+        .exec-badge-indicator.highlighted {
+            background-color: rgba(21, 135, 210, 0.08);
+            border-color: rgba(21, 135, 210, 0.2);
+            color: var(--blue-accent);
+        }
+
+        .executive-bio-details p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling corporate address registries and data grids...
+           ========================================================================== */
+        .corporate-registry-grid-card {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid var(--maroon-brand);
+        }
+
+        .registry-structural-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .registry-structural-header h4 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .registry-structural-header span {
+            font-size: 0.8rem;
+            color: var(--blue-accent);
+            font-weight: 700;
+        }
+
+        .registry-layout-columns-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .registry-data-node {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .registry-data-node h5 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #abbcd0;
+            font-weight: 800;
+            border-left: 2px solid var(--blue-accent);
+            padding-left: 8px;
+        }
+
+        .registry-info-item-row {
+            display: flex;
+            font-size: 0.88rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding-bottom: 6px;
+        }
+
+        .registry-info-item-row .info-label {
+            width: 110px;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .registry-info-item-row .info-value {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .registry-info-item-row .info-value.anchor-link {
+            color: var(--blue-accent);
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling accomplished capability interactive lists...
+           ========================================================================== */
+        .accomplished-sectors-section {
+            max-width: 1300px;
+            margin: 120px auto 0 auto;
+            padding: 0 4%;
+            position: relative;
+        }
+
+        .section-modular-title-box {
+            margin-bottom: 40px;
+            border-left: 4px solid var(--maroon-brand);
+            padding-left: 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-modular-title-box span {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .section-modular-title-box h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy-brand);
+        }
+
+        .capabilities-interactive-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .capability-interactive-node-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 35px;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+        }
+
+        .capability-interactive-node-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--navy-brand);
+            transition: transform 0.35s ease;
+            transform: scaleY(0);
+            transform-origin: bottom;
+        }
+
+        .capability-node-icon-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .capability-node-icon-header i {
+            font-size: 2rem;
+            color: var(--navy-brand);
+            transition: color 0.35s ease;
+        }
+
+        .capability-node-index-number {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #cbd5e1;
+        }
+
+        .capability-interactive-node-card h4 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .capability-interactive-node-card p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* Visual Fixes: Maroon color swap on hover */
+        .capability-interactive-node-card:hover {
+            box-shadow: 0 15px 35px rgba(22, 71, 128, 0.08);
+            transform: translateY(-4px);
+            border-color: transparent;
+        }
+
+        .capability-interactive-node-card:hover::before { 
+            transform: scaleY(1); 
+        }
+
+        .capability-interactive-node-card:hover i {
+            color: var(--maroon-brand) !important;
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling the strategic vision and regional maps...
+           ========================================================================== */
+        .strategic-horizon-section {
+            background-color: var(--bg-dark);
+            margin-top: 120px;
+            padding: 90px 4%;
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid var(--maroon-brand);
+        }
+
+        .strategic-horizon-layout-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .horizon-editorial-panel h3 {
+            color: #ffffff;
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+.horizon-editorial-panel h4 {
+ color: var(--maroon-light);
+}
+        .horizon-mission-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 30px;
+            border-left: 4px solid var(--blue-accent);
+        }
+
+        .horizon-mission-card h5 {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .horizon-mission-card p {
+            color: #abbcd0;
+        }
+
+        .horizon-interactive-map-timeline {
+            background: rgba(10, 20, 36, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 45px;
+            position: relative;
+        }
+
+        .map-timeline-target-year {
+            font-size: 6rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            position: absolute;
+            top: -15px;
+            right: 25px;
+        }
+
+        .map-timeline-statement-para {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 35px;
+        }
+
+        /* Visual Fixes: High-contrast maroon framework text */
+        .map-timeline-statement-para span {
+            color: var(--maroon-light) !important;
+            font-weight: 800;
+        }
+
+        .regional-expansion-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* Upgraded high-contrast white circles with maroon indicators */
+        .regional-destination-tag-node {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px 20px;
+            border-radius: 4px;
+        }
+
+        .regional-destination-tag-node i {
+            color: var(--maroon-brand) !important;
+            font-size: 1.1rem;
+            background-color: #ffffff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(127, 10, 28, 0.3);
+            flex-shrink: 0;
+        }
+
+        .regional-destination-tag-node span {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling foundational pillars and visual mascots...
+           ========================================================================== */
+        .foundational-pillars-section {
+            max-width: 1300px;
+            margin: 120px auto;
+            padding: 0 4%;
+        }
+
+        .pillars-and-avatar-layout-split {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 40px;
+            margin-top: 45px;
+            align-items: start;
+        }
+
+        .pillars-matrix-layout-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .pillar-matrix-node-item {
+            background-color: var(--bg-light);
+            border: 1px solid #e2e8f0;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.25s ease;
+        }
+
+        .pillar-icon-shield {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--navy-brand);
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        .pillar-content-group p {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Visual Fixes: Core values maroon number swap on hover */
+        .pillar-matrix-node-item:hover {
+            background-color: #ffffff;
+            transform: translateX(4px);
+            box-shadow: 0 8px 20px rgba(127, 10, 28, 0.05);
+            border-color: transparent;
+        }
+
+        .pillar-matrix-node-item:hover .pillar-icon-shield {
+            background-color: var(--maroon-brand) !important;
+            color: #ffffff !important;
+            border-color: var(--maroon-brand) !important;
+        }
+
+        /* Visual Fixes: Restoring Screenshot 308 CSS Mascot styles */
+        .avatar-mascot-sticky-container {
+            position: sticky;
+            top: 40px;
+            background-color: var(--bg-dark);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            overflow: hidden;
+            border-bottom: 4px solid var(--navy-brand);
+            box-shadow: 0 20px 45px rgba(7, 13, 25, 0.15);
+        }
+
+        .mascot-graphic-render-slot {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .avatar-mascot-sticky-container h4 {
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            margin-top: 10px;
+        }
+
+        .avatar-mascot-sticky-container p {
+            color: #abbcd0;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* Pulsating Interactive Green WhatsApp Contact Button */
+        .mascot-whatsapp-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #12d06c;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 50px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(18, 208, 108, 0.4);
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        .mascot-whatsapp-action:hover {
+            background-color: #0fb85e;
+            transform: scale(1.03);
+        }
+
+        @keyframes pulse-whatsapp {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(18, 208, 108, 0.6); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 12px rgba(18, 208, 108, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(18, 208, 108, 0); }
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Styling additional trust and client banners...
+           ========================================================================== */
+        .trust-partners-banner {
+            background-color: var(--bg-light);
+            padding: 60px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .partners-inner-wrap {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .partner-logo-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            opacity: 0.6;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease, color 0.3s ease;
+        }
+
+        .partner-logo-box:hover {
+            opacity: 1;
+            color: var(--navy-brand);
+        }
+
+        /* ==========================================================================
+           STREAMING_CHUNK: Configuring mobile responsive styling overrides...
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .top-main-header {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 5% !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                background-color: #ffffff !important;
+                height: 80px !important;
+                border-bottom: 1px solid #eef2f6;
+            }
+
+            .header-right-utilities {
+                display: none !important;
+            }
+
+            .mobile-menu-toggle {
+                display: flex !important;
+                position: relative !important;
+                width: 28px;
+                height: 20px;
+                flex-direction: column;
+                justify-content: space-between;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                z-index: 2005;
+                outline: none;
+            }
+
+            .mobile-menu-toggle span {
+                width: 100%;
+                height: 2.5px;
+                background-color: var(--navy-brand) !important;
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                transform-origin: left center;
+            }
+
+            .mobile-menu-toggle.is-open span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -1px);
+                background-color: var(--maroon-brand) !important;
+            }
+
+            .mobile-menu-toggle.is-open span:nth-child(2) {
+                width: 0%;
+                opacity: 0;
+            }
+
+            .mobile-menu-toggle.is-open span:nth-child(3) {
+                transform: rotate(-45deg) translate(2px, 1px);
+                background-color: var(--maroon-brand) !important;
+            }
+
+            .menu-navigation-bar {
+                position: static;
+                height: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            .nav-links-list {
+                position: fixed !important;
+                top: 80px; 
+                left: 0;
+                width: 100vw !important;
+                height: calc(100vh - 80px);
+                background-color: #ffffff !important;
+                box-shadow: 0 15px 30px rgba(10, 20, 36, 0.15);
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: 20px 6% !important;
+                max-height: 0;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                visibility: hidden;
+                transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+                z-index: 2000;
+            }
+
+            .nav-links-list.is-active {
+                max-height: calc(100vh - 80px) !important;
+                visibility: visible !important;
+            }
+
+            .nav-link-item {
+                width: 100%;
+                border-bottom: 1px solid #edf2f7;
+            }
+
+            .nav-link-item a, 
+            .dropdown-trigger {
+                color: #1a202c !important;
+                width: 100%;
+                padding: 16px 0;
+                font-size: 0.95rem;
+            }
+
+            .dropdown-trigger {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .dropdown-standard-panel,
+            .dropdown-mega-panel {
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                background-color: #f8fafc !important;
+                padding: 10px 15px !important;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .mega-menu-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .mega-column {
+                padding-right: 0 !important;
+                border-right: none !important;
+            }
+
+            .dropdown-standard-panel.mobile-open,
+            .dropdown-mega-panel.mobile-open {
+                max-height: 800px !important;
+            }
+
+            .nav-link-item.dropdown-wrapper.chevron-active .chevron-indicator {
+                transform: rotate(180deg);
+                color: var(--maroon-brand);
+            }
+
+            .mobile-drawer-socials {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                padding: 30px 0;
+                border-top: 1px solid #edf2f7;
+                margin-top: auto; 
+                width: 100%;
+            }
+
+            .profile-narrative-block { grid-template-columns: 1fr; margin-top: -40px; }
+            .financial-capacity-sidebar { margin-top: 0; }
+            .executive-cards-container { grid-template-columns: 1fr; }
+            .registry-layout-columns-wrapper { grid-template-columns: 1fr; gap: 30px; }
+            .capabilities-interactive-matrix { grid-template-columns: repeat(2, 1fr); }
+            .strategic-horizon-layout-container { grid-template-columns: 1fr; }
+            .pillars-and-avatar-layout-split { grid-template-columns: 1fr; }
+            .avatar-mascot-sticky-container { position: relative; top: 0; }
+            .narrative-split-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .identity-meta-branding h1 { font-size: 2.2rem; }
+            .corporate-executive-card { flex-direction: column; align-items: center; text-align: center; }
+            .capabilities-interactive-matrix { grid-template-columns: 1fr; }
+            .regional-expansion-matrix-grid { grid-template-columns: 1fr; }
+        }

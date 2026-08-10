@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology & R&D | Beles Consulting P.L.C</title>
+    <!-- Font Awesome Icons for authoritative engineering UI indicators -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Plus Jakarta Sans integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Rigid Corporate Color Guidelines matching source page */
+            --navy-brand: #164780;      /* Deep Industry Navy */
+            --maroon-brand: #7F0A1C;    /* Precision Maroon Accent */
+            --blue-accent: #1587D2;     /* Technical Structural Details */
+            --bg-dark: #070d19;         /* Rich dark canvas backing */
+            --bg-light: #f8fafc;        /* High-contrast neutral light layout background */
+            --text-dark: #1e293b;       /* Premium layout body typography color */
+            --text-muted: #64748b;      /* Secondary reading contrast */
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            
+            /* Extended Tech Page Styles */
+            --tech-glow: rgba(21, 135, 210, 0.15);
+            --card-border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: var(--font-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           Styling layout scroll reveal transitions
+           ========================================================================== */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ==========================================================================
+           Styling the dual-row master navigation header
+           ========================================================================== */
+        .top-main-header {
+            width: 100%;
+            height: 90px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6%; 
+            border-bottom: 1px solid #eef2f6;
+            position: relative;
+            z-index: 1002;
+        }
+
+        .corporate-logo-frame {
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .corporate-logo-frame img {
+            max-height: 60px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .header-right-utilities {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            gap: 30px;
+        }
+
+        .header-contact-info {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .contact-node {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #4a5568;
+            white-space: nowrap;
+        }
+
+        .contact-node i {
+            color: var(--maroon-brand);
+            font-size: 1rem;
+        }
+
+        .header-social-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 1px solid #e2e8f0;
+            padding-left: 30px;
+        }
+
+        .social-lnk {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-decoration: none;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #ffffff;
+        }
+
+        .social-lnk:hover {
+            color: var(--blue-accent);
+            border-color: var(--blue-accent);
+            transform: translateY(-2px);
+            background: rgba(21, 135, 210, 0.05);
+            box-shadow: 0 4px 10px rgba(21, 135, 210, 0.15);
+        }
+
+        /* ==========================================================================
+           Styling navigation bar and dropdown states
+           ========================================================================== */
+        .menu-navigation-bar {
+            width: 100%;
+            background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 55px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+            padding: 0 6%;
+        }
+
+        .sticky-nav-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            left: 6%;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sticky-nav-logo-wrap img {
+            max-height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .main-nav-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-links-list {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-link-item a, .dropdown-trigger {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 18px 0;
+            position: relative;
+            transition: color 0.25s;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-link-item a:hover, .dropdown-trigger:hover {
+            color: var(--blue-accent);
+        }
+
+        .chevron-indicator {
+            font-size: 0.65rem;
+            margin-left: 6px;
+            transition: transform 0.25s ease;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .dropdown-trigger:hover .chevron-indicator {
+            color: var(--blue-accent);
+        }
+
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        /* Dropdown Box Settings */
+        .dropdown-standard-panel {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 3px solid var(--maroon-brand);
+            box-shadow: 0 15px 35px rgba(10, 20, 36, 0.1);
+            padding: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1100;
+            border-radius: 0 0 4px 4px;
+        }
+
+        .dropdown-mega-panel {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            width: 90vw;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 3px solid var(--maroon-brand);
+            box-shadow: 0 20px 45px rgba(10, 20, 36, 0.12);
+            padding: 30px;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1100;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .mega-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .mega-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mega-column:not(:last-child) {
+            border-right: 1px solid #f1f5f9;
+            padding-right: 25px;
+        }
+
+        .mega-col-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 6px;
+        }
+
+        .dropdown-links-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dropdown-links-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            color: #4a5568 !important;
+            text-decoration: none !important;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s, padding-left 0.2s;
+        }
+
+        .dropdown-links-list li a i {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            width: 16px;
+            text-align: center;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .dropdown-links-list li a:hover {
+            background-color: #f8fafc;
+            color: var(--blue-accent) !important;
+            padding-left: 16px;
+        }
+
+        .dropdown-links-list li a:hover i {
+            color: var(--maroon-brand);
+            transform: translateX(2px);
+        }
+
+        /* Hover Display Settings for Desktop Devices */
+        @media (min-width: 1025px) {
+            .dropdown-wrapper:hover .dropdown-standard-panel,
+            .dropdown-wrapper:hover .dropdown-mega-panel {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            .dropdown-wrapper:hover .chevron-indicator {
+                transform: rotate(180deg);
+                color: var(--blue-accent);
+            }
+        }
+
+        /* Hamburger Styles */
+        .mobile-menu-toggle {
+            display: none; 
+            flex-direction: column;
+            justify-content: space-between;
+            width: 26px;
+            height: 18px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 2005;
+            outline: none;
+        }
+
+        .mobile-menu-toggle span {
+            width: 100%;
+            height: 2px;
+            background-color: var(--navy-brand); 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: left center;
+        }
+
+        .mobile-drawer-socials {
+            display: none !important;
+        }
+
+        /* ==========================================================================
+           Styling the customized High-Tech Hero banner
+           ========================================================================== */
+        .tech-hero {
+            position: relative;
+            padding: 140px 8% 160px 8%;
+            border-bottom: 5px solid var(--blue-accent);
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(to bottom, rgba(7, 13, 25, 0.5), rgba(7, 13, 25, 0.6)), 
+                              url('images/sofware.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-layout-wrap {
+            position: relative;
+            z-index: 5;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-lead-details {
+            max-width: 800px;
+        }
+
+        .hero-lead-details span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--blue-accent);
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .hero-lead-details h1 {
+            color: #ffffff;
+            font-size: 3.4rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-lead-details p {
+            color: #abbcd0;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        /* Interactive Circuit Layout Line/Watermark Background Overlay */
+        .tech-grid-watermark {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.08;
+            background-image: 
+                radial-gradient(var(--blue-accent) 1px, transparent 0),
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 2;
+        }
+
+        /* ==========================================================================
+           Two Unique Content Workspace Blocks Layout Style
+           ========================================================================== */
+        .tech-main-layout {
+            max-width: 1200px;
+            margin: -50px auto 100px auto;
+            padding: 0 4%;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 120px;
+        }
+
+        /* Section layout architecture */
+        .workspace-block-segment {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(10, 20, 36, 0.05);
+            border: 1px solid var(--card-border);
+            padding: 60px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .workspace-block-segment::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--navy-brand);
+        }
+
+        /* Section 2 explicit accent toggle override */
+        .workspace-block-segment.alt-tech-theme::before {
+            background: var(--maroon-brand);
+        }
+
+        .grid-split-engine {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .workspace-block-segment.alt-tech-theme .grid-split-engine {
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        /* Copywriting elements layout guidelines */
+        .meta-tech-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--blue-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .meta-tech-label i {
+            font-size: 0.9rem;
+        }
+
+        .workspace-heading-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--navy-brand);
+            line-height: 1.2;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .tech-description-paragraph {
+            font-size: 1.02rem;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        /* Technical Content Cards Showcase Grid Sub-System */
+        .showcase-images-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .premium-image-card-frame {
+            background: var(--bg-dark);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            height: 280px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .premium-image-card-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.75;
+            transition: all 0.5s ease;
+        }
+
+        .image-card-glass-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(7, 13, 25, 0.95) 70%, transparent);
+            padding: 25px 20px 20px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .image-card-glass-panel h4 {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .image-card-glass-panel h4 i {
+            color: var(--blue-accent);
+            font-size: 0.85rem;
+        }
+
+        .image-card-glass-panel p {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Image hover mechanics */
+        .premium-image-card-frame:hover img {
+            transform: scale(1.08);
+            opacity: 0.45;
+        }
+
+        .premium-image-card-frame:hover {
+            border-color: var(--blue-accent);
+            box-shadow: 0 12px 30px rgba(21, 135, 210, 0.25);
+        }
+
+        /* Section 2: Mock Code Terminal Graphic Visual Design */
+        .software-terminal-display {
+            background: #090f1c;
+            border-radius: 6px;
+            border: 1px solid #1e293b;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .terminal-header-console {
+            background: #111827;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .terminal-window-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-window-buttons span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .btn-red { background: #ef4444; }
+        .btn-yellow { background: #eab308; }
+        .btn-green { background: #22c55e; }
+
+        .terminal-tab-label {
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #64748b;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .terminal-body-content {
+            padding: 25px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+
+        .terminal-line-node {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .terminal-line-num {
+            color: #334155;
+            user-select: none;
+            text-align: right;
+            width: 20px;
+        }
+
+        .terminal-code-string {
+            color: #38bdf8;
+        }
+        .terminal-keyword { color: #f43f5e; }
+        .terminal-variable { color: #a78bfa; }
+        .terminal-comment { color: #475569; font-style: italic; }
+
+        /* ==========================================================================
+           Styling corporate footer
+           ========================================================================== */
+        .corporate-footer {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            padding: 80px 6% 40px 6%;
+            border-top: 5px solid var(--maroon-brand);
+        }
+
+        .footer-grid-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr;
+            gap: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 50px;
+        }
+
+        .footer-about-block h4 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--maroon-brand);
+            padding-left: 10px;
+        }
+
+        .footer-about-block p {
+            color: #abbcd0;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .footer-links-block h5, .footer-contact-block h5 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--blue-accent);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .footer-links-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links-list li a {
+            color: #abbcd0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.25s;
+        }
+
+        .footer-links-list li a:hover {
+            color: #ffffff;
+        }
+
+        .footer-contact-info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            color: #abbcd0;
+            font-size: 0.9rem;
+        }
+
+        .footer-contact-info-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-contact-info-list li i {
+            color: var(--maroon-brand);
+        }
+
+        .footer-bottom-bar {
+            max-width: 1200px;
+            margin: 30px auto 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* ==========================================================================
+           Configuring mobile responsive styling overrides matching source specifications
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .top-main-header {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 5% !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                background-color: #ffffff !important;
+                height: 80px !important;
+                border-bottom: 1px solid #eef2f6;
+            }
+
+            .header-right-utilities {
+                display: none !important;
+            }
+
+            .mobile-menu-toggle {
+                display: flex !important;
+                position: relative !important;
+                width: 28px;
+                height: 20px;
+                flex-direction: column;
+                justify-content: space-between;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                z-index: 2005;
+                outline: none;
+            }
+
+            .mobile-menu-toggle span {
+                width: 100%;
+                height: 2.5px;
+                background-color: var(--navy-brand) !important;
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                transform-origin: left center;
+            }
+
+            .mobile-menu-toggle.is-open span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -1px);
+                background-color: var(--maroon-brand) !important;
+            }
+
+            .mobile-menu-toggle.is-open span:nth-child(2) {
+                width: 0%;
+                opacity: 0;
+            }
+
+            .mobile-menu-toggle.is-open span:nth-child(3) {
+                transform: rotate(-45deg) translate(2px, 1px);
+                background-color: var(--maroon-brand) !important;
+            }
+
+            .menu-navigation-bar {
+                position: static;
+                height: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            .nav-links-list {
+                position: fixed !important;
+                top: 80px; 
+                left: 0;
+                width: 100vw !important;
+                height: calc(100vh - 80px);
+                background-color: #ffffff !important;
+                box-shadow: 0 15px 30px rgba(10, 20, 36, 0.15);
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: 20px 6% !important;
+                max-height: 0;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                visibility: hidden;
+                transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+                z-index: 2000;
+            }
+
+            .nav-links-list.is-active {
+                max-height: calc(100vh - 80px) !important;
+                visibility: visible !important;
+            }
+
+            .nav-link-item {
+                width: 100%;
+                border-bottom: 1px solid #edf2f7;
+            }
+
+            .nav-link-item a, 
+            .dropdown-trigger {
+                color: #1a202c !important;
+                width: 100%;
+                padding: 16px 0;
+                font-size: 0.95rem;
+            }
+
+            .dropdown-trigger {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .dropdown-standard-panel,
+            .dropdown-mega-panel {
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                background-color: #f8fafc !important;
+                padding: 10px 15px !important;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .mega-menu-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .mega-column {
+                padding-right: 0 !important;
+                border-right: none !important;
+            }
+
+            .dropdown-standard-panel.mobile-open,
+            .dropdown-mega-panel.mobile-open {
+                max-height: 800px !important;
+            }
+
+            .nav-link-item.dropdown-wrapper.chevron-active .chevron-indicator {
+                transform: rotate(180deg);
+                color: var(--maroon-brand);
+            }
+
+            .mobile-drawer-socials {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                padding: 30px 0;
+                border-top: 1px solid #edf2f7;
+                margin-top: auto; 
+                width: 100%;
+            }
+
+            /* Main structural alignment modifications on responsive formats */
+            .tech-hero { padding: 80px 6% 100px 6%; text-align: center; }
+            .hero-layout-wrap { justify-content: center; }
+            .tech-main-layout { margin: -20px 4% 60px 4%; gap: 40px; }
+            .workspace-block-segment { padding: 40px 24px; }
+            .grid-split-engine, .workspace-block-segment.alt-tech-theme .grid-split-engine { grid-template-columns: 1fr !important; gap: 40px; }
+            .footer-grid-container { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-lead-details h1 { font-size: 2.4rem; }
+            .workspace-heading-title { font-size: 1.6rem; }
+            .showcase-images-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       Building master double-row navigation header
+       ========================================================================== -->
+    <header class="top-main-header">
+        <a href="index.html" class="corporate-logo-frame">
+            <img src="logos/beles.png" alt="Beles Consulting P.L.C. Logo" onerror="this.onerror=null; this.src='https://placehold.co/180x60/ffffff/164780?text=Beles+Consulting'">
+        </a>
+
+        <!-- Kinetic Hamburger Icon: Aligned correctly on mobile views -->
+        <button class="mobile-menu-toggle" id="menuToggleTrigger" aria-label="Toggle Navigation Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="header-right-utilities">
+            <div class="header-contact-info">
+                <div class="contact-node">
+                    <i class="fa-regular fa-clock"></i> Mon - Sat 9AM - 6PM
+                </div>
+                <div class="contact-node">
+                    <i class="fa-solid fa-phone-flip"></i> (+251) 9-11279850/911 25 86 15 
+                </div>
+            </div>
+
+            <div class="header-social-group">
+                <a href="#" class="social-lnk" aria-label="Facebook Profile Connect"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-lnk" aria-label="Instagram Profile Connect"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-lnk" aria-label="LinkedIn Profile Connect"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-navigation-bar">
+        <a href="index.html" class="sticky-nav-logo-wrap">
+            <img src="logos/beles.png" alt="Beles Navbar Brand Logo Asset" onerror="this.onerror=null; this.src='https://placehold.co/120x36/164780/ffffff?text=Beles+Consulting'">
+        </a>
+        
+        <nav class="main-nav-container">
+            <ul class="nav-links-list">
+                <li class="nav-link-item"><a href="index.html">Home</a></li>
+                
+                <!-- Link 2: About (Standard Dropdown) -->
+                <li class="nav-link-item dropdown-wrapper">
+                    <a href="about.html" class="dropdown-trigger">About <i class="fa-solid fa-chevron-down chevron-indicator"></i></a>
+                    <div class="dropdown-standard-panel">
+                        <ul class="dropdown-links-list">
+                            <li><a href="index.html#background"><i class="fa-solid fa-circle-info"></i> Company Background</a></li>
+                            <li><a href="index.html#vision-mission"><i class="fa-solid fa-bullseye"></i> Vision & Mission</a></li>
+                            <li><a href="index.html#leadership"><i class="fa-solid fa-user-tie"></i> Leadership & Ownership</a></li>
+                            <li><a href="governance.html"><i class="fa-solid fa-sitemap"></i> Organizational Structure</a></li>
+                            <li><a href="legislation_certificates.html"><i class="fa-solid fa-file-signature"></i> Legislation & Certificates</a></li>
+                            <li><a href="legislation_certificates.html#certificates"><i class="fa-solid fa-trophy"></i> Awards & Accreditations</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Link 3: Services (Interactive Mega Menu) -->
+                <li class="nav-link-item dropdown-wrapper">
+                    <a href="services.html"class="dropdown-trigger">Services <i class="fa-solid fa-chevron-down chevron-indicator"></i></a>
+                    <div class="dropdown-mega-panel">
+                        <div class="mega-menu-grid">
+                            <div class="mega-column">
+                                <span class="mega-col-title">Heavy Infrastructure</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="#"><i class="fa-solid fa-road"></i> Roads & Highways</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-train"></i> Railroad Networks</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-bridge"></i> Bridge Structures</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-plane"></i> Airfield Structures</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Civil & Geotechnical</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="#"><i class="fa-solid fa-mountain"></i> Tunnel & Geotechnical</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-building"></i> Building Structures</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-water-ladder"></i> Dam & Irrigation</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Planning & Diagnostics</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="#"><i class="fa-solid fa-magnifying-glass-chart"></i> Feasibility Studies</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-leaf"></i> Environmental (EIA)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Link 4: Projects (Interactive Mega Menu) -->
+                <li class="nav-link-item dropdown-wrapper">
+                   <a href="projects.html" class="dropdown-trigger">Projects <i class="fa-solid fa-chevron-down chevron-indicator"></i></a>
+                    <div class="dropdown-mega-panel">
+                        <div class="mega-menu-grid">
+                            <div class="mega-column">
+                                <span class="mega-col-title">Detailed Engineering</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="#"><i class="fa-solid fa-compass-drafting"></i> Bridge Design</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-road"></i> Pavement & Road Design</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-pen-ruler"></i> Detailed Structural Design</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Supervision & Admin</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="#"><i class="fa-solid fa-building-shield"></i> Supervision & Contract Admin</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-city"></i> Building Supervision</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-faucet-drip"></i> Water Supply & Infrastructure</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <span class="mega-col-title">Feasibility & Safeguards</span>
+                                <ul class="dropdown-links-list">
+                                    <li><a href="#"><i class="fa-solid fa-file-invoice"></i> Feasibility Studies</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-users-viewfinder"></i> Socio-Environmental EIA</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Link 5: Company (Standard Dropdown) - Currently Active Sub-link -->
+                <li class="nav-link-item dropdown-wrapper">
+                    <span class="dropdown-trigger" style="color: var(--blue-accent);">Company <i class="fa-solid fa-chevron-down chevron-indicator" style="color: var(--blue-accent);"></i></span>
+                    <div class="dropdown-standard-panel">
+                        <ul class="dropdown-links-list">
+                            <li><a href="#"><i class="fa-solid fa-building"></i> Office & Headquarters</a></li>
+                            <li><a href="#"><i class="fa-solid fa-vial-virus"></i> Geotechnical Laboratory</a></li>
+                            <li><a href="#"><i class="fa-solid fa-truck-monster"></i> Equipment & Facilities</a></li>
+                            <li><a href="index.html#background"><i class="fa-solid fa-scale-balanced"></i> Financial Standing</a></li>
+                            <li><a href="technology_rd.html" style="color: var(--blue-accent) !important;"><i class="fa-solid fa-laptop-code" style="color: var(--maroon-brand);"></i> Technology & R&D</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-link-item"><a href="gallery.html">Gallery</a></li>
+                <li class="nav-link-item"><a href="contact.html">Contact</a></li>
+
+                <li class="mobile-drawer-socials">
+                    <a href="#" class="social-lnk"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-lnk"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-lnk"><i class="fa-brands fa-linkedin-in"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- ==========================================================================
+       Building modern hero section displaying tech grid system watermark
+       ========================================================================== -->
+    <section class="tech-hero">
+        <div class="tech-grid-watermark"></div>
+        <div class="hero-layout-wrap">
+            <div class="hero-lead-details reveal-element">
+                <span>Innovation & Digital Workspace Framework</span>
+                <h1>Technology & Development</h1>
+                <p>Driving efficiency across engineering fields through high-performance research pipelines, modern infrastructure analytics, and cutting-edge software deployment modules.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       Rendering Two Core Content Workspace Blocks
+       ========================================================================== -->
+    <main class="tech-main-layout">
+
+        <!-- SECTION 1: INFRASTRUCTURE TECHNOLOGY (RESEARCH AND DEVELOPMENT) -->
+        <article class="workspace-block-segment reveal-element">
+            <div class="grid-split-engine">
+                <div class="content-text-panel">
+                    <div class="meta-tech-label">
+                        <i class="fa-solid fa-microchip"></i> Research and Development Framework
+                    </div>
+                    <h2 class="workspace-heading-title">Infrastructure Technology</h2>
+                    <p class="tech-description-paragraph">
+                        At Beles Consulting Plc. we strongly believe in the importance of infrastructure and technology advancement, and continuously strive to make a significant impact on the engineering sector.
+                    </p>
+                    <p class="tech-description-paragraph">
+                        To achieve this goal, we have established a dedicated department focused on technology development, with a specific emphasis on engineering services. Through this department, we are able to stay at the forefront of technological advancements and leverage the latest tools and techniques to deliver innovative and effective engineering solutions to our clients.
+                    </p>
+                </div>
+                
+                <!-- Image Cards Slots Supporting Content Ideas -->
+                <div class="showcase-images-grid">
+                    <!-- Image 1: Automated Highway Systems -->
+                    <div class="premium-image-card-frame">
+                        <img src="images/tunnel.jpg" alt="Automated Highway Systems Engineering Modeling" onerror="this.onerror=null; this.src='https://placehold.co/400x280/070d19/ffffff?text=Automated+Highways'">
+                        <div class="image-card-glass-panel">
+                            <h4><i class="fa-solid fa-road"></i> Automated Highways</h4>
+                            <p>Systems Research & Vector Simulation</p>
+                        </div>
+                    </div>
+                    <!-- Image 2: Modern Tunnel Designs -->
+                    <div class="premium-image-card-frame">
+                        <img src="images/train.jpg" alt="Modern Tunnel Design Structural Cross Section" onerror="this.onerror=null; this.src='https://placehold.co/400x280/070d19/ffffff?text=Tunnel+Designs'">
+                        <div class="image-card-glass-panel">
+                            <h4><i class="fa-solid fa-tunnel"></i> Modern Tunnels</h4>
+                            <p>Geotechnical Structural Design Matrix</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+
+        <!-- SECTION 2: SOFTWARE DEVELOPMENT (PRODUCTS AND SERVICES) -->
+        <article class="workspace-block-segment alt-tech-theme reveal-element">
+            <div class="grid-split-engine">
+                
+                <!-- Mock High-Tech Engineering Dashboard Panel Layered Left -->
+                <div class="software-terminal-display">
+                    <div class="terminal-header-console">
+                        <div class="terminal-window-buttons">
+                            <span class="btn-red"></span>
+                            <span class="btn-yellow"></span>
+                            <span class="btn-green"></span>
+                        </div>
+                        <div class="terminal-tab-label">beles_supervision_engine.py</div>
+                    </div>
+                    <div class="terminal-body-content">
+                        <div class="terminal-line-node">
+                            <span class="terminal-line-num">01</span>
+                            <span class="terminal-comment"># Automating calculation accuracy metrics</span>
+                        </div>
+                        <div class="terminal-line-node">
+                            <span class="terminal-line-num">02</span>
+                            <span><span class="terminal-keyword">import</span> engineering_analytics <span class="terminal-keyword">as</span> b_consult</span>
+                        </div>
+                        <div class="terminal-line-node">
+                            <span class="terminal-line-num">03</span>
+                            <span><span class="terminal-variable">def</span> <span class="terminal-code-string">verify_site_efficiency</span>(data):</span>
+                        </div>
+                        <div class="terminal-line-node">
+                            <span class="terminal-line-num">04</span>
+                            <span>    output = b_consult.optimize(data.delivery_speed)</span>
+                        </div>
+                        <div class="terminal-line-node">
+                            <span class="terminal-line-num">05</span>
+                            <span>    <span class="terminal-keyword">return</span> output.increase_accuracy_by(<span class="terminal-variable">0.998</span>)</span>
+                        </div>
+                        <div class="terminal-line-node">
+                            <span class="terminal-line-num">06</span>
+                            <span><span class="terminal-comment"># Engineering tasks operational output verified</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-text-panel">
+                    <div class="meta-tech-label" style="color: var(--maroon-brand);">
+                        <i class="fa-solid fa-code"></i> Products & Services Portfolio
+                    </div>
+                    <h2 class="workspace-heading-title">Software Development</h2>
+                    <p class="tech-description-paragraph">
+                        At Beles Consult, our Design team utilizes a variety of engineering and technology software to enhance the accuracy of our design tasks and increase the speed of our output delivery. The use of advanced software technology has a significant impact on both the design and supervision activities, leading to better outcomes for our clients.
+                    </p>
+                    <p class="tech-description-paragraph">
+                        Additionally, we are committed to contributing to the development of software within our industry, with a focus on simplifying supervision work and improving efficiency. By investing in software development and staying up-to-date with the latest tools and techniques, we are able to offer our clients the highest level of service and deliver optimal results for their engineering projects.
+                    </p>
+                </div>
+
+            </div>
+        </article>
+
+    </main>
+
+    <!-- ==========================================================================
+       Injecting corporate footer
+       ========================================================================== -->
+    <footer class="corporate-footer">
+        <div class="footer-grid-container">
+            <div class="footer-about-block">
+                <h4>Beles Consulting</h4>
+                <p>Providing premium structural designs, detailed blueprint drawings, materials geotechnical testings, and world-class technical consulting services since October 2007 G.C. Aligned strictly with national and international compliance systems.</p>
+            </div>
+            <div class="footer-links-block">
+                <h5>Useful Gateways</h5>
+                <ul class="footer-links-list">
+                    <li><a href="index.html">Corporate Background</a></li>
+                    <li><a href="governance.html">Organizational Structure</a></li>
+                    <li><a href="legislation_certificates.html">Legislation & Certificates</a></li>
+                    <li><a href="index.html#background">Average Turnovers</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact-block">
+                <h5>Contact Channels</h5>
+                <ul class="footer-contact-info-list">
+                    <li><i class="fa-solid fa-map-location-dot"></i> Gurd shola, Infront of Ethio Telecom , Addis Ababa - Ethiopia</li>
+                    <li><i class="fa-solid fa-square-phone"></i> (+251) 9-11279850 / 911 25 86 15</li>
+                    <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom-bar">
+            <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+            <span>Honest to Serve</span>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPTS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // 1. MOBILE RESPONSIVE HAMBURGER & DROPDOWN ACCORDION ENGINE
+            const menuToggle = document.getElementById('menuToggleTrigger');
+            const navLinksList = document.querySelector('.nav-links-list');
+            const dropdownTriggers = document.querySelectorAll('.dropdown-trigger');
+
+            if (menuToggle && navLinksList) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('is-open');
+                    navLinksList.classList.toggle('is-active');
+                });
+            }
+
+            // Close mobile menu drawer when clicking outside
+            document.addEventListener('click', function(event) {
+                if (navLinksList && navLinksList.classList.contains('is-active')) {
+                    const isClickInside = navLinksList.contains(event.target) || menuToggle.contains(event.target);
+                    if (!isClickInside) {
+                        menuToggle.classList.remove('is-open');
+                        navLinksList.classList.remove('is-active');
+                    }
+                }
+            });
+
+            dropdownTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 1024) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const parent = this.parentElement;
+                        const panel = this.nextElementSibling;
+                        
+                        parent.classList.toggle('chevron-active');
+                        panel.classList.toggle('mobile-open');
+                    }
+                });
+            });
+
+            // Sticky header navigation logo scroll indicator control
+            const stickyLogo = document.querySelector('.sticky-nav-logo-wrap');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 90) {
+                    if (stickyLogo) {
+                        stickyLogo.style.opacity = '1';
+                        stickyLogo.style.visibility = 'visible';
+                    }
+                } else {
+                    if (stickyLogo) {
+                        stickyLogo.style.opacity = '0';
+                        stickyLogo.style.visibility = 'hidden';
+                    }
+                }
+            });
+            
+            // 2. SCROLL REVEAL OBSERVATIONAL ENGINE
+            const revealElements = document.querySelectorAll('.reveal-element');
+            if ('IntersectionObserver' in window) {
+                const scrollObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                revealElements.forEach(el => scrollObserver.observe(el));
+            } else {
+                revealElements.forEach(el => el.classList.add('active'));
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+ :root {
+            --section-bg: #f7f6f2; 
+            --text-main: #111111;
+            --border-color: #e2e0d9;
+            --logo-fill: #000000; /* Solid dark fills for absolute visibility */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* Split-Layout Container matching the target screenshot */
+        .partners-row-container {
+            display: flex;
+            width: 100%;
+            background-color: var(--section-bg);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            box-sizing: border-box;
+            align-items: stretch; /* Forces equal height between title and track */
+        }
+
+        /* Fixed Left Title Panel */
+        .partners-left-panel {
+            width: 20%;
+            min-width: 220px;
+            padding: 40px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-right: 1px solid var(--border-color);
+            box-sizing: border-box;
+            z-index: 3;
+            background-color: var(--section-bg);
+        }
+
+        .partners-static-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.25;
+            color: var(--text-main);
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        /* Right Side Sliding Track Space */
+        .partners-right-marquee {
+            position: relative;
+            width: 80%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Smooth Edge Blends inside the light gray track */
+        .partners-right-marquee::before,
+        .partners-right-marquee::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 8%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .partners-right-marquee::before {
+            left: 0;
+            background: linear-gradient(to right, var(--section-bg), transparent);
+        }
+        .partners-right-marquee::after {
+            right: 0;
+            background: linear-gradient(to left, var(--section-bg), transparent);
+        }
+
+        /* Endless Moving Track Flexbox */
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            align-items: center;
+            animation: slideLeftToRight 30s linear infinite;
+        }
+
+        /* Subtle pause on interaction */
+        .partners-right-marquee:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* Transparent Logo Slots matching the layout spacing */
+        .logo-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 190px;
+            height: 60px;
+            margin: 0 35px;
+            background: transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-item:hover {
+            transform: scale(1.04);
+        }
+
+        /* Sharp, Deep Vector Styling for full readability */
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+            max-height: 40px;
+            fill: var(--logo-fill);
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-item:hover .logo-svg {
+            opacity: 1;
+        }
+
+        /* Left-to-Right Continuous Carousel Keyframe */
+        @keyframes slideLeftToRight {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        /* Responsive stack layout for mobile viewports */
+        @media (max-width: 768px) {
+            .partners-row-container {
+                flex-direction: column;
+            }
+            .partners-left-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 25px 20px;
+                justify-content: center;
+                text-align: center;
+            }
+            .partners-right-marquee {
+                width: 100%;
+                padding: 20px 0;
+            }
+        }

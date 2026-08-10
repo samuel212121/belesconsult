@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beles Consulting P.L.C — Engineering, Infrastructure & Environmental Consultancy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyBrand: '#164780',
+                        maroonBrand: '#7F0A1C',
+                        blueAccent: '#1587D2',
+                        bgDark: '#070d19',
+                        bgLight: '#faf9f6', // Warm tactile paper background
+                        textDark: '#1e293b',
+                        textMuted: '#64748b',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --bg-grey: #f2f4f7;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #ffffff; font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+       .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Subtle tactile drafting blueprint watermark overlay */
+        .paper-sketch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03; /* Soft blueprint watermark background */
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            background-size: contain;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23164780' stroke-width='0.7' fill='none'><path d='M50 50 h700 v500 h-700 Z M100 100 h600 v400 h-600 Z M50 150 h700 M50 450 h700 M250 50 v500 M550 50 v500' stroke-dasharray='10,10'/><circle cx='400' cy='300' r='120'/><path d='M300 300 Q400 200 500 300' stroke-width='1.5'/></svg>");
+            z-index: -1;
+        }
+
+        /* Responsive Hover Animations for navigation panels */
+        .social-lnk {
+            transition: all 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .social-lnk:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(21, 135, 210, 0.15);
+        }
+
+        /* Dropdown transition structures */
+        .dropdown-standard-panel,
+        .dropdown-mega-panel {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        @media (min-width: 1025px) {
+            .dropdown-wrapper:hover .dropdown-standard-panel,
+            .dropdown-wrapper:hover .dropdown-mega-panel {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+            .dropdown-wrapper:hover .chevron-indicator {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* High-fidelity dropdown link styling & animations */
+        .dropdown-standard-panel a, 
+        .dropdown-mega-panel a {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            padding: 8px 12px !important;
+            color: #4a5568 !important;
+            text-decoration: none !important;
+            font-size: 0.85rem !important;
+            font-weight: 500 !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            border-radius: 4px !important;
+            background-color: transparent !important;
+            transition: background-color 0.25s ease, color 0.25s ease, padding-left 0.25s ease !important;
+        }
+
+        .dropdown-standard-panel a i, 
+        .dropdown-mega-panel a i {
+            color: #94a3b8 !important;
+            font-size: 0.85rem !important;
+            width: 16px !important;
+            text-align: center !important;
+            transition: color 0.25s ease, transform 0.25s ease !important;
+        }
+
+        /* Hover animations: turning into brand maroon and shifting slightly to the right */
+        .dropdown-standard-panel a:hover, 
+        .dropdown-mega-panel a:hover {
+            background-color: #f8fafc !important;
+            color: #7F0A1C !important; /* Maroon color */
+            padding-left: 18px !important; /* Animated slide shift */
+        }
+
+        .dropdown-standard-panel a:hover i, 
+        .dropdown-mega-panel a:hover i {
+            color: #7F0A1C !important; /* Maroon icon */
+            transform: translateX(3px) !important;
+        }
+
+        /* Mobile drawer specific overrides to handle layouts smoothly */
+        @media (max-width: 1024px) {
+            header {
+                height: 80px !important;
+            }
+            .menu-navigation-bar {
+                position: static !important;
+                height: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: hidden !important;
+            }
+            .nav-links-list {
+                position: fixed !important;
+                top: 80px !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: calc(100vh - 80px) !important;
+                background-color: #ffffff !important;
+                max-height: 0 !important;
+                overflow-y: auto !important;
+                visibility: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important;
+                padding: 20px 6% !important;
+                transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease !important;
+                z-index: 2000 !important;
+                box-shadow: 0 15px 30px rgba(10, 20, 36, 0.15) !important;
+            }
+            .nav-links-list.is-active {
+                max-height: calc(100vh - 80px) !important;
+                visibility: visible !important;
+            }
+            .nav-link-item {
+                width: 100% !important;
+                border-bottom: 1px solid #edf2f7 !important;
+            }
+            .nav-link-item a, 
+            .dropdown-trigger {
+                color: #1a202c !important;
+                width: 100% !important;
+                padding: 16px 0 !important;
+                font-size: 0.95rem !important;
+                display: flex !important;
+                justify-content: space-between !important;
+            }
+            .dropdown-standard-panel,
+            .dropdown-mega-panel {
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                background-color: #f8fafc !important;
+                padding: 10px 15px !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+            .dropdown-standard-panel.mobile-open,
+            .dropdown-mega-panel.mobile-open {
+                max-height: 800px !important;
+            }
+            .nav-link-item.dropdown-wrapper.chevron-active .chevron-indicator {
+                transform: rotate(180deg) !important;
+                color: #7F0A1C !important;
+            }
+            /* Reset columns inside mega-menus for mobile */
+            .dropdown-mega-panel .grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+            
+            /* Clean responsive hamburger transformation classes */
+            .mobile-menu-toggle span {
+                width: 100%;
+                height: 2.5px;
+                background-color: #164780 !important;
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                transform-origin: left center;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -1px);
+                background-color: #7F0A1C !important;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(2) {
+                width: 0%;
+                opacity: 0;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(3) {
+                transform: rotate(-45deg) translate(2px, 1px);
+                background-color: #7F0A1C !important;
+            }
+        }
+        /* ══ HERO — auto-cycling Ken Burns background ══ */
+        /* ══ HERO — TERRA-inspired editorial layout ══ */
+        .home-hero {
+            position: relative; min-height: 100vh;
+            overflow: hidden; background: var(--bg-dark);
+            display: flex; flex-direction: column;
+        }
+
+        /* ── Background slideshow ── */
+        .hero-bg-layer { position: absolute; inset: 0; z-index: 0; }
+        .hero-bg-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 2s ease; }
+        .hero-bg-slide.active { opacity: 1; }
+        .hero-bg-slide img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            animation: kenburns 14s ease-in-out infinite alternate;
+            filter: saturate(0.75) brightness(0.85);
+        }
+        @keyframes kenburns {
+            0%   { transform: scale(1)    translate(0,0); }
+            100% { transform: scale(1.10) translate(-1%,-0.8%); }
+        }
+        /* layered dark overlay — lighter center so photo shows through on big text */
+        .hero-bg-overlay {
+            position: absolute; inset: 0; z-index: 1;
+            background:
+                linear-gradient(to bottom,
+                    rgba(7,13,25,0.72) 0%,
+                    rgba(7,13,25,0.35) 28%,
+                    rgba(7,13,25,0.28) 55%,
+                    rgba(7,13,25,0.90) 100%);
+        }
+        /* vertical grid lines — like the inspiration */
+        .hero-grid-veil {
+            position: absolute; inset: 0; z-index: 2;
+            display: flex; pointer-events: none;
+        }
+        .hero-grid-col { flex: 1; border-right: 3px solid rgba(255,255,255,0.04); }
+
+        /* ── TOP ROW: left identity + right keyword list ── */
+        .hero-top-row {
+            position: relative; z-index: 6;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 36px 6% 0 6%;
+            /* animate in */
+            opacity: 0; transform: translateY(-16px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s,
+                        transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s;
+        }
+        .hero-top-row.anim-in { opacity: 1; transform: translateY(0); }
+
+        .hero-id-block { display: flex; flex-direction: column; gap: 4px; }
+        .hero-id-studio {
+            font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 3px; color: rgba(255,255,255,0.45);
+        }
+        .hero-id-tagline {
+            font-size: 0.72rem; font-weight: 600;
+            color: rgba(255,255,255,0.3); letter-spacing: 1px;
+        }
+
+        .hero-top-center {
+            text-align: center;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .hero-top-center .hero-year {
+            font-size: 0.68rem; font-weight: 800; letter-spacing: 3px;
+            text-transform: uppercase; color: rgba(255,255,255,0.35);
+        }
+        .hero-top-center .hero-discipline {
+            font-size: 0.72rem; font-weight: 600;
+            color: var(--blue-accent); letter-spacing: 1.5px; text-transform: uppercase;
+        }
+
+        .hero-keywords {
+            display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+        }
+        .hero-keyword-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; color: rgba(255,255,255,0.35);
+            opacity: 0; transform: translateX(20px);
+            transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1),
+                        transform 0.5s cubic-bezier(0.16,1,0.3,1),
+                        color 0.3s;
+        }
+        .hero-keyword-item.kw-in { opacity: 1; transform: translateX(0); }
+        .hero-keyword-item::before {
+            content: '—'; color: rgba(255,255,255,0.2);
+            font-weight: 300; font-size: 0.8rem;
+        }
+        .hero-keyword-item.kw-pulse { color: var(--blue-accent); }
+
+        /* ── MASSIVE BELES TEXT — behind photo via z-index ── */
+        .hero-big-text-zone {
+            position: relative; z-index: 3;
+            padding: 0 4%;
+            margin-top: auto;
+            display: flex; flex-direction: column;
+            pointer-events: none;
+            user-select: none;
+        }
+        .hero-big-name {
+            font-size: clamp(14vw, 18vw, 22vw);
+            font-weight: 800;
+            color: rgba(255,255,255,0.92);
+            line-height: 0.88;
+            letter-spacing: -0.04em;
+            display: flex; gap: 0.04em;
+            overflow: hidden;
+        }
+        /* each letter animates individually */
+        .hero-big-name .letter {
+            display: inline-block;
+            opacity: 0;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.7s cubic-bezier(0.16,1,0.3,1),
+                        opacity 0.4s ease;
+        }
+        .hero-big-name .letter.letter-in {
+            opacity: 1; clip-path: inset(0 0% 0 0);
+        }
+        .hero-big-sub {
+            font-size: clamp(4vw, 6vw, 8vw);
+            font-weight: 800; letter-spacing: 0.12em;
+            line-height: 1; color: var(--blue-accent);
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1) 0.9s,
+                        transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.9s;
+        }
+.hero-big-sub .plc-highlight {
+    color: var(--blue-accent); /* Replace this hex code with whatever color you want! */
+}
+        
+        .hero-big-sub.sub-in { opacity: 1; transform: translateY(0); }
+
+        
+
+        /* ── PHOTO OVERLAPPING TEXT — z-index above text ── */
+        .hero-photo-layer {
+            position: absolute;
+            bottom: 120px; left: 50%; transform: translateX(-30%);
+            width: 58%; max-width: 860px;
+            z-index: 4; /* sits above the big text */
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.2s ease 1s;
+        }
+        .hero-photo-layer.photo-in { opacity: 1; }
+        .hero-photo-layer img {
+            width: 100%; height: 480px; object-fit: cover; display: block;
+            /* bottom fades into the overlay below */
+            -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+        }
+
+        /* ── SCRIPT FLOATING WORD — Honest to Serve ── */
+        .hero-script-word {
+            position: absolute;
+            bottom: 130px; right: 6%;
+            z-index: 7; pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease 1.8s;
+        }
+        .hero-script-word.script-in { opacity: 1; }
+        .hero-script-text {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-style: italic;
+            font-size: clamp(2.2rem, 4vw, 4rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.88);
+            line-height: 1.2;
+            display: block;
+        }
+        .hero-script-line {
+            display: block; width: 0; height: 3px;
+            background: var(--maroon-brand);
+            margin-top: 8px;
+            transition: width 0.8s cubic-bezier(0.16,1,0.3,1) 2.2s;
+        }
+        .hero-script-word.script-in .hero-script-line { width: 100%; }
+
+        /* ── BOTTOM ROW: info card + description ── */
+        .hero-bottom-row {
+            position: relative; z-index: 7;
+            display: grid; grid-template-columns: 280px 1fr;
+            gap: 40px; align-items: end;
+            padding: 0 6% 48px 6%;
+            opacity: 0; transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1) 1.3s,
+                        transform 0.7s cubic-bezier(0.16,1,0.3,1) 1.3s;
+        }
+        .hero-bottom-row.bottom-in { opacity: 1; transform: translateY(0); }
+
+        /* dark info card — like the studio card in inspiration */
+        .hero-info-card {
+            background: rgba(7,13,25,0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-left: 3px solid var(--maroon-brand);
+            padding: 22px 20px;
+        }
+        .hero-info-row {
+            display: flex; gap: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 7px 0;
+        }
+        .hero-info-row:last-child { border-bottom: none; }
+        .hero-info-label {
+            font-size: 0.62rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; color: #64748b; width: 90px; flex-shrink: 0;
+        }
+        .hero-info-value {
+            font-size: 0.78rem; font-weight: 700;
+            color: rgba(255,255,255,0.8); line-height: 1.4;
+        }
+        .hero-info-value.blue { color: var(--blue-accent); }
+
+        /* right description — two columns */
+        .hero-desc-cols {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+            align-items: start;
+        }
+        .hero-desc-col p {
+            font-size: 0.84rem; color: rgba(255,255,255,0.55);
+            line-height: 1.75;
+        }
+        .hero-desc-col .hero-btn-row {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            justify-content: flex-start; margin-bottom: 0; margin-top: 16px;
+        }
+
+        /* reuse btn styles */
+        .hero-btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--maroon-brand); color: #fff; text-decoration: none; padding: 12px 24px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 50px; transition: background 0.2s, transform 0.2s; }
+        .hero-btn-primary:hover { background: #9e0d23; transform: translateY(-2px); }
+        .hero-btn-ghost { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); backdrop-filter: blur(6px); border: 1.5px solid rgba(255,255,255,0.18); color: #fff; text-decoration: none; padding: 12px 24px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 50px; transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+        .hero-btn-ghost:hover { background: rgba(255,255,255,0.14); border-color: var(--blue-accent); transform: translateY(-2px); }
+
+        /* scroll cue */
+        .hero-scroll-cue { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.3); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; z-index: 8; }
+        .hero-scroll-cue i { animation: bobdown 1.8s ease-in-out infinite; }
+        @keyframes bobdown { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .hero-photo-layer { width: 80%; transform: translateX(-20%); bottom: 160px; }
+            .hero-script-word { bottom: 160px; right: 5%; }
+            .hero-bottom-row { grid-template-columns: 1fr; gap: 20px; }
+            .hero-desc-cols { grid-template-columns: 1fr; }
+            .hero-top-center { display: none; }
+            .hero-big-name { font-size: clamp(18vw, 22vw, 28vw); }
+            .hero-big-sub { font-size: clamp(6vw, 9vw, 12vw); }
+        }
+        @media (max-width: 600px) {
+            .hero-keywords { display: none; }
+            .hero-photo-layer { display: none; }
+            .hero-script-word { right: 5%; bottom: 210px; }
+            .hero-script-text { font-size: 2rem; }
+        }
+
+
+        /* ══ INTRO SPLIT ══ */
+        .intro-split { background: #fff; padding: 100px 6%; }
+        .intro-split-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+        .section-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--maroon-brand); display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .section-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--maroon-brand); }
+        .intro-split-text h2 { font-size: clamp(1.8rem,3vw,2.5rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; line-height: 1.25; margin-bottom: 26px; }
+        .intro-split-text p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 32px; }
+        .intro-stats-mini { display: flex; gap: 32px; margin-top: 36px; }
+        .intro-stat-mini strong { display: block; font-size: 1.6rem; font-weight: 800; color: var(--maroon-brand); }
+        .intro-stat-mini span { font-size: 0.74rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .intro-split-img { position: relative; }
+        .intro-split-img img { width: 100%; height: 440px; object-fit: cover; display: block; }
+        .intro-split-img-tag { position: absolute; bottom: -20px; left: -20px; background: var(--navy-brand); color: #fff; padding: 18px 26px; max-width: 220px; }
+        .intro-split-img-tag strong { font-size: 1.6rem; font-weight: 800; display: block; color: var(--blue-accent); }
+        .intro-split-img-tag span { font-size: 0.74rem; color: #cdd9e8; }
+
+        /* ══ STATS COUNTER STRIP ══ */
+.stats-strip { 
+    /* This adds a 70% dark overlay over your background image so text stays readable */
+    background: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), 
+                url('images/blue7.jfif'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 64px 6%; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.stats-watermark { 
+    position: absolute; 
+    inset: 0; 
+    opacity: 0.05; 
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' stroke='%23ffffff' stroke-width='0.5' fill='none'><path d='M0 150 L300 50 L600 200 L900 80 L1200 150' /><circle cx='300' cy='50' r='6'/><circle cx='600' cy='200' r='6'/><circle cx='900' cy='80' r='6'/></svg>"); 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-size: cover; 
+    /* Ensures it sits on top of the main background image but behind text */
+    z-index: 1; 
+}
+
+.stats-inner { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: grid; 
+    grid-template-columns: repeat(4,1fr); 
+    gap: 30px; 
+    position: relative; 
+    z-index: 2; /* Keeps the text in front of everything else */
+}
+
+.stat-item { text-align: center; }
+.stat-num { font-size: clamp(2.2rem,4vw,3rem); font-weight: 800; color: var(--maroon-brand); letter-spacing: -1px; margin-bottom: 8px; }
+.stat-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #cdd9e8; }
+        /* ══ SERVICES — 3 CARDS ══ */
+        .services-section { background: var(--bg-grey); padding: 100px 6%; }
+        .services-inner { max-width: 1200px; margin: 0 auto; }
+        .services-header { margin-bottom: 56px; max-width: 680px; }
+        .services-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; line-height: 1.25; }
+        .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; }
+        .service-card { background: #fff; overflow: hidden; transition: box-shadow 0.35s, transform 0.35s; }
+        .service-card:hover { box-shadow: 0 24px 56px rgba(22,71,128,0.12); transform: translateY(-6px); }
+        .service-card-img { height: 200px; overflow: hidden; position: relative; }
+        .service-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8); transition: transform 0.55s ease, filter 0.4s ease; }
+        .service-card:hover .service-card-img img { transform: scale(1.07); filter: brightness(0.6); }
+        .service-card-body { padding: 28px 26px; }
+        .service-card h3 { font-size: 1.15rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; }
+        .service-card-underline { width: 38px; height: 3px; background: var(--maroon-brand); margin-bottom: 16px; }
+        .service-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 22px; }
+        .service-card-link { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--navy-brand); text-decoration: none; transition: color 0.2s, gap 0.2s; }
+        .service-card-link:hover { color: var(--maroon-brand); gap: 12px; }
+
+        /* ══ FEATURED-WORK ALTERNATING SPLITS ══ */
+        .feature-split-section { background: #fff; }
+        .feature-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 460px; }
+        .feature-split.reverse { direction: rtl; }
+        .feature-split.reverse .feature-split-text { direction: ltr; }
+        .feature-split-img { position: relative; overflow: hidden; }
+        .feature-split-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 460px; }
+        .feature-split-text { direction: ltr; display: flex; flex-direction: column; justify-content: center; padding: 64px 7%; }
+        .feature-split-text h3 { font-size: clamp(1.5rem,2.6vw,2.1rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 18px; }
+        .feature-split-text .service-card-underline { margin-bottom: 22px; }
+        .feature-split-text p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 30px; max-width: 460px; }
+
+        /* ══ TRUST STRIP ══ */
+.trust-strip {
+        background-color: #ffffff;
+        padding: 5rem 0;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .trust-strip-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .trust-strip-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #64748b;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .trust-strip-label::before,
+    .trust-strip-label::after {
+        content: '';
+        display: inline-block;
+        width: 40px;
+        height: 1px;
+        background-color: #cbd5e1;
+    }
+
+    /* Infinite Motion Container */
+    .marquee-viewport {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        white-space: nowrap;
+        padding: 1rem 0;
+    }
+
+    /* Smooth Gradient Fade Left & Right */
+    .marquee-viewport::before,
+    .marquee-viewport::after {
+        content: "";
+        height: 100%;
+        position: absolute;
+        width: 150px;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .marquee-viewport::before {
+        left: 0;
+        top: 0;
+        background: linear-gradient(to right, #ffffff, transparent);
+    }
+    .marquee-viewport::after {
+        right: 0;
+        top: 0;
+        background: linear-gradient(to left, #ffffff, transparent);
+    }
+
+    .marquee-track {
+        display: inline-flex;
+        gap: 3rem;
+        animation: smoothMarquee 30s linear infinite;
+    }
+
+    /* Pause animation on hover */
+    .marquee-viewport:hover .marquee-track {
+        animation-play-state: paused;
+    }
+
+    /* Logo Item Wrapper Styling */
+    .trust-logo-link {
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .trust-logo-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1e293b;
+        background-color: #f8fafc;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        transition: all 0.3s ease;
+    }
+
+    .trust-logo-link:hover .trust-logo-item {
+        border-color: #164780; /* navy-brand */
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(22, 71, 128, 0.08);
+        background-color: #ffffff;
+    }
+
+    /* Logo Image Sizing */
+    .trust-logo-img {
+        height: 32px;
+        width: auto;
+        object-fit: contain;
+        filter: grayscale(100%) opacity(80%);
+        transition: all 0.3s ease;
+    }
+
+    .trust-logo-link:hover .trust-logo-img {
+        filter: grayscale(0%) opacity(100%);
+    }
+
+    /* The Moving Keyframe */
+    @keyframes smoothMarquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-50% - 1.5rem)); }
+    }
+
+    .trust-statement {
+        text-align: center;
+        margin-top: 4rem;
+    }
+
+    .trust-statement h3 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #070d19;
+        letter-spacing: -0.5px;
+    }
+
+    .trust-statement h3 span {
+        color: #1587D2;
+        position: relative;
+        display: inline-block;
+    }
+
+        /* .trust-strip { background: var(--bg-grey); padding: 56px 6%; border-top: 1px solid #e8ecf2; border-bottom: 1px solid #e8ecf2; }
+        .trust-strip-inner { max-width: 1200px; margin: 0 auto; }
+        .trust-strip-label { text-align: center; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 32px; }
+        .trust-logos-row { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .trust-logo-item { display: flex; align-items: center; gap: 10px; color: #94a3b8; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.5px; opacity: 0.7; transition: opacity 0.3s; }
+        .trust-logo-item:hover { opacity: 1; color: var(--navy-brand); }
+        .trust-logo-item i { font-size: 1.3rem; }
+        .trust-statement { text-align: center; margin-top: 48px; }
+        .trust-statement h3 { font-size: clamp(1.4rem,2.4vw,1.9rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; }
+        .trust-statement h3 span { color: var(--maroon-brand); } */
+
+       /* ══ EXPERIENCE BADGE BLOCK ══ */
+.experience-section { 
+    /* 1. Linear gradient creates a dark overlay over your abstract image so text stays readable */
+    background: linear-gradient(135deg, rgba(10, 25, 47, 0.95), rgba(20, 35, 65, 0.85)), 
+                url('images/blue\ .jfif') no-repeat center center; 
+    background-size: cover;
+    background-attachment: fixed; /* Optional: Creates a cool parallax scrolling effect */
+    padding: 100px 6%; 
+}
+
+.experience-inner { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: grid; 
+    grid-template-columns: 0.5fr 1fr 1fr; 
+    gap: 50px; 
+    align-items: center; 
+}
+
+/* 2. Changed border to white/translucent so it stands out on the dark background */
+.experience-badge { 
+    border: 3px solid rgba(255, 255, 255, 0.8); 
+    padding: 40px 20px; 
+    text-align: center; 
+    background: rgba(255, 255, 255, 0.05); /* Subtle inner glow */
+    backdrop-filter: blur(5px); /* Modern frosted glass effect */
+}
+
+/* 3. Kept your bold maroon color for the number */
+.experience-badge strong { 
+    display: block; 
+    font-size: 3rem; 
+    font-weight: 800; 
+    color: var(--maroon-brand); 
+    line-height: 1; 
+}
+
+/* 4. Changed text inside the badge to white for high contrast */
+.experience-badge span { 
+    font-size: 1.05rem; 
+    font-weight: 700; 
+    color: #ffffff; 
+    display: block; 
+    margin-top: 6px; 
+}
+
+/* 5. Changed headings to white to pop against the abstract background */
+.experience-col h4 { 
+    font-size: 1.3rem; 
+    font-weight: 800; 
+    color: #ffffff; 
+    margin-bottom: 18px; 
+}
+
+.experience-col .service-card-underline { 
+    margin-bottom: 20px; 
+    background-color: var(--maroon-brand); /* Ensuring your underline is visible */
+}
+
+/* 6. Lightened paragraph text color slightly so it is highly readable on dark */
+.experience-col p { 
+    font-size: 0.88rem; 
+    color: #e0e6ed; 
+    line-height: 1.75; 
+}
+
+        /* ══ BIG STATEMENT ══ */
+        .statement-section { background: var(--bg-grey); padding: 110px 6%; text-align: center; }
+        .statement-inner { max-width: 880px; margin: 0 auto; }
+        .statement-inner h2 { font-size: clamp(1.8rem,3.6vw,2.7rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; line-height: 1.3; }
+        .statement-inner h2 span { color: var(--maroon-brand); }
+
+        /* ══ PROJECT HIGHLIGHTS TEASER ══ */
+        .highlights-section { background: #fff; padding: 100px 6%; }
+        .highlights-inner { max-width: 1200px; margin: 0 auto; }
+        .highlights-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; flex-wrap: wrap; gap: 20px; }
+        .highlights-header h2 { font-size: clamp(1.8rem,3vw,2.3rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; max-width: 600px; }
+        .highlights-header p.sub { font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; max-width: 500px; }
+        .view-all-link { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--navy-brand); text-decoration: none; border-bottom: 2px solid var(--maroon-brand); padding-bottom: 6px; transition: color 0.2s, gap 0.2s; flex-shrink: 0; }
+        .view-all-link:hover { color: var(--maroon-brand); gap: 12px; }
+        .highlights-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; }
+        .highlight-card { position: relative; height: 280px; overflow: hidden; cursor: pointer; }
+        .highlight-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.55s ease, filter 0.4s ease; filter: brightness(0.78); }
+        .highlight-card:hover img { transform: scale(1.07); filter: brightness(0.55); }
+        .highlight-card-overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px; background: linear-gradient(to top, rgba(7,13,25,0.9), transparent); }
+        .highlight-cat { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--blue-accent); display: block; margin-bottom: 4px; }
+        .highlight-name { font-size: 0.86rem; font-weight: 800; color: #fff; line-height: 1.3; }
+
+        /* ══ FAQ + CONTACT BAND ══ */
+        .faq-section { background: #fff; padding: 100px 6%; }
+        .faq-inner { max-width: 1200px; margin: 0 auto; }
+        .faq-header { margin-bottom: 50px; max-width: 700px; }
+        .faq-header h2 { font-size: clamp(1.8rem,3vw,2.3rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; line-height: 1.3; }
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+        .faq-list { display: flex; flex-direction: column; gap: 1px; background: #e8ecf2; }
+        .faq-item { background: #fff; }
+        .faq-question { padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 0.95rem; font-weight: 700; color: var(--navy-brand); }
+        .faq-question i { color: var(--maroon-brand); transition: transform 0.3s ease; flex-shrink: 0; margin-left: 16px; }
+        .faq-item.open .faq-question i { transform: rotate(180deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+        .faq-item.open .faq-answer { max-height: 220px; }
+        .faq-answer-inner { padding: 0 24px 22px 24px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.75; }
+
+        .contact-band { background: var(--navy-brand); color: #fff; padding: 44px 38px; position: relative; overflow: hidden; }
+        .contact-band::before { content: ''; position: absolute; inset: 0; opacity: 0.06; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' stroke='%23ffffff' stroke-width='0.6' fill='none'><circle cx='200' cy='200' r='150'/><circle cx='200' cy='200' r='100'/></svg>"); background-position: bottom right; background-size: 60%; background-repeat: no-repeat; }
+        .contact-band-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.45); margin-bottom: 18px; position: relative; z-index: 2; }
+        .contact-band h3 { font-size: clamp(1.4rem,2.4vw,1.8rem); font-weight: 800; line-height: 1.3; margin-bottom: 22px; position: relative; z-index: 2; }
+        .contact-band-underline { width: 52px; height: 3px; background: var(--maroon-brand); margin-bottom: 30px; position: relative; z-index: 2; }
+        .contact-band form { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; }
+        .contact-band input, .contact-band textarea {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.25);
+            color: #fff; font-family: var(--font-main); font-size: 0.9rem; padding: 10px 2px; outline: none;
+            transition: border-color 0.2s;
+        }
+        .contact-band input::placeholder, .contact-band textarea::placeholder { color: rgba(255,255,255,0.45); }
+        .contact-band input:focus, .contact-band textarea:focus { border-color: var(--blue-accent); }
+        .contact-band textarea { resize: vertical; min-height: 70px; }
+        .contact-band-submit { align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; background: var(--maroon-brand); color: #fff; border: none; padding: 14px 28px; font-family: var(--font-main); font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: background 0.2s, transform 0.2s; margin-top: 6px; }
+        .contact-band-submit:hover { background: #9e0d23; transform: translateY(-2px); }
+
+        /* ══ TESTIMONIALS ══ */
+        .testimonials-section { background: var(--bg-grey); padding: 100px 6%; }
+        .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+        .testimonials-header { margin-bottom: 50px; max-width: 650px; }
+        .testimonials-header h2 { font-size: clamp(1.8rem,3vw,2.3rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; }
+        .sample-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(127,10,28,0.08); border: 1px solid rgba(127,10,28,0.2); color: var(--maroon-brand); font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; padding: 5px 12px; margin-top: 14px; border-radius: 50px; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+        .testimonial-card { background: #fff; padding: 32px 28px; position: relative; border-top: 3px solid var(--maroon-brand); }
+        .testimonial-card p.quote { font-size: 0.9rem; color: var(--text-dark); line-height: 1.75; margin-bottom: 20px; font-style: italic; }
+        .testimonial-stars { color: #f0a500; font-size: 0.85rem; margin-bottom: 20px; letter-spacing: 2px; }
+        .testimonial-footer { display: flex; align-items: center; gap: 12px; border-top: 1px solid #f1f5f9; padding-top: 18px; }
+        .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--bg-light); display: flex; align-items: center; justify-content: center; color: var(--navy-brand); font-weight: 800; font-size: 0.95rem; border: 1px solid #e2e8f0; }
+        .testimonial-footer strong { font-size: 0.86rem; color: var(--navy-brand); display: block; }
+        .testimonial-footer span { font-size: 0.74rem; color: var(--text-muted); }
+
+        /* ══ ENGAGE / NEWSLETTER ══ */
+        .engage-section { background: var(--bg-dark); padding: 100px 6%; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); }
+        .engage-inner { max-width: 560px; margin: 0 auto; }
+        .mascot-wrap { width: 120px; height: 120px; margin: 0 auto 28px auto; background: radial-gradient(circle, rgba(21,135,210,0.15) 0%, transparent 70%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .mascot-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(21,135,210,0.4); animation: spin 20s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .css-avatar { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .av-hat { position: absolute; top: 8px; width: 62px; height: 34px; background: var(--maroon-brand); border-radius: 36px 36px 6px 6px; z-index: 5; }
+        .av-hat-b { position: absolute; top: 8px; left: 24px; width: 13px; height: 13px; background: #e2e8f0; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--navy-brand); font-weight: 900; }
+        .av-brim { position: absolute; top: 38px; width: 74px; height: 5px; background: #630512; border-radius: 3px; z-index: 6; }
+        .av-face { position: absolute; top: 36px; width: 54px; height: 52px; background: #d1a17d; border-radius: 2px 2px 24px 24px; z-index: 3; }
+        .av-eye-l { position: absolute; top: 16px; left: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-eye-r { position: absolute; top: 16px; right: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-smile { position: absolute; bottom: 10px; left: 16px; width: 18px; height: 8px; border-bottom: 2.5px solid #2d3748; border-radius: 0 0 12px 12px; }
+        .av-body { position: absolute; bottom: 0; width: 88px; height: 28px; background: var(--navy-brand); border-radius: 14px 14px 3px 3px; z-index: 2; }
+        .av-shirt { position: absolute; top: 0; left: 35px; width: 18px; height: 11px; background: #fff; clip-path: polygon(0 0,100% 0,50% 100%); }
+        .engage-motto { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--blue-accent); margin-bottom: 10px; }
+        .engage-inner h2 { font-size: 1.9rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .engage-inner p { font-size: 0.9rem; color: #abbcd0; line-height: 1.7; margin-bottom: 32px; }
+        .engage-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; box-shadow: 0 4px 20px rgba(37,211,102,0.3); animation: pulse-wa 2.2s infinite; transition: transform 0.2s; }
+        .btn-wa:hover { transform: translateY(-2px); }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+        .btn-em { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+        .btn-em:hover { border-color: var(--blue-accent); background: rgba(21,135,210,0.1); transform: translateY(-2px); }
+
+        /* ══ FOOTER ══ */
+        .corporate-footer { background: var(--bg-dark); color: #fff; padding: 70px 6% 36px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 48px; }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-col h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 18px; }
+        .footer-col p { color: #abbcd0; font-size: 0.88rem; line-height: 1.6; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .footer-links li a { color: #abbcd0; text-decoration: none; font-size: 0.88rem; transition: color 0.25s; }
+        .footer-links li a:hover { color: #fff; }
+        .footer-contact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; color: #abbcd0; font-size: 0.88rem; }
+        .footer-contact-list li { display: flex; align-items: center; gap: 10px; }
+        .footer-contact-list li i { color: var(--maroon-brand); }
+        .footer-bottom { max-width: 1200px; margin: 26px auto 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: #64748b; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 1024px) {
+            .slim-nav-links { display: none; }
+            .nav-burger { display: flex; }
+            .intro-split-inner { grid-template-columns: 1fr; gap: 40px; }
+            .services-grid { grid-template-columns: 1fr 1fr; }
+            .feature-split, .feature-split.reverse { grid-template-columns: 1fr; direction: ltr; }
+            .feature-split-img img { min-height: 280px; }
+            .experience-inner { grid-template-columns: 1fr; text-align: center; }
+            .experience-badge { max-width: 220px; margin: 0 auto; }
+            .highlights-grid { grid-template-columns: 1fr 1fr; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); gap: 30px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+        }
+        @media (max-width: 640px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .highlights-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.3rem; }
+            .hero-scroll-cue span { display: none; }
+            .slim-nav-right .nav-cta-pill span { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-bgLight text-textDark font-sans relative overflow-x-hidden">
+
+    <div class="paper-sketch-overlay"></div>
+
+    <!-- MASTER DOUBLE-ROW NAVIGATION HEADER (Consistent across all pages) -->
+    <header class="w-full h-[90px] bg-white flex justify-between items-center px-[6%] border-b border-[#eef2f6] relative z-[1002]">
+        <a href="index.html" class="inline-flex items-center h-full">
+            <img src="logos/beles.png" alt="Beles Consulting P.L.C. Logo" class="max-h-[60px] w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/180x60/ffffff/164780?text=Beles+Consulting'">
+        </a>
+
+        <!-- Kinetic Hamburger Toggle -->
+        <button class="mobile-menu-toggle lg:hidden flex flex-col justify-between w-[28px] h-[20px] bg-transparent border-none cursor-pointer z-[2005] outline-none" id="menuToggleTrigger" aria-label="Toggle Navigation Menu">
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300 origin-left"></span>
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300"></span>
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300 origin-left"></span>
+        </button>
+
+        <!-- Right Side Contact Utilities -->
+        <div class="hidden lg:flex items-center h-full gap-[30px]">
+            <div class="flex items-center gap-[35px]">
+                <div class="flex items-center gap-[10px] text-[0.85rem] font-bold text-[#4a5568]">
+                    <i class="fa-regular fa-clock text-maroonBrand text-[1rem]"></i> Mon - Sat 9AM - 6PM
+                </div>
+                <div class="flex items-center gap-[10px] text-[0.85rem] font-bold text-[#4a5568]">
+                    <i class="fa-solid fa-phone-flip text-maroonBrand text-[1rem]"></i> (+251) 9-11279850 / 911281227
+
+                </div>
+            </div>
+
+            <!-- Social Group -->
+            <div class="flex items-center gap-[12px] border-l border-[#e2e8f0] pl-[30px]">
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="Facebook"><i class="fa-brands fa-facebook-f text-[0.9rem]"></i></a>
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="Instagram"><i class="fa-brands fa-instagram text-[0.9rem]"></i></a>
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in text-[0.9rem]"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-navigation-bar w-full bg-gradient-to-r from-navyBrand via-[#113866] to-[#070d14] flex justify-center items-center h-[55px] sticky top-0 z-[1000] border-b border-[rgba(0,229,255,0.1)] shadow-lg px-[6%]">
+        <a href="index.html" class="sticky-nav-logo-wrap inline-flex items-center h-full absolute left-[6%] opacity-0 invisible transition-all duration-300">
+            <img src="logos/beles.png" alt="Beles Navbar Brand Logo" class="max-h-[36px] w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/120x36/164780/ffffff?text=Beles'">
+        </a>
+        
+        <nav class="main-nav-container w-full flex justify-center items-center">
+            <ul class="nav-links-list flex lg:flex-row flex-col gap-[40px] list-none lg:p-0 p-[20px] lg:w-auto w-full lg:static fixed">
+                
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="index.html" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Home</a></li>
+                
+                <!-- Dropdown: About -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <a href="about.html" class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between"> About <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-standard-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[280px] bg-white border-t-[3px] border-maroonBrand shadow-xl p-[12px] z-[1100] rounded-b-[4px]">
+                        <ul class="flex flex-col gap-[2px] list-none">
+                            <li><a href="compbg.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-circle-info text-[#94a3b8]"></i> Company Background</a></li>
+                            <li><a href="compbg.html#vision-mission" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-bullseye text-[#94a3b8]"></i> Vision & Mission</a></li>
+                            <li><a href="compbg.html#leadership" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-user-tie text-[#94a3b8]"></i> Leadership & Ownership</a></li>
+                            <li><a href="gov2.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-sitemap text-[#94a3b8]"></i> Organizational Structure</a></li>
+                            <li><a href="legislation_certificates.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-file-signature text-[#94a3b8]"></i> Legislation & Certificates</a></li>
+                            <li><a href="legislation_certificates.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-trophy text-[#94a3b8]"></i> Awards & Accreditations</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Mega Menu: Services -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                   <a href="services.html" class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Services <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-mega-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[90vw] lg:max-w-[1000px] bg-white border-t-[3px] border-maroonBrand shadow-2xl p-[30px] z-[1100] rounded-b-[6px]">
+                        <div class="grid lg:grid-cols-3 grid-cols-1 gap-[25px]">
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Heavy Infrastructure</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-roads.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-road text-[#94a3b8]"></i> Roads & Highways</a></li>
+                                    <li><a href="service-railroads.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-train text-[#94a3b8]"></i> Railroad Networks</a></li>
+                                    <li><a href="service-bridges.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-bridge text-[#94a3b8]"></i> Bridge Structures</a></li>
+                                    <li><a href="service-airfields.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-plane text-[#94a3b8]"></i> Airfield Structures</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Civil & Geotechnical</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-tunnel.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-mountain text-[#94a3b8]"></i> Tunnel & Geotechnical</a></li>
+                                    <li><a href="service-buildings.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building text-[#94a3b8]"></i> Building Structures</a></li>
+                                    <li><a href="service-dams.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-water-ladder text-[#94a3b8]"></i> Dam & Irrigation</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Planning & Diagnostics</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-feasibility.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-magnifying-glass-chart text-[#94a3b8]"></i> Feasibility Studies</a></li>
+                                    <li><a href="service-feasibility.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-leaf text-[#94a3b8]"></i> Environmental (EIA)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Mega Menu: Projects -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <a href="projects.html"class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Projects <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-mega-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[90vw] lg:max-w-[1000px] bg-white border-t-[3px] border-maroonBrand shadow-2xl p-[30px] z-[1100] rounded-b-[6px]">
+                        <div class="grid lg:grid-cols-3 grid-cols-1 gap-[25px]">
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Detailed Engineering</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="project-bridge-design.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-compass-drafting text-[#94a3b8]"></i> Bridge Design</a></li>
+                                    <li><a href="project-road-pavement.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-road text-[#94a3b8]"></i> Pavement & Road Design</a></li>
+                                    <li><a href="project-detailed-engineering.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-pen-ruler text-[#94a3b8]"></i> Detailed Structural Design</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Supervision & Admin</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="project-supervision.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building-shield text-[#94a3b8]"></i> Supervision & Contract Admin</a></li>
+                                    <li><a href="project-buliding design&supervision.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-city text-[#94a3b8]"></i> Building Supervision</a></li>
+                                    <li><a href="project-water-production.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-faucet-drip text-[#94a3b8]"></i> Water Supply & Infrastructure</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Feasibility & Safeguards</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="project-feasibility-eia.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-file-invoice text-[#94a3b8]"></i> Feasibility Studies</a></li>
+                                    <li><a href="project-feasibility-eia.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-users-viewfinder text-[#94a3b8]"></i> Socio-Environmental EIA</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Dropdown: Company -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <span class="dropdown-trigger text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Company <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></span>
+                    <div class="dropdown-standard-panel lg:absolute lg:top-[100%] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[15px] lg:opacity-0 lg:invisible lg:w-[280px] bg-white border-t-[3px] border-maroonBrand shadow-xl p-[12px] z-[1100] rounded-b-[4px]">
+                        <ul class="flex flex-col gap-[2px] list-none">
+                            <li><a href="office_headquarters.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building text-[#94a3b8]"></i> Office & Headquarters</a></li>
+                            <li><a href="geotechnical&labortaory.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-vial-virus text-[#94a3b8]"></i> Geotechnical Laboratory</a></li>
+                            <li><a href="equipment_facilities.html#fleet" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-truck-monster text-[#94a3b8]"></i> Equipment & Facilities</a></li>
+                            <li><a href="fincalstanding2.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-scale-balanced text-[#94a3b8]"></i> Financial Standing</a></li>
+                            <li><a href="tech.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-laptop-code text-[#94a3b8]"></i> Technology & R&D</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="gallery.html" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Gallery</a></li>
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="contact.html" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Contact</a></li>
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="beles-blog/blog.php" class="text-white hover:text-blueAccent text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Blog</a></li>
+
+
+                <li class="mobile-drawer-socials flex lg:hidden items-center justify-center gap-[20px] py-[30px] border-t border-[#edf2f7] mt-auto w-full">
+                    <a href="#" class="social-lnk w-[36px] h-[36px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-lnk w-[36px] h-[36px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-lnk w-[36px] h-[36px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent"><i class="fa-brands fa-linkedin-in"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+<!-- ══ HERO — auto-cycling Ken Burns ══ -->
+<!-- ══ HERO — moody arch with fanned project cards ══ -->
+<section class="home-hero" id="homeHero">
+
+    <!-- Background slideshow -->
+    <div class="hero-bg-layer" id="heroBgLayer">
+        <div class="hero-bg-slide active" data-index="0">
+            <img src="images/project2.jpg" alt="Road engineering Ethiopia">
+        </div>
+        <div class="hero-bg-slide" data-index="1">
+            <img src="images/project1.jpg" alt="Bridge infrastructure">
+        </div>
+        <div class="hero-bg-slide" data-index="2">
+            <img src="images/projectsimages/buildings/6.jpg" alt="Airfield design">
+        </div>
+    </div>
+    <div class="hero-bg-overlay"></div>
+
+    <!-- Vertical grid lines -->
+    <div class="hero-grid-veil">
+        <div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+    </div>
+
+    <!-- TOP ROW: identity left · year center · keywords right -->
+    <div class="hero-top-row" id="heroTopRow">
+        <div class="hero-id-block">
+<span class="hero-id-studio">Beles Consult <span class="plc-color">P.L.C.</span></span></div>
+        <div class="hero-top-center">
+            <span class="hero-year">Since. 2007</span>
+            <span class="hero-discipline">Addis Ababa · Ethiopia</span>
+        </div>
+        <div class="hero-keywords" id="heroKeywords">
+            <!-- <span class="hero-keyword-item">Roads &amp; Highways</span> -->
+            <!-- <span class="hero-keyword-item">Bridge Structures</span> -->
+            <!-- <span class="hero-keyword-item">Airfield Design</span> -->
+            <!-- <span class="hero-keyword-item">Dam &amp; Irrigation</span> -->
+        </div>
+    </div>
+
+    <!-- MASSIVE BELES TEXT — sits at z-index 3, photo overlaps at z-index 4 -->
+    <div class="hero-big-text-zone">
+        <div class="hero-big-name" id="heroBigName">
+            <span class="letter">B</span><span class="letter">E</span><span class="letter">L</span><span class="letter">E</span><span class="letter">S</span>
+        </div>
+<div class="hero-big-sub" id="heroBigSub">CONSULT <span class="plc-highlight">P.L.C</span></div>    </div>
+
+    <!-- PHOTO LAYER — overlaps the big text (z-index 4) -->
+    <!-- <div class="hero-photo-layer" id="heroPhotoLayer">
+        <img src="https://images.unsplash.com/photo-1510672981848-a1c4f1cb5ccf?q=80&w=1200&auto=format&fit=crop" alt="Ethiopian road infrastructure">
+    </div> -->
+
+    <!-- SCRIPT WORD — Honest to Serve floating bottom right -->
+    <div class="hero-script-word" id="heroScriptWord">
+        <span class="hero-script-text">Honest to Serve</span>
+        <span class="hero-script-line"></span>
+    </div>
+
+    <!-- BOTTOM ROW: info card left · description right -->
+    <div class="hero-bottom-row" id="heroBottomRow">
+        <div class="hero-info-card">
+            <!-- <div class="hero-info-row">
+                <span class="hero-info-value">Beles Consult P.L.C.</span>
+            </div> -->
+            <!-- <div class="hero-info-row">
+                <span class="hero-info-label">Founded</span>
+                <span class="hero-info-value blue">October 2007</span>
+            </div> -->
+            <!-- <div class="hero-info-row">
+                <span class="hero-info-label">Location</span>
+                <span class="hero-info-value">Addis Ababa, Ethiopia</span>
+            </div> -->
+            <!-- <div class="hero-info-row">
+                <span class="hero-info-label">Licenses</span>
+                <span class="hero-info-value blue">ET · RW · UG</span>
+            </div> -->
+            <!-- <div class="hero-info-row">
+                <span class="hero-info-label">Model</span>
+                <span class="hero-info-value">100% Sole Contract</span>
+            </div> -->
+        </div>
+        
+        <!-- Two-column description -->
+        <div class="hero-desc-cols">
+            <div class="hero-desc-col">
+                <!-- <p>Ethiopia's premier sole-contract engineering consultancy delivering roads, bridges, airfields, and water infrastructure across multiple regions — on time, on budget, to specification.</p> -->
+                <div class="hero-btn-row">
+                    <a href="contact.html" class="hero-btn-primary"><i class="fa-solid fa-paper-plane"></i> Start a Project</a>
+                </div>
+            </div>
+            <div class="hero-desc-col">
+                <!-- <p>Holding active consultancy licenses in Ethiopia, Rwanda, and Uganda — with a vision to become East Africa's frontier engineering consultancy by 2030, using cutting-edge advanced techniques.</p> -->
+                <div class="hero-btn-row">
+                    <a href="projects.html" class="hero-btn-ghost"><i class="fa-solid fa-folder-open"></i> View Our Work</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll-cue"><span>Scroll</span> <i class="fa-solid fa-chevron-down"></i></div>
+</section>
+
+<!-- ══ INTRO SPLIT ══ -->
+<section class="intro-split">
+    <div class="intro-split-inner">
+        <div class="intro-split-text reveal-element">
+            <div class="section-eyebrow">Who We Are</div>
+            <h2>Bringing expertise, partnership, and single-point accountability to every project</h2>
+            <p>We're experts in delivering infrastructure that meets the real needs of federal institutions, regional governments, and private clients. When agencies and entrepreneurs across Ethiopia need engineering consultancy they can trust end-to-end, they turn to Beles.</p>
+            <a href="about.html" class="hero-btn-primary" style="background:var(--maroon-brand);"><i class="fa-solid fa-arrow-right"></i> Get Started</a>
+            <div class="intro-stats-mini">
+                <div class="intro-stat-mini"><strong>18+</strong><span>Years Active</span></div>
+                <div class="intro-stat-mini"><strong>30+</strong><span>Projects Delivered</span></div>
+                <div class="intro-stat-mini"><strong>100%</strong><span>Sole Contract</span></div>
+            </div>
+        </div>
+        <div class="intro-split-img reveal-element delay-1">
+            <img src="images/serimg/BUIL2.jpg" alt="Beles engineers on site">
+            <div class="intro-split-img-tag">
+                <strong>296+</strong>
+                <span>Housing Blocks Supervised</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ STATS COUNTER ══ -->
+<section class="stats-strip">
+    <div class="stats-watermark"></div>
+    <div class="stats-inner">
+        <div class="stat-item reveal-element">
+            <div class="stat-num" data-count="18">0</div>
+            <div class="stat-label">Years of Service</div>
+        </div>
+        <div class="stat-item reveal-element delay-1">
+            <div class="stat-num" data-count="30">0</div>
+            <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-item reveal-element delay-2">
+            <div class="stat-num" data-count="300" data-suffix="+">0</div>
+            <div class="stat-label">Housing Blocks Supervised</div>
+        </div>
+        <div class="stat-item reveal-element delay-3">
+            <div class="stat-num" data-count="275" data-suffix="M+">0</div>
+            <div class="stat-label">ETB in Water Infrastructure</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ SERVICES — 3 CARDS ══ -->
+<section class="services-section">
+    <div class="services-inner">
+        <div class="services-header reveal-element">
+            <div class="section-eyebrow">What We Do</div>
+            <h2>We deliver your project on time, on budget, and exactly to specification.</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal-element">
+                <div class="service-card-img"><img src="images/EIA.jfif" alt="Feasibility and EIA"></div>
+                <div class="service-card-body">
+                    <h3>Feasibility &amp; EIA Studies</h3>
+                    <div class="service-card-underline"></div>
+                    <p>Route selection, feasibility analysis, and environmental impact assessment for road and bridge projects across multiple regions.</p>
+                    <a href="project-feasibility-eia.html" class="service-card-link">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="service-card reveal-element delay-1">
+                <div class="service-card-img"><img src="images/prooject7.jpg" alt="Detailed engineering design"></div>
+                <div class="service-card-body">
+                    <h3>Detailed Engineering Design</h3>
+                    <div class="service-card-underline"></div>
+                    <p>Road, bridge, and airfield design — from route alignment and structural design through to full tender documentation.</p>
+                    <a href="project-detailed-engineering.html" class="service-card-link">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="service-card reveal-element delay-2">
+                <div class="service-card-img"><img src="images/projectsimages/buildings/11.jpg" alt="Building supervision"></div>
+                <div class="service-card-body">
+                    <h3>Building &amp; Construction Supervision</h3>
+                    <div class="service-card-underline"></div>
+                    <p>Resident supervision, quality control, and contract administration for residential, religious, and commercial buildings.</p>
+                    <a href="project-buliding design&supervision.html" class="service-card-link">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FEATURED ALTERNATING SPLITS ══ -->
+<section class="feature-split-section">
+    <div class="feature-split reveal-element">
+        <div class="feature-split-img"><img src="images/water.jfif" alt="Water infrastructure"></div>
+        <div class="feature-split-text">
+            <div class="section-eyebrow">Changing the Industry</div>
+            <h3>Water security delivered at scale</h3>
+            <div class="service-card-underline"></div>
+            <p>Across Afar and Somali Region, our detailed design and supervision have brought deep wells, springs, and supply systems worth over 275 million ETB into service — each integrating environmental and social impact assessment from day one.</p>
+            <a href="project-water-production.html" class="hero-btn-primary" style="background:var(--maroon-brand); width:fit-content;"><i class="fa-solid fa-droplet"></i> See Water Projects</a>
+        </div>
+    </div>
+    <div class="feature-split reverse reveal-element">
+        <div class="feature-split-img"><img src="images/serimg/BRI5.jpg" alt="Bridge design"></div>
+        <div class="feature-split-text">
+            <div class="section-eyebrow">Sole-Contract Delivery</div>
+            <h3>Nine bridges, one accountable team</h3>
+            <div class="service-card-underline"></div>
+            <p>From the Kefo Bridge to Package I's six-bridge programme in SNNP Region, every structure was designed and documented entirely in-house — no subcontracting, no diluted responsibility.</p>
+            <a href="project-detailed-engineering-design.html" class="hero-btn-primary" style="background:var(--maroon-brand); width:fit-content;"><i class="fa-solid fa-bridge"></i> See Bridge Projects</a>
+        </div>
+    </div>
+</section>
+
+<section class="trust-strip">
+    <div class="trust-strip-inner">
+        <div class="trust-strip-label reveal-element">Trusted By Federal &amp; Regional Institutions</div>
+        
+        <!-- Infinite Animated Viewport -->
+        <div class="marquee-viewport reveal-element delay-1">
+            <div class="marquee-track">
+                
+                <!-- ====== ORIGINAL LOGO SET WITH REFERRAL LINKS ====== -->
+                <a href="https://www.era.gov.et" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/EthiopianRoadsAdministration.png" alt="Ethiopian Roads Administration" class="trust-logo-img">
+                        <span>Ethiopian Roads Administration</span>
+                    </div>
+                </a>
+
+                <!-- <a href="https://www.moa.gov.et" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/ministryofagricultureethiopia.jfif.png" alt="Ministry of Agriculture" class="trust-logo-img">
+                        <span>Ministry of Agriculture</span>
+                    </div>
+                </a> -->
+
+                <a href="https://www.ethiopianairlines.com" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/EthiopianAirlines.png" alt="Ethiopian Airlines Group" class="trust-logo-img">
+                        <span>Ethiopian Airlines Group</span>
+                    </div>
+                </a>
+
+                <a href="https://www.fhc.gov.et/" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/Addis Ababa Housing Corporation.png" alt="Addis Ababa Housing Corporation" class="trust-logo-img">
+                        <span>Addis Ababa Housing Corporation</span>
+                    </div>
+                </a>
+
+                <a href="https://www.ecx.com.et" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/ecx.jfif.png"Ethiopian Commodity Exchange" class="trust-logo-img">
+                        <span>Ethiopian Commodity Exchange</span>
+                    </div>
+                </a>
+
+                <!-- ====== CLONED DUPLICATE SET (For Seamless Continuous Loop) ====== -->
+                <a href="https://www.era.gov.et" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/EthiopianRoadsAdministration.png" alt="Ethiopian Roads Administration" class="trust-logo-img">
+                        <span>Ethiopian Roads Administration</span>
+                    </div>
+                </a>
+
+                <!-- <a href="https://www.moa.gov.et" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/ministry of agriculture ethiopia.jfif" alt="Ministry of Agriculture" class="trust-logo-img">
+                        <span>Ministry of Agriculture</span>
+                    </div>
+                </a> -->
+
+                <a href="https://www.ethiopianairlines.com" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/EthiopianAirlines.png" alt="Ethiopian Airlines Group" class="trust-logo-img">
+                        <span>Ethiopian Airlines Group</span>
+                    </div>
+                </a>
+
+                <a href="https://www.fhc.gov.et/" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/Addis Ababa Housing Corporation.png" alt="Addis Ababa Housing Corporation" class="trust-logo-img">
+                        <span>Addis Ababa Housing Corporation</span>
+                    </div>
+                </a>
+
+                <a href="https://www.ecx.com.et" target="_blank" rel="noopener" class="trust-logo-link">
+                    <div class="trust-logo-item">
+                        <img src="logos/ecx.jfif.png" alt="Ethiopian Commodity Exchange" class="trust-logo-img">
+                        <span>Ethiopian Commodity Exchange</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="trust-statement reveal-element delay-2">
+            <h3>We want to work with you, <span>even after the project is complete.</span></h3>
+        </div>
+    </div>
+</section>
+
+<!-- ══ EXPERIENCE BADGE ══ -->
+<section class="experience-section">
+    <div class="experience-inner">
+        <div class="experience-badge reveal-element">
+            <strong>18</strong>
+            <span>Years of Experience</span>
+        </div>
+        <div class="experience-col reveal-element delay-1">
+            <h4>The best quality service</h4>
+            <div class="service-card-underline"></div>
+            <p>To deliver the best quality service, we bring a full in-house team across feasibility, design, supervision, and contract administration — so you get one accountable partner, not a chain of subcontractors.</p>
+        </div>
+        <div class="experience-col reveal-element delay-2">
+            <h4>Specialized across disciplines</h4>
+            <div class="service-card-underline"></div>
+            <p>Beles Consulting is specialized in road and bridge engineering, building design, environmental assessment, and water infrastructure — with project experience spanning Addis Ababa to Afar, Somali, Oromia, Amhara, and SNNP Regions.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ BIG STATEMENT ══ -->
+<section class="statement-section">
+    <div class="statement-inner reveal-element">
+        <h2>Offering engineering design, construction supervision, and contract administration <span>as a single point of accountability.</span></h2>
+    </div>
+</section>
+
+<!-- ══ PROJECT HIGHLIGHTS TEASER ══ -->
+<section class="highlights-section">
+    <div class="highlights-inner">
+        <div class="highlights-header reveal-element">
+            <div>
+                <div class="section-eyebrow">Our Work</div>
+                <h2>Recent Project Highlights</h2>
+                <p class="sub">A glimpse of the bridges, roads, buildings, and water systems delivered by our sole-contract team.</p>
+            </div>
+            <a href="gallery.html" class="view-all-link">View Full Gallery <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="highlights-grid">
+            <div class="highlight-card reveal-element" onclick="window.location.href='project-bridge-design.html'">
+                <img src="images/projectsimages/bridge/50.jpg" alt="Bridge Package I">
+                <div class="highlight-card-overlay"><span class="highlight-cat">Bridge Design</span><span class="highlight-name">Package I — Six Bridges, SNNP</span></div>
+            </div>
+            <div class="highlight-card reveal-element delay-1" onclick="window.location.href=''">
+                <img src="images/serimg/AIR.jpg" alt="Mizan Aman Airfield">
+                <div class="highlight-card-overlay"><span class="highlight-cat">Airfield Design</span><span class="highlight-name">Mizan Aman Airfield</span></div>
+            </div>
+            <div class="highlight-card reveal-element delay-2" onclick="window.location.href='project-building-design.html'">
+                <img src="images/serimg/BUI1.jpg" alt="Bole Arabsa Condominium">
+                <div class="highlight-card-overlay"><span class="highlight-cat">Building Supervision</span><span class="highlight-name">Bole Arabsa Condominium</span></div>
+            </div>
+            <div class="highlight-card reveal-element delay-3" onclick="window.location.href='project-water-production.html'">
+                <img src="images/water.jfif" alt="Asaita Water Infrastructure">
+                <div class="highlight-card-overlay"><span class="highlight-cat">Water Infrastructure</span><span class="highlight-name">Asaita Water Project, Afar</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FAQ + CONTACT BAND ══ -->
+<section class="faq-section">
+    <div class="faq-inner">
+        <div class="faq-header reveal-element">
+            <div class="section-eyebrow">Questions (FAQ)</div>
+            <h2>Got some questions? Here's what we get asked about most.  <STrong>(FAQ) </STrong></h2>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-list reveal-element">
+                <div class="faq-item open">
+                    <div class="faq-question">What does "sole contract" mean? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">It means Beles Consulting executes the entire scope of a project in-house, without subcontracting to associated consultants. This keeps quality consistent and accountability with a single team from start to finish.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Which regions do you work in? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Our project history spans Addis Ababa, Oromia, Amhara, Southern Nations Nationalities &amp; Peoples Region, Afar, Somali, and Benishangul Gumuz — with capacity to take on assignments across Ethiopia and East Africa.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What services do you offer? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Feasibility studies, environmental impact assessment, detailed engineering design for roads, bridges and airfields, building design and supervision, contract administration, and water supply &amp; well production consultancy.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do I start a project inquiry? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Use the form alongside this section, message us on WhatsApp, or visit our Contact page for full office details and a detailed project inquiry form.</div></div>
+                </div>
+            </div>
+            <div class="contact-band reveal-element delay-1">
+                <div class="contact-band-label">Drop Us a Line</div>
+                <h3>For inquiries, discover our products or services</h3>
+                <div class="contact-band-underline"></div>
+                <form>
+                    <input type="text" placeholder="Your Name">
+                    <input type="email" placeholder="Your Email">
+                    <input type="tel" placeholder="Telephone">
+                    <textarea rows="3" placeholder="Comment"></textarea>
+                    <button type="submit" class="contact-band-submit"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testimonials-section">
+    <div class="testimonials-inner">
+        <div class="testimonials-header reveal-element">
+            <div class="section-eyebrow">Client Feedback</div>
+            <h2>What clients say about working with us</h2>
+            <!-- <div class="sample-tag"><i class="fa-solid fa-flask"></i> Sample Testimonials — Placeholder Content</div> -->
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal-element">
+                <p class="quote">"The team handled every phase of our road project in-house — from feasibility to final design — without ever needing to bring in outside consultants."</p>
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-footer">
+                    <div class="testimonial-avatar">PM</div>
+                    <div><strong>Project Manager</strong><span>Federal Roads Programme</span></div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal-element delay-1">
+                <p class="quote">"Clear monthly reporting and a responsive resident supervisor made a 200+ block housing programme far easier to manage."</p>
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-footer">
+                    <div class="testimonial-avatar">HD</div>
+                    <div><strong>Housing Development Officer</strong><span>Addis Ababa Housing Programme</span></div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal-element delay-2">
+                <p class="quote">"Their environmental and social impact assessment work on our water infrastructure project was thorough and fully compliant with regulatory standards."</p>
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-footer">
+                    <div class="testimonial-avatar">WI</div>
+                    <div><strong>Water Infrastructure Client</strong><span>Ministry of Agriculture</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ENGAGE ══ -->
+<section class="engage-section">
+    <div class="engage-inner">
+        <div class="mascot-wrap reveal-element">
+            <div class="mascot-ring"></div>
+            <div class="css-avatar">
+                <div class="av-hat"><div class="av-hat-b">B</div></div>
+                <div class="av-brim"></div>
+                <div class="av-face">
+                    <div class="av-eye-l"></div><div class="av-eye-r"></div><div class="av-smile"></div>
+                </div>
+                <div class="av-body"><div class="av-shirt"></div></div>
+            </div>
+        </div>
+        <p class="engage-motto reveal-element">Honest to Serve</p>
+        <h2 class="reveal-element">Ready to Build Ethiopia's<br>Next Landmark?</h2>
+        <p class="reveal-element">Partner with experienced engineering, transportation, and infrastructure consultants who deliver on a sole-contract, single-point-accountability basis.</p>
+        <div class="engage-btns reveal-element">
+            <a href="https://wa.me/251911281227" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="mailto:belesconsult@gmail.com" class="btn-em"><i class="fa-solid fa-envelope"></i> Send an Email</a>
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="corporate-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Beles Consulting P.L.C.</h4>
+            <p>Providing premium feasibility studies, environmental assessments, resettlement planning, detailed engineering design, building supervision, water infrastructure, and world-class consultancy since October 2007.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Project Categories</h5>
+            <ul class="footer-links">
+                <li><a href="project-feasibility-eia.html">Feasibility, EIA &amp; Resettlement Studies</a></li>
+                <li><a href="project-detailed-engineering-design.html">Detailed Engineering Design</a></li>
+                <li><a href="project-building-design.html">Building Design &amp; Supervision</a></li>
+                <li><a href="project-water-production.html">Water Supply &amp; Well Production</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact Channels</h5>
+            <ul class="footer-contact-list">
+                <li><i class="fa-solid fa-map-location-dot"></i> Gurd Shola Infront of Tele, Addis Ababa, Ethiopia</li>
+                <li><i class="fa-solid fa-square-phone"></i> (+251) 911 279 850 / 911 281 227</li>
+                <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+        <span>Honest to Serve</span>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // 1. MOBILE RESPONSIVE HAMBURGER & DROPDOWN ACCORDION ENGINE
+            const menuToggle = document.getElementById('menuToggleTrigger');
+            const navLinksList = document.querySelector('.nav-links-list');
+            const dropdownTriggers = document.querySelectorAll('.dropdown-trigger');
+
+            if (menuToggle && navLinksList) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('is-open');
+                    navLinksList.classList.toggle('is-active');
+                });
+            }
+
+            // Close mobile menu drawer when clicking outside bounds
+            document.addEventListener('click', function(event) {
+                if (navLinksList && navLinksList.classList.contains('is-active')) {
+                    const isClickInside = navLinksList.contains(event.target) || menuToggle.contains(event.target);
+                    if (!isClickInside) {
+                        menuToggle.classList.remove('is-open');
+                        navLinksList.classList.remove('is-active');
+                    }
+                }
+            });
+
+            dropdownTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 1024) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const parent = this.parentElement;
+                        const panel = this.nextElementSibling;
+                        
+                        parent.classList.toggle('chevron-active');
+                        panel.classList.toggle('mobile-open');
+                    }
+                });
+            });
+
+    /* ════════════════════════════════════════
+       HERO — CINEMATIC ENTRANCE ANIMATION
+       Sequence mirrors what we planned:
+       0.0s  bg fades in (CSS handles via .active on slide)
+       0.2s  top row slides down
+       0.4s  keywords stagger in from right
+       0.6s  BELES letters clip-path reveal L→R
+       0.9s  CONSULTING sub fades up
+       1.0s  photo overlay fades in
+       1.2s  bottom row slides up
+       1.8s  script word fades in
+       2.2s  underline draws L→R (CSS transition)
+       Ongoing: keyword pulse cycle
+    ════════════════════════════════════════ */
+
+    // 1. Top row
+    setTimeout(function() {
+        var topRow = document.getElementById('heroTopRow');
+        if (topRow) topRow.classList.add('anim-in');
+    }, 200);
+
+    // 2. Keywords stagger
+    var keywords = document.querySelectorAll('.hero-keyword-item');
+    keywords.forEach(function(kw, i) {
+        setTimeout(function() {
+            kw.classList.add('kw-in');
+        }, 400 + i * 120);
+    });
+
+    // 3. BELES letters — clip-path reveal left to right
+    var letters = document.querySelectorAll('.hero-big-name .letter');
+    letters.forEach(function(letter, i) {
+        setTimeout(function() {
+            letter.classList.add('letter-in');
+        }, 600 + i * 110);
+    });
+
+    // 4. CONSULTING sub
+    setTimeout(function() {
+        var sub = document.getElementById('heroBigSub');
+        if (sub) sub.classList.add('sub-in');
+    }, 900);
+
+    // 5. Photo layer fades in over text
+    setTimeout(function() {
+        var photo = document.getElementById('heroPhotoLayer');
+        if (photo) photo.classList.add('photo-in');
+    }, 1000);
+
+    // 6. Bottom row slides up
+    setTimeout(function() {
+        var bottom = document.getElementById('heroBottomRow');
+        if (bottom) bottom.classList.add('bottom-in');
+    }, 1200);
+
+    // 7. Script word + underline
+    setTimeout(function() {
+        var script = document.getElementById('heroScriptWord');
+        if (script) script.classList.add('script-in');
+    }, 1800);
+
+    // 8. Keyword pulse — cycle every 2.5s
+    var kwIndex = 0;
+    setInterval(function() {
+        keywords.forEach(function(kw) { kw.classList.remove('kw-pulse'); });
+        if (keywords[kwIndex]) keywords[kwIndex].classList.add('kw-pulse');
+        kwIndex = (kwIndex + 1) % keywords.length;
+    }, 2500);
+
+    /* ── Hero background slideshow ── */
+    var heroSlides = document.querySelectorAll('.hero-bg-slide');
+    var heroIndex = 0;
+    function showHeroSlide(i) {
+        heroSlides.forEach(function(s) { s.classList.remove('active'); });
+        heroSlides[i].classList.add('active');
+        heroIndex = i;
+    }
+    setInterval(function() {
+        showHeroSlide((heroIndex + 1) % heroSlides.length);
+    }, 7000);
+
+
+     /* ════════════════════════════════════════
+       SCROLL REVEAL — all other sections
+    ════════════════════════════════════════ */
+    var reveals = document.querySelectorAll('.reveal-element');
+    if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) e.target.classList.add('active');
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function(el) { obs.observe(el); });
+    } else {
+        reveals.forEach(function(el) { el.classList.add('active'); });
+    }
+
+    /* ── Stat counters: animate on scroll into view ── */
+    const statNums = document.querySelectorAll('.stat-num');
+    const statObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.dataset.count, 10);
+                const suffix = el.dataset.suffix || '';
+                const duration = 1400;
+                const startTime = performance.now();
+                function tick(now) {
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(eased * target) + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                    else el.textContent = target + suffix;
+                }
+                requestAnimationFrame(tick);
+                statObs.unobserve(el);
+            }
+        });
+    }, { threshold: 0.4 });
+    statNums.forEach(el => statObs.observe(el));
+
+
+    /* ── FAQ accordion ── */
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        item.querySelector('.faq-question').addEventListener('click', () => {
+            const wasOpen = item.classList.contains('open');
+            faqItems.forEach(i => i.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        });
+    });
+});
+
+/* ── Parallax: big text moves slower than scroll ── */
+    var bigTextZone = document.querySelector('.hero-big-text-zone');
+    window.addEventListener('scroll', function() {
+        if (!bigTextZone) return;
+        var scrollY = window.scrollY;
+        if (scrollY < window.innerHeight) {
+            bigTextZone.style.transform = 'translateY(' + (scrollY * 0.18) + 'px)';
+        }
+    }, { passive: true });
+
+ // Sticky header navigation logo scroll indicator control
+            const stickyLogo = document.querySelector('.sticky-nav-logo-wrap');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 90) {
+                    if (stickyLogo) {
+                        stickyLogo.style.opacity = '1';
+                        stickyLogo.style.visibility = 'visible';
+                    }
+                } else {
+                    if (stickyLogo) {
+                        stickyLogo.style.opacity = '0';
+                        stickyLogo.style.visibility = 'hidden';
+                    }
+                }
+            });
+</script>
+</body>
+</html>

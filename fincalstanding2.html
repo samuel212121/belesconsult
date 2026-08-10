@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Standing & Value Engineering | Beles Consulting P.L.C</title>
+    <!-- Font Awesome Icons for engineering indicators -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Plus Jakarta Sans integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght=0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navyBrand: '#164780',
+                        maroonBrand: '#7F0A1C',
+                        blueAccent: '#1587D2',
+                        bgDark: '#070d19',
+                        bgLight: '#faf9f6', /* Warm tactile paper background */
+                        textDark: '#1e293b',
+                        textMuted: '#64748b',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Subtle blueprint watermark overlay background */
+        .paper-sketch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            background-size: contain;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23164780' stroke-width='0.7' fill='none'><path d='M50 50 h700 v500 h-700 Z M100 100 h600 v400 h-600 Z M50 150 h700 M50 450 h700 M250 50 v500 M550 50 v500' stroke-dasharray='10,10'/><circle cx='400' cy='300' r='120'/><path d='M300 300 Q400 200 500 300' stroke-width='1.5'/></svg>");
+            z-index: -1;
+        }
+
+        /* PREMIUM FLUID DROPDOWN ANIMATIONS (AS REQUESTED) */
+        .dropdown-standard-panel,
+        .dropdown-mega-panel {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(15px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        opacity 0.3s ease, 
+                        visibility 0.3s ease;
+        }
+
+        @media (min-width: 1025px) {
+            .dropdown-wrapper:hover .dropdown-standard-panel,
+            .dropdown-wrapper:hover .dropdown-mega-panel {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+            .dropdown-wrapper:hover .chevron-indicator {
+                transform: rotate(180deg);
+                color: #7F0A1C !important;
+            }
+        }
+
+        /* Hover animation classes for landscape data blocks */
+        .blueprint-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .blueprint-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(22, 71, 128, 0.08);
+        }
+
+        /* Simulation graph chart heights and transitions */
+        .sim-chart-bar {
+            transition: height 1s cubic-bezier(0.16, 1, 0.3, 1), bg-color 0.3s ease;
+        }
+
+        /* Mobile specific overwrites */
+        @media (max-width: 1024px) {
+            header {
+                height: 80px !important;
+            }
+            .menu-navigation-bar {
+                position: static !important;
+                height: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: hidden !important;
+            }
+            .nav-links-list {
+                position: fixed !important;
+                top: 80px !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: calc(100vh - 80px) !important;
+                background-color: #ffffff !important;
+                max-height: 0 !important;
+                overflow-y: auto !important;
+                visibility: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important;
+                padding: 20px 6% !important;
+                transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease !important;
+                z-index: 2000 !important;
+                box-shadow: 0 15px 30px rgba(10, 20, 36, 0.15) !important;
+            }
+            .nav-links-list.is-active {
+                max-height: calc(100vh - 80px) !important;
+                visibility: visible !important;
+            }
+            .nav-link-item {
+                width: 100% !important;
+                border-bottom: 1px solid #edf2f7 !important;
+            }
+            .nav-link-item a, 
+            .dropdown-trigger {
+                color: #1a202c !important;
+                width: 100% !important;
+                padding: 16px 0 !important;
+                font-size: 0.95rem !important;
+                display: flex !important;
+                justify-content: space-between !important;
+            }
+            .dropdown-standard-panel,
+            .dropdown-mega-panel {
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border-top: none !important;
+                background-color: #f8fafc !important;
+                padding: 10px 15px !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+            .dropdown-standard-panel.mobile-open,
+            .dropdown-mega-panel.mobile-open {
+                max-height: 850px !important;
+            }
+            .nav-link-item.dropdown-wrapper.chevron-active .chevron-indicator {
+                transform: rotate(180deg) !important;
+                color: #7F0A1C !important;
+            }
+            
+            .mobile-menu-toggle span {
+                width: 100%;
+                height: 2.5px;
+                background-color: #164780 !important;
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                transform-origin: left center;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -1px);
+                background-color: #7F0A1C !important;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(2) {
+                width: 0%;
+                opacity: 0;
+            }
+            .mobile-menu-toggle.is-open span:nth-child(3) {
+                transform: rotate(-45deg) translate(2px, 1px);
+                background-color: #7F0A1C !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-bgLight text-textDark font-sans relative overflow-x-hidden">
+
+    <div class="paper-sketch-overlay"></div>
+
+    <!-- MASTER DOUBLE-ROW NAVIGATION HEADER -->
+    <header class="w-full h-[90px] bg-white flex justify-between items-center px-[6%] border-b border-[#eef2f6] relative z-[1002]">
+        <a href="index.html" class="inline-flex items-center h-full">
+            <img src="logos/beles.png" alt="Beles Consulting P.L.C. Logo" class="max-h-[60px] w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/180x60/ffffff/164780?text=Beles+Consulting'">
+        </a>
+
+        <!-- Kinetic Hamburger Toggle -->
+        <button class="mobile-menu-toggle lg:hidden flex flex-col justify-between w-[28px] h-[20px] bg-transparent border-none cursor-pointer z-[2005] outline-none" id="menuToggleTrigger" aria-label="Toggle Navigation Menu">
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300 origin-left"></span>
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300"></span>
+            <span class="w-full h-[2.5px] bg-navyBrand transition-all duration-300 origin-left"></span>
+        </button>
+
+        <!-- Right Side Contact Utilities -->
+        <div class="hidden lg:flex items-center h-full gap-[30px]">
+            <div class="flex items-center gap-[35px]">
+                <div class="flex items-center gap-[10px] text-[0.85rem] font-bold text-[#4a5568]">
+                    <i class="fa-regular fa-clock text-maroonBrand text-[1rem]"></i> Mon - Sat 9AM - 6PM
+                </div>
+                <div class="flex items-center gap-[10px] text-[0.85rem] font-bold text-[#4a5568]">
+                    <i class="fa-solid fa-phone-flip text-maroonBrand text-[1rem]"></i> (+251) 9-11279850 / 911 25 86 15 
+                </div>
+            </div>
+
+            <!-- Social Group -->
+            <div class="flex items-center gap-[12px] border-l border-[#e2e8f0] pl-[30px]">
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="Facebook"><i class="fa-brands fa-facebook-f text-[0.9rem]"></i></a>
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="Instagram"><i class="fa-brands fa-instagram text-[0.9rem]"></i></a>
+                <a href="#" class="social-lnk w-[32px] h-[32px] border border-[#e2e8f0] rounded-full flex items-center justify-center text-[#94a3b8] hover:text-blueAccent hover:border-blueAccent hover:bg-[rgba(21,135,210,0.05)]" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in text-[0.9rem]"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- STICKY NAVIGATION BAR -->
+    <div class="menu-navigation-bar w-full bg-gradient-to-r from-navyBrand via-[#113866] to-[#070d14] flex justify-center items-center h-[55px] sticky top-0 z-[1000] border-b border-[rgba(0,229,255,0.1)] shadow-lg px-[6%]">
+        <a href="index.html" class="sticky-nav-logo-wrap inline-flex items-center h-full absolute left-[6%] opacity-0 invisible transition-all duration-300">
+            <img src="logos/beles.png" alt="Beles Navbar Brand Logo" class="max-h-[36px] w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/120x36/164780/ffffff?text=Beles'">
+        </a>
+        
+        <nav class="main-nav-container w-full flex justify-center items-center">
+            <ul class="nav-links-list flex lg:flex-row flex-col gap-[40px] list-none lg:p-0 p-[20px] lg:w-auto w-full lg:static fixed">
+                
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="index.html" class="text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Home</a></li>
+                
+                <!-- Dropdown: About (Fixed Dynamic Color and Animate Transitions) -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <a href="about.html" class="dropdown-trigger text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">About <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-standard-panel lg:absolute lg:top-[100%] lg:left-[50%] bg-white border-t-[3px] border-maroonBrand shadow-xl p-[12px] z-[1100] rounded-b-[4px] lg:w-[280px]">
+                        <ul class="flex flex-col gap-[2px] list-none">
+                            <li><a href="index.html#background" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] transition-colors duration-200 text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-circle-info text-[#94a3b8]"></i> Company Background</a></li>
+                            <li><a href="index.html#vision-mission" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] transition-colors duration-200 text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-bullseye text-[#94a3b8]"></i> Vision & Mission</a></li>
+                            <li><a href="index.html#leadership" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] transition-colors duration-200 text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-user-tie text-[#94a3b8]"></i> Leadership & Ownership</a></li>
+                            <li><a href="governance.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] transition-colors duration-200 text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-sitemap text-[#94a3b8]"></i> Organizational Structure</a></li>
+                            <li><a href="legislation_certificates.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] transition-colors duration-200 text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-file-signature text-[#94a3b8]"></i> Legislation & Certificates</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Mega Menu: Services -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <a href="services.html"class="dropdown-trigger text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Services <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></a>
+                    <div class="dropdown-mega-panel lg:absolute lg:top-[100%] lg:left-[50%] bg-white border-t-[3px] border-maroonBrand shadow-2xl p-[30px] z-[1100] rounded-b-[6px] lg:w-[90vw] lg:max-w-[1000px]">
+                        <div class="grid lg:grid-cols-3 grid-cols-1 gap-[25px]">
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Heavy Infrastructure</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-roads.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-road text-[#94a3b8]"></i> Roads & Highways</a></li>
+                                    <li><a href="service-railroads.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-train text-[#94a3b8]"></i> Railroad Networks</a></li>
+                                    <li><a href="service-bridges.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-bridge text-[#94a3b8]"></i> Bridge Structures</a></li>
+                                    <li><a href="service-airfields.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-plane text-[#94a3b8]"></i> Airfield Structures</a></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px] lg:border-r border-[#f1f5f9] lg:pr-[25px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Civil & Geotechnical</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-tunnel.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-mountain text-[#94a3b8]"></i> Tunnel & Geotechnical</a></li>
+                                    <li><a href="service-buildings.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building text-[#94a3b8]"></i> Building Structures</a></li>
+                                    <li><a href="service-dams.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-water-ladder text-[#94a3b8]"></i> Dam & Irrigation</a></li>
+
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-[8px]">
+                                <span class="text-[0.68rem] font-extrabold text-textMuted uppercase tracking-[1.5px] border-b border-[#f1f5f9] pb-[6px] mb-[12px]">Planning & Diagnostics</span>
+                                <ul class="flex flex-col gap-[2px] list-none">
+                                    <li><a href="service-feasibility.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-magnifying-glass-chart text-[#94a3b8]"></i> Feasibility Studies</a></li>
+                                     <li><a href="service-feasibility.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-blueAccent hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-leaf text-[#94a3b8]"></i> Environmental (EIA)</a></li>
+                              
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Dropdown: Company -->
+                <li class="nav-link-item dropdown-wrapper relative lg:border-none border-b border-[#edf2f7]">
+                    <span class="dropdown-trigger text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] flex items-center cursor-pointer justify-between">Company <i class="fa-solid fa-chevron-down chevron-indicator text-[0.65rem] ml-[6px] transition-transform duration-200"></i></span>
+                    <div class="dropdown-standard-panel lg:absolute lg:top-[100%] lg:left-[50%] bg-white border-t-[3px] border-maroonBrand shadow-xl p-[12px] z-[1100] rounded-b-[4px] lg:w-[280px]">
+                        <ul class="flex flex-col gap-[2px] list-none">
+                            <li><a href="office_headquarters.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-building text-[#94a3b8]"></i> Office & Headquarters</a></li>
+                            <li><a href="geotechnical_laboratory.html" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-vial-virus text-[#94a3b8]"></i> Geotechnical Laboratory</a></li>
+                            <li><a href="equipment_facilities.html#fleet" class="flex items-center gap-[12px] p-[8px_12px] text-[#4a5568] hover:text-maroonBrand hover:bg-[#f8fafc] text-[0.85rem] font-medium rounded-[4px]"><i class="fa-solid fa-truck-monster text-[#94a3b8]"></i> Equipment & Facilities</a></li>
+                            <li><a href="financial_standing.html" class="flex items-center gap-[12px] p-[8px_12px] text-blueAccent border-l-2 border-blueAccent pl-[10px] bg-[#f8fafc] text-[0.85rem] font-semibold rounded-[4px]"><i class="fa-solid fa-scale-balanced text-blueAccent"></i> Financial Standing</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="gallery.html" class="text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Gallery</a></li>
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="contact.html" class="text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Contact</a></li>
+                <li class="nav-link-item lg:border-none border-b border-[#edf2f7]"><a href="beles-blog/blog.php" class="text-white hover:text-maroonBrand transition-colors duration-300 text-[0.8rem] font-bold uppercase tracking-[1px] py-[18px] block">Blog</a></li>
+
+            </ul>
+        </nav>
+    </div>
+
+    <!-- HERO HEADER BANNER BLOCK WITH INTEGRATED HIGH-END DECK NAVIGATION -->
+    <section class="relative pt-[110px] pb-[140px] lg:px-[6%] px-[4%] border-b-[5px] border-maroonBrand overflow-hidden bg-bgDark bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(7, 13, 25, 0.6), rgba(7, 13, 25, 0.4)), url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1600&auto=format&fit=crop');">
+        <div class="relative z-[5] max-w-[1300px] mx-auto flex flex-col justify-between h-full">
+            
+            <!-- Hero Core Titles -->
+            <div class="reveal-element active mb-12">
+                <span class="text-[0.75rem] uppercase tracking-[3px] text-blueAccent font-extrabold mb-[15px] block">Corporate Viability & Optimizations</span>
+                <h1 class="text-white lg:text-[3.2rem] text-[2.4rem] font-extrabold leading-[1.1] tracking-[-1px] mb-[20px]">Financial Standing Specs</h1>
+                <p class="text-[#abbcd0] text-[1.05rem] leading-[1.6] max-w-[700px]">Review the audited annual financial turnovers, comprehensive disclosures, and analytical frameworks directing our value engineering schemes.</p>
+            </div>
+
+            <!-- TACTILE MATRIX NAVIGATION DECK (ANCHOR LINKS SECTION) -->
+            <div class="w-full mt-4 reveal-element active">
+                <p class="text-[0.7rem] font-bold uppercase tracking-[2px] text-blueAccent mb-4 flex items-center gap-2"><i class="fa-solid fa-compass"></i> Fast Track Project Subsections Navigation</p>
+                
+                <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+                    <!-- Anchor Station 1 -->
+                    <a href="#financial-turnover" class="block bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] hover:border-maroonBrand p-4 rounded transition-all duration-300 group hover:bg-[rgba(127,10,28,0.05)] shadow-sm">
+                        <span class="text-[0.6rem] font-mono text-textMuted block mb-1 group-hover:text-maroonBrand transition-colors">[SEC-01]</span>
+                        <div class="text-white font-bold text-[0.88rem] flex items-center justify-between uppercase tracking-wide">
+                            Financial Turnover <i class="fa-solid fa-arrow-right text-[0.75rem] text-blueAccent group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Anchor Station 2 -->
+                    <a href="#external-audit" class="block bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] hover:border-maroonBrand p-4 rounded transition-all duration-300 group hover:bg-[rgba(127,10,28,0.05)] shadow-sm">
+                        <span class="text-[0.6rem] font-mono text-textMuted block mb-1 group-hover:text-maroonBrand transition-colors">[SEC-02]</span>
+                        <div class="text-white font-bold text-[0.88rem] flex items-center justify-between uppercase tracking-wide">
+                            External Audit Reports <i class="fa-solid fa-arrow-right text-[0.75rem] text-blueAccent group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Anchor Station 3 -->
+                    <a href="#disclosures" class="block bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] hover:border-maroonBrand p-4 rounded transition-all duration-300 group hover:bg-[rgba(127,10,28,0.05)] shadow-sm">
+                        <span class="text-[0.6rem] font-mono text-textMuted block mb-1 group-hover:text-maroonBrand transition-colors">[SEC-03]</span>
+                        <div class="text-white font-bold text-[0.88rem] flex items-center justify-between uppercase tracking-wide">
+                            Disclosures Matrix <i class="fa-solid fa-arrow-right text-[0.75rem] text-blueAccent group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Anchor Station 4 -->
+                    <a href="#value-engineering" class="block bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] hover:border-maroonBrand p-4 rounded transition-all duration-300 group hover:bg-[rgba(127,10,28,0.05)] shadow-sm">
+                        <span class="text-[0.6rem] font-mono text-textMuted block mb-1 group-hover:text-maroonBrand transition-colors">[SEC-04]</span>
+                        <div class="text-white font-bold text-[0.88rem] flex items-center justify-between uppercase tracking-wide">
+                            Value Engineering <i class="fa-solid fa-arrow-right text-[0.75rem] text-blueAccent group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- NARRATIVE SUMMARY -->
+    <section class="max-w-[1200px] mx-auto mt-[80px] px-[4%] reveal-element active">
+        <div class="bg-white border-l-4 border-maroonBrand p-8 rounded shadow-sm max-w-5xl">
+            <span class="text-blueAccent text-[0.72rem] font-bold uppercase tracking-[2px] block mb-2"><i class="fa-solid fa-shield-halved"></i> Asset Stability Matrix</span>
+            <h2 class="text-[1.8rem] font-extrabold text-[#164780] leading-[1.2] mb-4">Financial Assurance Framework</h2>
+            <p class="text-textDark leading-[1.7] text-justify">
+                BELES Consulting P.L.C. is currently experiencing a financially stable period. Over the past decade, our technical teams have continuously supervised, designed, and managed complex civil infrastructures valued in excess of 116 million Ethiopian Birr. The enterprise stands thoroughly positioned with unencumbered liquid reserves to absorb any rapid deployment costs and initialization overheads across immediate or upcoming layout contracts without performance delays.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECTION 1: FINANCIAL TURNOVER DATA LAB -->
+    <main id="financial-turnover" class="max-w-[1200px] mx-auto my-[60px] pt-12 px-[4%]">
+        
+        <!-- Cross-hair Spec Block Title -->
+        <div class="flex items-center gap-[15px] mb-[30px] border-b border-[#cbd5e1] pb-[12px]">
+            <span class="text-mono font-bold text-maroonBrand text-[1.1rem] tracking-tight">[SEC-01]</span>
+            <h3 class="text-[1.4rem] font-extrabold text-navyBrand uppercase tracking-[0.5px]">Financial Turnover Data</h3>
+        </div>
+
+        <!-- 3-Column Engineering Metrics Cards -->
+        <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[25px] mb-[45px]">
+            <div class="bg-white border border-[#cbd5e1] p-[20px] rounded-[4px] blueprint-card relative">
+                <span class="absolute top-[8px] right-[8px] text-[0.65rem] text-[#94a3b8] font-mono">+</span>
+                <span class="text-[0.68rem] font-bold text-textMuted uppercase tracking-[1px] block mb-[5px]">10-Year Cumulative Portfolio Value</span>
+                <div class="text-[1.6rem] font-extrabold text-navyBrand leading-none">116,272,950.99 <span class="text-[0.9rem] font-bold text-maroonBrand">ETB</span></div>
+                <div class="text-[0.85rem] text-textMuted font-medium mt-[4px]">Equivalent to $3,096,169.57 USD Portfolio</div>
+            </div>
+            <div class="bg-white border border-[#cbd5e1] p-[20px] rounded-[4px] blueprint-card relative">
+                <span class="absolute top-[8px] right-[8px] text-[0.65rem] text-[#94a3b8] font-mono">+</span>
+                <span class="text-[0.68rem] font-bold text-textMuted uppercase tracking-[1px] block mb-[5px]">10-Year Mean Annual Scale</span>
+                <div class="text-[1.6rem] font-extrabold text-navyBrand leading-none">11,627,295.10 <span class="text-[0.9rem] font-bold text-maroonBrand">ETB</span></div>
+                <div class="text-[0.85rem] text-textMuted font-medium mt-[4px]">Mean average annual asset distribution of $309,616.96 USD</div>
+            </div>
+            <div class="bg-white border border-[#cbd5e1] p-[20px] rounded-[4px] blueprint-card relative md:col-span-2 lg:col-span-1">
+                <span class="absolute top-[8px] right-[8px] text-[0.65rem] text-[#94a3b8] font-mono">+</span>
+                <span class="text-[0.68rem] font-bold text-textMuted uppercase tracking-[1px] block mb-[5px]">Liquidity Security Status</span>
+                <div class="text-[1.4rem] font-extrabold text-[#10b981] flex items-center gap-[8px] uppercase tracking-wide">
+                    <i class="fa-solid fa-circle-check text-[1.1rem]"></i> Unencumbered
+                </div>
+                <div class="text-[0.85rem] text-textMuted font-medium mt-[6px]">Sufficient backing for immediate project mobilizations.</div>
+            </div>
+        </div>
+
+        <!-- Split Grid: Table vs Simulation Graph -->
+        <div class="grid lg:grid-cols-12 grid-cols-1 gap-[40px] items-start">
+            
+            <!-- Audited Turnover Data Table -->
+            <div class="lg:col-span-7 bg-white border border-[#cbd5e1] rounded-[4px] overflow-hidden shadow-sm">
+                <div class="bg-gradient-to-r from-navyBrand to-[#0f3460] p-[15px_20px] flex justify-between items-center">
+                    <span class="text-white text-[0.85rem] font-bold tracking-wide uppercase"><i class="fa-solid fa-table-list mr-2"></i> Audit Ledger Matrix</span>
+                    <span class="text-[0.7rem] font-mono text-blueAccent bg-[rgba(21,135,210,0.15)] px-2 py-0.5 rounded">REF-ID: BL-REV-10Y</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-[#f1f5f9] border-b border-[#cbd5e1]">
+                                <th class="p-[12px_16px] text-[0.72rem] font-extrabold uppercase text-textDark tracking-wider">Fiscal Year</th>
+                                <th class="p-[12px_16px] text-[0.72rem] font-extrabold uppercase text-textDark tracking-wider text-right">Amount (ETB)</th>
+                                <th class="p-[12px_16px] text-[0.72rem] font-extrabold uppercase text-textDark tracking-wider text-right">USD ($) Equivalent</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#e2e8f0]">
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2024</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">18,110,702.63</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">314,112.03</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2023</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">19,141,791.98</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">347,903.98</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2022</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">18,569,009.54</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">356,076.04</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2021</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">14,279,979.71</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">325,143.55</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2020</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">10,261,423.63</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">291,319.09</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2019</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">7,994,473.57</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">274,724.18</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2018</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">7,207,865.71</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">262,811.41</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2017</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">6,583,027.90</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">281,928.47</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2016</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">8,711,959.54</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">386,886.97</td>
+                            </tr>
+                            <tr class="hover:bg-[rgba(21,135,210,0.03)] transition-colors">
+                                <td class="p-[12px_16px] text-[0.85rem] font-bold text-textDark">2015</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textDark">5,412,716.78</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-medium font-mono text-right text-textMuted">255,263.85</td>
+                            </tr>
+                            <tr class="bg-[#f8fafc] font-bold border-t-2 border-[#cbd5e1]">
+                                <td class="p-[12px_16px] text-[0.85rem] text-navyBrand uppercase">Total Portfolio</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-mono text-right text-navyBrand">116,272,950.99</td>
+                                <td class="p-[12px_16px] text-[0.85rem] font-mono text-right text-maroonBrand">3,096,169.57</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Visual Simulation Graph Frame -->
+            <div class="lg:col-span-5 bg-white border border-[#cbd5e1] rounded-[4px] p-6 shadow-sm h-full flex flex-col justify-between">
+                <div>
+                    <span class="text-maroonBrand text-[0.68rem] font-extrabold uppercase tracking-[2px] block mb-1">Asset Generation Path</span>
+                    <h4 class="text-[1.15rem] font-extrabold text-navyBrand mb-2">10-Year Revenue Growth Simulation</h4>
+                    <p class="text-textMuted text-[0.82rem] leading-[1.5] mb-6">Visual schematic illustrating the multi-year scale progression in million ETB from 2015 baseline through 2024 operations.</p>
+                </div>
+
+                <!-- Pure CSS/Tailwind Vertical Growth Scale Bar Chart Container -->
+                <div class="w-full flex items-end justify-between h-[230px] border-b border-l border-[#cbd5e1] pb-2 pl-2">
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-maroonBrand sim-chart-bar h-[28px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">15</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-maroonBrand sim-chart-bar h-[45px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">16</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-maroonBrand sim-chart-bar h-[34px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">17</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-maroonBrand sim-chart-bar h-[37px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">18</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-maroonBrand sim-chart-bar h-[41px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">19</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-blueAccent sim-chart-bar h-[53px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">20</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-[#cbd5e1] group-hover:bg-blueAccent sim-chart-bar h-[74px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">21</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-blueAccent sim-chart-bar h-[96px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">22</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-blueAccent sim-chart-bar h-[100px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">23</span>
+                    </div>
+                    <div class="flex flex-col items-center w-[7%] group">
+                        <div class="w-full bg-blueAccent sim-chart-bar h-[94px] rounded-t-[2px] relative cursor-pointer"></div>
+                        <span class="text-[0.65rem] font-bold text-textMuted mt-2">24</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-[15px] mt-4 pt-4 border-t border-[#f1f5f9] text-[0.72rem] font-semibold text-textMuted">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#cbd5e1] rounded-full inline-block"></span> Baseline Cycle</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-blueAccent rounded-full inline-block"></span> High Acceleration Peak</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SECTION 2: EXTERNAL AUDIT REPORTS -->
+    <section id="external-audit" class="max-w-[1200px] mx-auto my-[10px] pt-16 px-[4%]">
+        <div class="flex items-center gap-[15px] mb-[30px] border-b border-[#cbd5e1] pb-[12px]">
+            <span class="text-mono font-bold text-maroonBrand text-[1.1rem] tracking-tight">[SEC-02]</span>
+            <h3 class="text-[1.4rem] font-extrabold text-navyBrand uppercase tracking-[0.5px]">External Audit Reports</h3>
+        </div>
+
+        <div class="bg-white border border-[#cbd5e1] p-[30px] rounded-[4px] shadow-sm relative">
+            <p class="text-textDark text-[0.95rem] leading-[1.7] mb-4 text-justify">
+                Independent external auditors conduct detailed strategic reviews of our financial ledger tracking systems to mathematically verify balance accuracy and eliminate operational accounting errors. This rigorous governance structure reassures public and private stakeholders of the transparency underlying all structural investments.
+            </p>
+            <p class="text-textDark text-[0.95rem] leading-[1.7] text-justify bg-[#f8fafc] p-5 border-l-4 border-maroonBrand rounded-[4px]">
+                Beles Consulting P.L.C. processes full external auditing structures strictly compliant under the regulatory frameworks authorized by the <strong>Federal Ethiopian Audit and Report Authority Agency</strong>. All yearly reporting validations are certified error-free and embedded directly into our central ledger systems.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECTION 3: DISCLOSURES MATRIX -->
+    <section id="disclosures" class="max-w-[1200px] mx-auto my-[60px] pt-16 px-[4%]">
+        <div class="flex items-center gap-[15px] mb-[30px] border-b border-[#cbd5e1] pb-[12px]">
+            <span class="text-mono font-bold text-maroonBrand text-[1.1rem] tracking-tight">[SEC-03]</span>
+            <h3 class="text-[1.4rem] font-extrabold text-navyBrand uppercase tracking-[0.5px]">Disclosures Matrix</h3>
+        </div>
+
+        <div class="bg-white border border-[#cbd5e1] p-[30px] rounded-[4px] shadow-sm">
+            <p class="text-textMuted text-[0.9rem] leading-[1.6] mb-[25px]">Clear and precise disclosures protect contractual integrity and map risk allocations down to exact mathematical parameters. The primary foundational blocks of our financial disclosures include:</p>
+            
+            <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+                <div class="p-4 border border-[#edf2f7] rounded bg-[#fafbfe]">
+                    <h4 class="text-[0.92rem] font-bold text-navyBrand uppercase tracking-[0.3px] mb-1">[01] Comprehensive Statements</h4>
+                    <p class="text-textDark text-[0.82rem] leading-[1.5]">Fair dynamic recording of corporate balancing statements matching standard engineering frameworks.</p>
+                </div>
+                <div class="p-4 border border-[#edf2f7] rounded bg-[#fafbfe]">
+                    <h4 class="text-[0.92rem] font-bold text-navyBrand uppercase tracking-[0.3px] mb-1">[02] Notes to the Financial Statements</h4>
+                    <p class="text-textDark text-[0.82rem] leading-[1.5]">Detailed descriptive balance annotations logging accounting policies, target metrics, and material estimations.</p>
+                </div>
+                <div class="p-4 border border-[#edf2f7] rounded bg-[#fafbfe]">
+                    <h4 class="text-[0.92rem] font-bold text-navyBrand uppercase tracking-[0.3px] mb-1">[03] Management's Discussion & Analysis (MD&A)</h4>
+                    <p class="text-textDark text-[0.82rem] leading-[1.5]">Strategic technical perspectives reviewing multi-year asset performance, macro-scale risks, and target growth paths.</p>
+                </div>
+                <div class="p-4 border border-[#edf2f7] rounded bg-[#fafbfe]">
+                    <h4 class="text-[0.92rem] font-bold text-navyBrand uppercase tracking-[0.3px] mb-1">[04] Internal Control Controls</h4>
+                    <p class="text-textDark text-[0.82rem] leading-[1.5]">Active structural validation matrices protecting fiscal operations from unexpected ledger discrepancies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: VALUE ENGINEERING: MANAGEMENT SCHEME -->
+    <section id="value-engineering" class="bg-gradient-to-b from-[#0e1626] to-bgDark text-white py-[90px] mt-16 border-t-4 border-maroonBrand relative">
+        <div class="max-w-[1200px] mx-auto px-[4%]">
+            <div class="max-w-3xl mb-[60px]">
+                <span class="text-blueAccent text-[0.75rem] font-extrabold uppercase tracking-[3px] block mb-2"><i class="fa-solid fa-gears"></i> Integrated Resource Optimization</span>
+                <h2 class="text-white lg:text-[2.2rem] text-[1.8rem] font-extrabold tracking-tight mb-4">Value Engineering: Management Scheme</h2>
+                <p class="text-[#abbcd0] text-[0.95rem] leading-[1.7] text-justify">
+                    Value Engineering (VE) forms a fundamental core inside Beles Consulting's product delivery lifecycle. During foundational blueprint phases, optimization loops are systematically run to weigh performance against financial variables. This approach controls project components to align performance demands, safety, and schedules into a highly refined baseline structure.
+                </p>
+            </div>
+
+            <!-- THE ENGINEERING DESIGN PROCESS STATIONS -->
+            <div>
+                <div class="flex items-center gap-4 mb-8 border-b border-[rgba(255,255,255,0.1)] pb-3">
+                    <span class="font-mono text-blueAccent text-[0.8rem] font-bold">[METHODOLOGY SPEC: LOOP-5]</span>
+                    <h3 class="text-[1.1rem] font-bold uppercase tracking-wider text-white">The Continuous Engineering Optimization Loop</h3>
+                </div>
+
+                <div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 gap-[25px]">
+                    <!-- Station 1 -->
+                    <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(21,135,210,0.2)] p-6 rounded relative flex flex-col justify-between hover:border-maroonBrand transition-colors duration-300">
+                        <div>
+                            <span class="w-[36px] h-[36px] rounded-full bg-[rgba(21,135,210,0.1)] text-blueAccent border border-[rgba(21,135,210,0.3)] flex items-center justify-center font-mono text-[0.9rem] font-bold mb-4">01</span>
+                            <h4 class="text-[0.95rem] font-bold text-white uppercase tracking-[0.5px] mb-2">1. Ask & Scope</h4>
+                            <p class="text-[#abbcd0] text-[0.8rem] leading-[1.5]">Identify the core problem, structural variables, cost rules, and baseline functional requirements.</p>
+                        </div>
+                    </div>
+                    <!-- Station 2 -->
+                    <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(21,135,210,0.2)] p-6 rounded relative flex flex-col justify-between hover:border-maroonBrand transition-colors duration-300">
+                        <div>
+                            <span class="w-[36px] h-[36px] rounded-full bg-[rgba(21,135,210,0.1)] text-blueAccent border border-[rgba(21,135,210,0.3)] flex items-center justify-center font-mono text-[0.9rem] font-bold mb-4">02</span>
+                            <h4 class="text-[0.95rem] font-bold text-white uppercase tracking-[0.5px] mb-2">2. Imagine & Solve</h4>
+                            <p class="text-[#abbcd0] text-[0.8rem] leading-[1.5]">Brainstorm flexible possibilities, alternative materials choices, and optimized structural methodologies.</p>
+                        </div>
+                    </div>
+                    <!-- Station 3 -->
+                    <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(21,135,210,0.2)] p-6 rounded relative flex flex-col justify-between hover:border-maroonBrand transition-colors duration-300">
+                        <div>
+                            <span class="w-[36px] h-[36px] rounded-full bg-[rgba(21,135,210,0.1)] text-blueAccent border border-[rgba(21,135,210,0.3)] flex items-center justify-center font-mono text-[0.9rem] font-bold mb-4">03</span>
+                            <h4 class="text-[0.95rem] font-bold text-white uppercase tracking-[0.5px] mb-2">3. Strategic Plan</h4>
+                            <p class="text-[#abbcd0] text-[0.8rem] leading-[1.5]">Map refined targets down to exact technical profiles, processing matrix risks, and cost balances.</p>
+                        </div>
+                    </div>
+                    <!-- Station 4 -->
+                    <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(21,135,210,0.2)] p-6 rounded relative flex flex-col justify-between hover:border-maroonBrand transition-colors duration-300">
+                        <div>
+                            <span class="w-[36px] h-[36px] rounded-full bg-[rgba(21,135,210,0.1)] text-blueAccent border border-[rgba(21,135,210,0.3)] flex items-center justify-center font-mono text-[0.9rem] font-bold mb-4">04</span>
+                            <h4 class="text-[0.95rem] font-bold text-white uppercase tracking-[0.5px] mb-2">4. Create & Build</h4>
+                            <p class="text-[#abbcd0] text-[0.8rem] leading-[1.5]">Execute physical prototype test structures, refining design efficiency by eliminating cost padding.</p>
+                        </div>
+                    </div>
+                    <!-- Station 5 -->
+                    <div class="bg-[rgba(255,255,255,0.02)] border border-[rgba(21,135,210,0.2)] p-6 rounded relative flex flex-col justify-between hover:border-maroonBrand transition-colors duration-300 md:col-span-2 lg:col-span-1">
+                        <div>
+                            <span class="w-[36px] h-[36px] rounded-full bg-[rgba(16,185,129,0.1)] text-[#10b981] border border-[rgba(16,185,129,0.3)] flex items-center justify-center font-mono text-[0.9rem] font-bold mb-4">05</span>
+                            <h4 class="text-[0.95rem] font-bold text-white uppercase tracking-[0.5px] mb-2">5. Test & Redesign</h4>
+                            <p class="text-[#abbcd0] text-[0.8rem] leading-[1.5]">Audit field performance metrics, executing iterative refinements to prolong lifecycle endurance thresholds.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MASTER CLOSING FOOTER BRAND ROW -->
+    <footer class="w-full bg-bgDark text-textMuted py-6 border-t border-[rgba(255,255,255,0.05)] px-[6%] flex sm:flex-row flex-col justify-between items-center text-[0.8rem] font-bold">
+        <span>&copy; 2026 Beles Consulting P.L.C. All Engineering Rights Reserved.</span>
+        <div class="flex gap-4 sm:mt-0 mt-3 font-medium">
+            <a href="index.html" class="hover:text-white transition-colors">Home</a>
+            <span>&middot;</span>
+            <a href="office_headquarters.html" class="hover:text-white transition-colors">Headquarters</a>
+            <span>&middot;</span>
+            <a href="contact.html" class="hover:text-white transition-colors">Contact Specs</a>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT KINETIC CONTROLLERS -->
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Kinetic Mobile Menu Drawer Toggle Integration Logic
+            const menuToggleTrigger = document.getElementById("menuToggleTrigger");
+            const navLinksList = document.querySelector(".nav-links-list");
+            
+            if (menuToggleTrigger && navLinksList) {
+                menuToggleTrigger.addEventListener("click", function() {
+                    this.classList.toggle("is-open");
+                    navLinksList.classList.toggle("is-active");
+                });
+            }
+
+            // Mobile Dropdown Menus Expand Actions Setup
+            const mobileDropdownTriggers = document.querySelectorAll(".dropdown-trigger");
+            mobileDropdownTriggers.forEach(trigger => {
+                trigger.addEventListener("click", function(e) {
+                    if (window.innerWidth <= 1024) {
+                        const wrapper = this.parentElement;
+                        const panel = this.nextElementSibling;
+                        
+                        wrapper.classList.toggle("chevron-active");
+                        if (panel) {
+                            panel.classList.toggle("mobile-open");
+                        }
+                    }
+                });
+            });
+
+            // Sticky Navigation Bar Logo Reveal behavior upon down-scroll
+            const stickyLogoWrap = document.querySelector(".sticky-nav-logo-wrap");
+            window.addEventListener("scroll", function() {
+                if (window.scrollY > 120) {
+                    if (stickyLogoWrap) {
+                        stickyLogoWrap.style.opacity = "1";
+                        stickyLogoWrap.style.visibility = "visible";
+                    }
+                } else {
+                    if (stickyLogoWrap) {
+                        stickyLogoWrap.style.opacity = "0";
+                        stickyLogoWrap.style.visibility = "invisible";
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

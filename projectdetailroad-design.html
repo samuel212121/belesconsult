@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailed Engineering Design of Road Projects | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --bg-grey: #f2f4f7;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #ffffff; font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        /* ── REVEAL ── */
+        .reveal-element { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ══════════════════════════════
+           SLIM NAV
+        ══════════════════════════════ */
+        .slim-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: linear-gradient(135deg, var(--navy-brand) 60%, #070d14 100%);
+            border-bottom: 3px solid var(--maroon-brand);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+            height: 58px; display: flex; align-items: center; padding: 0 6%;
+        }
+        .slim-nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .slim-nav-logo { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .slim-nav-logo img { height: 34px; width: auto; }
+        .slim-nav-logo span { font-size: 0.85rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .slim-nav-logo span em { color: var(--blue-accent); font-style: normal; }
+        .slim-nav-right { display: flex; align-items: center; gap: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; transition: color 0.2s; }
+        .back-btn:hover { color: var(--blue-accent); }
+        .back-btn i { font-size: 0.7rem; transition: transform 0.2s; }
+        .back-btn:hover i { transform: translateX(-3px); }
+        .nav-cta-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--maroon-brand); color: #fff; text-decoration: none; padding: 8px 18px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; transition: background 0.2s, transform 0.2s; }
+        .nav-cta-pill:hover { background: #9e0d23; transform: translateY(-1px); }
+
+        /* ══════════════════════════════
+           HERO
+        ══════════════════════════════ */
+        .page-hero {
+            position: relative; min-height: 82vh;
+            display: flex; align-items: flex-end; overflow: hidden;
+            background: var(--bg-dark);
+            background-image: linear-gradient(to top, rgba(7,13,25,0.98) 0%, rgba(7,13,25,0.6) 50%, rgba(7,13,25,0.35) 100%),
+                url('https://images.unsplash.com/photo-1544984243-ec57ea16fe25?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            border-bottom: 5px solid var(--maroon-brand);
+        }
+        .hero-watermark {
+            position: absolute; inset: 0; pointer-events: none; opacity: 0.05;
+            background-repeat: no-repeat; background-position: right 8% center; background-size: 45%;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 500' stroke='%23ffffff' stroke-width='0.6' fill='none'><path d='M50 100 Q 300 400, 550 100 M50 200 Q 300 450, 550 200 M50 300 L 550 300' stroke-dasharray='6,4'/><path d='M100 50 L 100 450 M 300 50 L 300 450 M 500 50 L 500 450' stroke-width='0.3'/><circle cx='300' cy='260' r='60'/><circle cx='300' cy='260' r='110'/></svg>");
+        }
+        .hero-grid { position: absolute; inset: 0; display: flex; pointer-events: none; z-index: 1; }
+        .hero-grid-col { flex: 1; border-right: 1px solid rgba(255,255,255,0.04); }
+        .hero-content { position: relative; z-index: 5; max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 6% 80px 6%; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+        .breadcrumb a, .breadcrumb span { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--blue-accent); }
+        .breadcrumb i { font-size: 0.55rem; color: rgba(255,255,255,0.2); }
+        .breadcrumb span:last-child { color: var(--blue-accent); }
+        .hero-label { display: inline-flex; align-items: center; gap: 10px; background: rgba(21,135,210,0.15); border: 1px solid rgba(21,135,210,0.3); color: var(--blue-accent); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; padding: 6px 16px; border-radius: 2px; margin-bottom: 20px; }
+        .hero-content h1 { font-size: clamp(2.6rem,5.5vw,4.5rem); font-weight: 800; color: #fff; line-height: 1.05; letter-spacing: -2px; margin-bottom: 18px; }
+        .hero-content h1 span { color: var(--blue-accent); }
+        .hero-content p { font-size: 1rem; color: #abbcd0; max-width: 580px; line-height: 1.75; margin-bottom: 36px; }
+        .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+        .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 50px; }
+        .hero-pill i { color: var(--blue-accent); font-size: 0.75rem; }
+
+        /* ══════════════════════════════
+           DISCIPLINE INTRO BLOCKS
+        ══════════════════════════════ */
+        .discipline-section { background: #fff; padding: 90px 6%; }
+        .discipline-inner { max-width: 1200px; margin: 0 auto; }
+        .section-eyebrow { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--maroon-brand); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+        .section-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--maroon-brand); }
+        .discipline-intro-title { font-size: clamp(1.8rem,3vw,2.5rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 48px; max-width: 700px; line-height: 1.2; }
+        .discipline-intro-title span { color: var(--maroon-brand); }
+        .discipline-blocks { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: rgba(22,71,128,0.06); }
+        .disc-block { background: #fff; padding: 36px 28px; position: relative; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+        .disc-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .disc-block:nth-child(1)::before { background: var(--navy-brand); }
+        .disc-block:nth-child(2)::before { background: var(--maroon-brand); }
+        .disc-block:nth-child(3)::before { background: var(--blue-accent); }
+        .disc-block:hover { box-shadow: 0 12px 32px rgba(22,71,128,0.08); transform: translateY(-4px); }
+        .disc-block-num { font-size: 5rem; font-weight: 900; color: rgba(22,71,128,0.05); position: absolute; top: 8px; right: 16px; line-height: 1; pointer-events: none; }
+        .disc-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 18px; }
+        .disc-block:nth-child(1) .disc-icon { background: rgba(22,71,128,0.1); }
+        .disc-block:nth-child(2) .disc-icon { background: rgba(127,10,28,0.1); }
+        .disc-block:nth-child(3) .disc-icon { background: rgba(21,135,210,0.1); }
+        .disc-block:nth-child(1) .disc-icon i { color: var(--navy-brand); }
+        .disc-block:nth-child(2) .disc-icon i { color: var(--maroon-brand); }
+        .disc-block:nth-child(3) .disc-icon i { color: var(--blue-accent); }
+        .disc-icon i { font-size: 1.2rem; }
+        .disc-block h4 { font-size: 1rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px; }
+        .disc-block p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* ══════════════════════════════
+           PROJECTS SECTION
+        ══════════════════════════════ */
+        .projects-listing { background: var(--bg-grey); padding: 100px 6%; }
+        .projects-listing-inner { max-width: 1200px; margin: 0 auto; }
+        .projects-listing-header { margin-bottom: 60px; }
+        .projects-listing-header h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: var(--navy-brand); letter-spacing: -0.5px; margin-bottom: 12px; }
+        .red-line { width: 52px; height: 3px; background: var(--maroon-brand); margin-bottom: 20px; }
+        .projects-listing-header p { font-size: 0.95rem; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+
+        /* ── PROJECT CARD ── */
+        .project-card {
+            background: #fff;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: box-shadow 0.35s, border-color 0.35s;
+        }
+        .project-card:hover { box-shadow: 0 20px 50px rgba(22,71,128,0.09); border-color: rgba(22,71,128,0.15); }
+        .project-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--maroon-brand); transform: scaleY(0); transform-origin: bottom; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+        .project-card:hover::before { transform: scaleY(1); }
+
+        /* ── card top strip ── */
+        .card-top-strip {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 32px 0 32px; flex-wrap: wrap; gap: 12px;
+        }
+        .card-top-left { display: flex; align-items: center; gap: 16px; }
+        .card-ghost-num { font-size: 3.5rem; font-weight: 900; color: rgba(22,71,128,0.07); line-height: 1; letter-spacing: -2px; }
+        .card-status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; padding: 5px 12px; border-radius: 50px; }
+        .badge-completed { background: rgba(34,197,94,0.1); color: #16a34a; border: 1px solid rgba(34,197,94,0.2); }
+        .badge-active { background: rgba(21,135,210,0.1); color: var(--blue-accent); border: 1px solid rgba(21,135,210,0.2); }
+        .badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .badge-completed .badge-dot { background: #16a34a; }
+        .badge-active .badge-dot { background: var(--blue-accent); animation: blink 1.5s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        /* discipline badges */
+        .discipline-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+        .disc-badge { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 2px; }
+        .disc-badge.design { background: rgba(22,71,128,0.08); color: var(--navy-brand); border: 1px solid rgba(22,71,128,0.15); }
+        .disc-badge.review { background: rgba(127,10,28,0.08); color: var(--maroon-brand); border: 1px solid rgba(127,10,28,0.15); }
+        .disc-badge.airfield { background: rgba(21,135,210,0.08); color: var(--blue-accent); border: 1px solid rgba(21,135,210,0.15); }
+        .disc-badge.feasibility { background: rgba(34,197,94,0.08); color: #16a34a; border: 1px solid rgba(34,197,94,0.15); }
+
+        /* ── card main body ── */
+        .card-main-body { padding: 20px 32px 0 32px; }
+        .card-project-title { font-size: clamp(1rem,1.8vw,1.25rem); font-weight: 800; color: var(--navy-brand); line-height: 1.35; margin-bottom: 20px; }
+        .card-content-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; margin-bottom: 0; }
+
+        /* left column */
+        .card-narrative {
+            font-size: 0.95rem; font-weight: 600; color: var(--navy-brand);
+            border-left: 4px solid var(--maroon-brand);
+            padding-left: 16px; margin-bottom: 22px; line-height: 1.6;
+            font-style: italic;
+        }
+        .deliverables-title { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 12px; }
+        .deliverables-list { display: flex; flex-direction: column; gap: 7px; }
+        .deliverable-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.84rem; color: var(--text-dark); line-height: 1.45; }
+        .deliverable-item i { color: #16a34a; font-size: 0.75rem; margin-top: 3px; flex-shrink: 0; }
+
+        /* right column (data panel) */
+        .card-data-panel { background: var(--bg-dark); padding: 28px; display: flex; flex-direction: column; gap: 0; }
+        .data-panel-title { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .data-panel-title i { font-size: 0.7rem; }
+        .data-row { display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 9px 0; }
+        .data-row:last-child { border-bottom: none; }
+        .data-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; width: 110px; flex-shrink: 0; padding-top: 1px; }
+        .data-value { font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.8); line-height: 1.4; flex: 1; }
+        .data-value.highlight { color: var(--blue-accent); font-weight: 700; }
+        .data-value.gold { color: #C8A96E; font-weight: 700; }
+
+        /* ── card photo strip ── */
+        .card-photo-strip { margin-top: 28px; position: relative; height: 220px; overflow: hidden; }
+        .card-photo-strip img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.75); transition: transform 0.5s ease, filter 0.4s ease; }
+        .project-card:hover .card-photo-strip img { transform: scale(1.04); filter: brightness(0.6); }
+        .photo-location-tag { position: absolute; bottom: 16px; left: 16px; background: rgba(7,13,25,0.82); backdrop-filter: blur(6px); border-left: 3px solid var(--maroon-brand); padding: 8px 14px; }
+        .photo-location-tag strong { font-size: 0.82rem; font-weight: 800; color: #fff; display: block; }
+        .photo-location-tag span { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+        .photo-sole-badge { position: absolute; top: 16px; right: 16px; background: var(--maroon-brand); color: #fff; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 5px 12px; }
+
+        /* ── card staff footer ── */
+        .card-staff-footer { padding: 16px 32px 20px 32px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .staff-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .staff-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-light); border: 1px solid #e2e8f0; padding: 6px 14px; font-size: 0.75rem; font-weight: 700; color: var(--text-dark); }
+        .staff-tag i { color: var(--navy-brand); font-size: 0.75rem; }
+        .staff-tag span { color: var(--text-muted); font-weight: 500; }
+        .card-contract-value { font-size: 0.78rem; font-weight: 800; color: var(--navy-brand); display: flex; align-items: center; gap: 8px; }
+        .card-contract-value i { color: var(--maroon-brand); }
+
+        /* project divider */
+        .project-divider { display: flex; align-items: center; gap: 16px; margin: 8px 0 32px 0; }
+        .project-divider-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--maroon-brand), transparent); }
+        .project-divider-label { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); white-space: nowrap; }
+
+        /* ══════════════════════════════
+           WHY BELES
+        ══════════════════════════════ */
+        .why-section { background: var(--navy-brand); padding: 90px 6%; border-top: 4px solid var(--maroon-brand); }
+        .why-inner { max-width: 1200px; margin: 0 auto; }
+        .why-section .section-eyebrow { color: rgba(255,255,255,0.45); }
+        .why-section .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+        .why-section h2 { font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 800; color: #fff; margin-bottom: 48px; letter-spacing: -0.5px; }
+        .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+        .why-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid var(--maroon-brand); padding: 32px 28px; transition: background 0.3s, transform 0.3s; }
+        .why-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+        .why-icon { width: 44px; height: 44px; background: rgba(127,10,28,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; transition: background 0.3s; }
+        .why-card:hover .why-icon { background: var(--maroon-brand); }
+        .why-icon i { color: var(--maroon-brand); font-size: 1.1rem; transition: color 0.3s; }
+        .why-card:hover .why-icon i { color: #fff; }
+        .why-card h4 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .why-card p { font-size: 0.85rem; color: #abbcd0; line-height: 1.65; }
+
+        /* ══════════════════════════════
+           ENGAGE US
+        ══════════════════════════════ */
+        .engage-section { background: var(--bg-dark); padding: 100px 6%; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); }
+        .engage-inner { max-width: 540px; margin: 0 auto; }
+        .mascot-wrap { width: 120px; height: 120px; margin: 0 auto 28px auto; background: radial-gradient(circle, rgba(21,135,210,0.15) 0%, transparent 70%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .mascot-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(21,135,210,0.4); animation: spin 20s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .css-avatar { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .av-hat { position: absolute; top: 8px; width: 62px; height: 34px; background: var(--maroon-brand); border-radius: 36px 36px 6px 6px; z-index: 5; }
+        .av-hat-b { position: absolute; top: 8px; left: 24px; width: 13px; height: 13px; background: #e2e8f0; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--navy-brand); font-weight: 900; }
+        .av-brim { position: absolute; top: 38px; width: 74px; height: 5px; background: #630512; border-radius: 3px; z-index: 6; }
+        .av-face { position: absolute; top: 36px; width: 54px; height: 52px; background: #d1a17d; border-radius: 2px 2px 24px 24px; z-index: 3; }
+        .av-eye-l { position: absolute; top: 16px; left: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-eye-r { position: absolute; top: 16px; right: 11px; width: 7px; height: 3px; border-bottom: 2px solid #2d3748; border-radius: 0 0 4px 4px; }
+        .av-smile { position: absolute; bottom: 10px; left: 16px; width: 18px; height: 8px; border-bottom: 2.5px solid #2d3748; border-radius: 0 0 12px 12px; }
+        .av-body { position: absolute; bottom: 0; width: 88px; height: 28px; background: var(--navy-brand); border-radius: 14px 14px 3px 3px; z-index: 2; }
+        .av-shirt { position: absolute; top: 0; left: 35px; width: 18px; height: 11px; background: #fff; clip-path: polygon(0 0,100% 0,50% 100%); }
+        .engage-motto { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; color: var(--blue-accent); margin-bottom: 10px; }
+        .engage-inner h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .engage-inner p { font-size: 0.9rem; color: #abbcd0; line-height: 1.7; margin-bottom: 32px; }
+        .engage-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+        .btn-wa { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; box-shadow: 0 4px 20px rgba(37,211,102,0.3); animation: pulse-wa 2.2s infinite; transition: transform 0.2s; }
+        .btn-wa:hover { transform: translateY(-2px); }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+        .btn-em { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff; text-decoration: none; padding: 14px 28px; font-size: 0.85rem; font-weight: 800; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+        .btn-em:hover { border-color: var(--blue-accent); background: rgba(21,135,210,0.1); transform: translateY(-2px); }
+        .intl-note { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 10px 20px; border-radius: 50px; font-size: 0.76rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+        .intl-note i { color: var(--blue-accent); }
+
+        /* ══════════════════════════════
+           FOOTER
+        ══════════════════════════════ */
+        .corporate-footer { background: var(--bg-dark); color: #fff; padding: 70px 6% 36px 6%; border-top: 5px solid var(--maroon-brand); }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 48px; }
+        .footer-col h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; border-left: 3px solid var(--maroon-brand); padding-left: 10px; }
+        .footer-col h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--blue-accent); font-weight: 800; margin-bottom: 18px; }
+        .footer-col p { color: #abbcd0; font-size: 0.88rem; line-height: 1.6; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+        .footer-links li a { color: #abbcd0; text-decoration: none; font-size: 0.88rem; transition: color 0.25s; }
+        .footer-links li a:hover { color: #fff; }
+        .footer-contact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; color: #abbcd0; font-size: 0.88rem; }
+        .footer-contact-list li { display: flex; align-items: center; gap: 10px; }
+        .footer-contact-list li i { color: var(--maroon-brand); }
+        .footer-bottom { max-width: 1200px; margin: 26px auto 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: #64748b; }
+
+        /* ══════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════ */
+        @media (max-width: 1024px) {
+            .discipline-blocks { grid-template-columns: 1fr; }
+            .card-content-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+            .card-top-strip { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 640px) {
+            .why-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.4rem; }
+            .card-main-body, .card-top-strip, .card-staff-footer { padding-left: 20px; padding-right: 20px; }
+            .slim-nav-right .back-btn span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ SLIM NAV ══ -->
+<nav class="slim-nav">
+    <div class="slim-nav-inner">
+        <a href="index.html" class="slim-nav-logo">
+            <img src="logos/beles.png" alt="Beles Consulting" onerror="this.onerror=null;this.src='https://placehold.co/120x34/164780/ffffff?text=Beles'">
+            <span>Beles <em>Consult</em></span>
+        </a>
+        <div class="slim-nav-right">
+            <a href="projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i><span>Back to Projects</span></a>
+            <a href="https://wa.me/251911281227" class="nav-cta-pill" target="_blank"><i class="fa-brands fa-whatsapp"></i> Get a Quote</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="page-hero">
+    <div class="hero-watermark"></div>
+    <div class="hero-grid">
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div><div class="hero-grid-col"></div>
+        <div class="hero-grid-col"></div>
+    </div>
+    <div class="hero-content">
+        <nav class="breadcrumb reveal-element">
+            <a href="index.html">Home</a><i class="fa-solid fa-chevron-right"></i>
+            <a href="projects.html">Projects</a><i class="fa-solid fa-chevron-right"></i>
+            <span>Road &amp; Highway Design</span>
+        </nav>
+        <div class="hero-label reveal-element"><i class="fa-solid fa-road"></i> Engineering Design</div>
+        <h1 class="reveal-element">Detailed Engineering<br><span>Design of Road Projects</span></h1>
+        <p class="reveal-element">Precision highway geometry, advanced pavement asset styling, and complex drainage structures modeled to perfection—ensuring structural integrity and efficient regional connectivity before construction deployment.</p>
+        <div class="hero-pills reveal-element">
+            <div class="hero-pill"><i class="fa-solid fa-compass"></i> Geometric Design</div>
+            <div class="hero-pill"><i class="fa-solid fa-layer-group"></i> Pavement Structuring</div>
+            <div class="hero-pill"><i class="fa-solid fa-droplet"></i> Hydrology &amp; Drainage</div>
+            <div class="hero-pill"><i class="fa-solid fa-plane"></i> Airfield Runways</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ DISCIPLINE INTRO BLOCKS ══ -->
+<section class="discipline-section">
+    <div class="discipline-inner">
+        <div class="section-eyebrow reveal-element">Three Pillars of Infrastructure Design</div>
+        <h2 class="discipline-intro-title reveal-element">Translating complex terrain metrics into high-performance, durable <span>corridors.</span></h2>
+        <div class="discipline-blocks">
+            <div class="disc-block reveal-element delay-1">
+                <div class="disc-block-num">01</div>
+                <div class="disc-icon"><i class="fa-solid fa-compass"></i></div>
+                <h4>Geometric Road Design</h4>
+                <p>Advanced calculation of horizontal and vertical alignments, cross-sectional distributions, and dynamic terrain optimizations ensuring high speed safety tolerances and compliant grade balances across demanding corridors.</p>
+            </div>
+            <div class="disc-block reveal-element delay-2">
+                <div class="disc-block-num">02</div>
+                <div class="disc-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <h4>Pavement Layer Engineering</h4>
+                <p>Detailed analysis of soil mechanics, structural subgrade evaluations, aggregate load-bearing calculations, and durable surface layer configuration for heavy-tonnage logistics and industrial corridors.</p>
+            </div>
+            <div class="disc-block reveal-element delay-3">
+                <div class="disc-block-num">03</div>
+                <div class="disc-icon"><i class="fa-solid fa-droplet"></i></div>
+                <h4>Hydrology &amp; Civil Review</h4>
+                <p>Rigorous structural design review of culverts, catchpits, and catchment side-drains matched with precise cut-and-fill computation balancing environmental safety guidelines with cost efficiency.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ PROJECTS LISTING ══ -->
+<section class="projects-listing">
+    <div class="projects-listing-inner">
+        <div class="projects-listing-header reveal-element">
+            <h2>Completed &amp; Active Project Engagements</h2>
+            <div class="red-line"></div>
+            <p>All projects below were executed solely by Beles Consulting P.L.C. — no associated consultants, full accountability from inception to completion report.</p>
+        </div>
+
+        <!-- ══ PROJECT 01 (MIZAN AMAN AIRFIELD) ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">01.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge airfield">Airfield Design</span>
+                    <span class="disc-badge design">Detailed Engineering Design</span>
+                    <span class="disc-badge feasibility">EIA &amp; RAP</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Consultancy Service for Detailed Design of Design and Build of Mizan Aman Airfield Project</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — comprehensive pre-construction consultancy covering route selection, detailed engineering runway design, airfield alignment configuration modeling, environmental safeguards, and resettlement analysis. Total baseline project package value aggregates to 2.5 Billion ETB incorporating escalation valuation.</div>
+                        <div class="deliverables-title">Main Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Final Inception Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Route Selection Studies</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Environmental Impact Assessment (EIA) Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Specific Design Standard Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Material and Site Investigation Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Engineering Design Report, Final Estimate &amp; Book of Computation</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Resettlement Action Plan (RAP)</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Land Acquisition Plans &amp; Right-of-Way Obstruction Identification</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Digital Terrain Model (DTM) &amp; Airfield Alignment Design Software Output</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Right of Way (ROW) Completion Report &amp; Final Project Completion Report</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Ethiopian Airlines Group / Samson Chernet G.C</span></div>
+                        <div class="data-row"><span class="data-label">Country</span><span class="data-value">Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">South Western Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">August 2019</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">May 2021</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">12 Months</span></div>
+                        <div class="data-row"><span class="data-label">Staff Months</span><span class="data-value">8 (12 Associated)</span></div>
+                        <div class="data-row"><span class="data-label">Design Fee</span><span class="data-value gold">2,500,000.00 ETB<br>$55,000.00 USD</span></div>
+                        <div class="data-row"><span class="data-label">Client Tel</span><span class="data-value">+251 115 178025</span></div>
+                        <div class="data-row"><span class="data-label">Address</span><span class="data-value">Africa Avenue, Bole Int. Airport, Addis Ababa</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop" alt="Airfield Engineering Design"> -->
+                <div class="photo-location-tag">
+                    <strong>Mizan Aman Airfield Design</strong>
+                    <span>South Western Region, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-gear"></i> Ato. Adamu Kebede <span>— Team Leader / Project Coordinator / Highway Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-coins"></i> 2,500,000 ETB Design Contract Value</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Project</div>
+            <div class="project-divider-line"></div>
+        </div>
+
+        <!-- ══ PROJECT 02 (ADAMA - AWASH HEAVY MAINTENANCE) ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">02.</div>
+                    <div class="card-status-badge badge-active"><div class="badge-dot"></div> On Progress</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge design">Heavy Maintenance Design</span>
+                    <span class="disc-badge review">Supervision Manuals</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Consultancy Service for the Detailed Engineering Design of Adama – Awash Heavy Maintenance Road Project [Km 0+000 – Km 60+000]</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — high-capacity detailed engineering structural restoration layout design and comprehensive construction safety reporting across 60 kilometers of Ethiopia's premier dynamic cargo logistics backbone corridor. Detailed engineering design phase achieved 100% full authorization closure metrics.</div>
+                        <div class="deliverables-title">Main Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Final Inception Report &amp; Material Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Condition Survey Report &amp; Contractor’s Mobilization Evaluation</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Monthly, Quarterly, and Annual Progress Analytics</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Consultant’s Corporate Quality Assurance Manual</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Rigorous Construction Supervision Manual</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Environmental Management Framework &amp; Special Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Contract Completion &amp; Consultancy Services Closure Documentation</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Ethiopian Roads Administration</span></div>
+                        <div class="data-row"><span class="data-label">Country</span><span class="data-value">Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Oromia Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">January 2022</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">Active Supervision Phase</span></div>
+                        <div class="data-row"><span class="data-label">Staff Months</span><span class="data-value">36 Total (17 Associated)</span></div>
+                        <div class="data-row"><span class="data-label">Contract Value</span><span class="data-value gold">13,912,395.83 ETB<br>$279,370.42 USD</span></div>
+                        <div class="data-row"><span class="data-label">Firm Share</span><span class="data-value highlight">6,057,968.50 ETB</span></div>
+                        <div class="data-row"><span class="data-label">Client Tel</span><span class="data-value">+251-1-15-66 03</span></div>
+                        <div class="data-row"><span class="data-label">Client Email</span><span class="data-value highlight">eramail@era.gov.et</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1590487988256-9ed24133863e?q=80&w=1200&auto=format&fit=crop" alt="Heavy Maintenance Highway Design"> -->
+                <div class="photo-location-tag">
+                    <strong>Adama – Awash Logistics Corridor [60 Km]</strong>
+                    <span>Oromia Region, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Design Authority</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Adamu Kebede <span>— Project Director</span></div>
+                    <div class="staff-tag"><i class="fa-solid fa-user-gear"></i> Micheal Mulugeta <span>— Coordinator</span></div>
+                    <div class="staff-tag"><i class="fa-solid fa-user-shield"></i> Habte Tsegaw <span>— Resident Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-chart-line"></i> Design 100% Finalized · Active Support</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Project</div>
+            <div class="project-divider-line"></div>
+        </div>
+
+        <!-- ══ PROJECT 03 (BELES-MEKANE BIRHAN REVIEW) ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">03.</div>
+                    <div class="card-status-badge badge-active"><div class="badge-dot"></div> Time Extension</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge review">Design Review</span>
+                    <span class="disc-badge design">Asphalt Concrete</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Consultancy Service for the Detailed Engineering Design Review of Beles - Mekane Birhan Design and Build Road Project</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — detailed engineering audit validation and design layout safety optimization analysis across a 39.0-kilometer heavy Asphalt Concrete corridor blueprint. Core 24-month contract framework deliverables are 100% completed, now operating within an authorized structural time extension cycle for complete system alignment closeout.</div>
+                        <div class="deliverables-title">Main Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Final Inception Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Full Comprehensive Engineering Design Review Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Contractor’s Mobilization Evaluation Audit</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Sequential Monthly, Quarterly, and Annual Engineering Overviews</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Specialized Consultant Quality Assurance Manual Mapping</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Structural Construction Supervision Framework Manual</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Environmental Safeguard Management and Specialized Review Reports</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Ethiopian Roads Administration</span></div>
+                        <div class="data-row"><span class="data-label">Country</span><span class="data-value">Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Amhara Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">October 2021</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">Design Review 100% Finalized</span></div>
+                        <div class="data-row"><span class="data-label">Corridor Metrics</span><span class="data-value gold">39.0 km Asphalt Concrete</span></div>
+                        <div class="data-row"><span class="data-label">Staff Months</span><span class="data-value">36 Total (28 Associated)</span></div>
+                        <div class="data-row"><span class="data-label">Contract Value</span><span class="data-value gold">16,119,529.30 ETB<br>$350,432.19 USD</span></div>
+                        <div class="data-row"><span class="data-label">Client Tel</span><span class="data-value">+251-1-15-66 03</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop" alt="Asphalt Highway Engineering"> -->
+                <div class="photo-location-tag">
+                    <strong>Beles – Mekane Birhan Structural Link</strong>
+                    <span>39.0 km · Amhara Region, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Audit Authority</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Adamu Kebede <span>— Project Director</span></div>
+                    <div class="staff-tag"><i class="fa-solid fa-user-gear"></i> Micheal Mulugeta <span>— Coordinator</span></div>
+                    <div class="staff-tag"><i class="fa-solid fa-user-shield"></i> Amare Getachew <span>— Resident Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-clock-rotate-left"></i> > 16.1 Million ETB · Extended Validation</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Project</div>
+            <div class="project-divider-line"></div>
+        </div>
+
+        <!-- ══ PROJECT 04 (PACKAGE 6 CONCEPT & FEASIBILITY) ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">04.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge design">Concept Design</span>
+                    <span class="disc-badge feasibility">Feasibility &amp; EIA</span>
+                    <span class="disc-badge airfield">Risk Engineering</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Consultancy Services for the Concept Design, Resettlement Action (RAP), Environmental Impact Assessment, Risk Assessment, and Feasibility Study: (Package 6)</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — Multi-segment engineering deployment balancing concept geometry drawings across 5 separate regional connection packages. The structural engineering evaluation targeted massive deep cuts, high fills livelihood parameters, and complex traffic intersections. Completed program framework valuation touches 5.4 Billion ETB.</div>
+                        <div class="deliverables-title">Interconnected Corridor Network Components</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-route"></i> 1. Kofele – Korie – Bekoji Route Block</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-route"></i> 2. Arsi Negele – Bilalo Junction Segment</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-route"></i> 3. Bojober – Bole – Bole Junction Corridor</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-route"></i> 4. Arekit – Kuterie Connection</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-route"></i> 5. Kuterie – Bilalo Strategic Highway Section</div>
+                        </div>
+                        <br>
+                        <div class="deliverables-title">Main Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Inception Report &amp; Final Concept Engineering Design Layout Documents &amp; Drawings</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Environmental Impact Assessment (EIA) &amp; Final Economic Feasibility Valuation Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Final Resettlement Action Plan (RAP) &amp; Technical Asset Risk Appraisals</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Final Engineering Cost Report &amp; Definitive Tender Document Configurations</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Site Safety Operations, Difficult Terrain Traffic Modeling, and Deep Cut Safeguards</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Ethiopian Roads Administration</span></div>
+                        <div class="data-row"><span class="data-label">Country</span><span class="data-value">Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Oromia &amp; SNNP Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">March 2021</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">June 2022</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">6 Months</span></div>
+                        <div class="data-row"><span class="data-label">Staff Months</span><span class="data-value">42 Total (42 Associated)</span></div>
+                        <div class="data-row"><span class="data-label">Contract Value</span><span class="data-value gold">5,442,104 ETB Fee Base</span></div>
+                        <div class="data-row"><span class="data-label">Client Email</span><span class="data-value highlight">eramail@era.gov.et</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1512412046876-f386342eddb3?q=80&w=1200&auto=format&fit=crop" alt="Multi segment Highway Network"> -->
+                <div class="photo-location-tag">
+                    <strong>Package 6 Network — 5 Connectors</strong>
+                    <span>Oromia / SNNP Regions, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Ato. Adamu Kebede <span>— Project Coordinator</span></div>
+                    <div class="staff-tag"><i class="fa-solid fa-user-gear"></i> Nebiyu Mekonnen <span>— Team Leader</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-network-wired"></i> 5 Segments Framework Network Block</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Project</div>
+            <div class="project-divider-line"></div>
+        </div>
+
+        <!-- ══ PROJECT 05 (DENEGORO REALIGNMENT) ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">05.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge design">Realignment Design</span>
+                    <span class="disc-badge feasibility">Feasibility Study</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Consultancy Services for Realignment Detailed Engineering Design — Denegoro – Kingi - Mekebilla Road Projects District</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — targeted geometrical corridor realignment detailed engineering design, restructuring hazardous intersection metrics while calculating optimized earthwork grading balances across long-term territorial planning baselines.</div>
+                        <div class="deliverables-title">Main Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Draft &amp; Final Inception Reports</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Draft &amp; Final Route Selection Engineering Studies</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Draft &amp; Final Feasibility Study Reporting Sets</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Draft &amp; Final Environmental Impact Assessment (EIA) Safeguard Frameworks</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Ethiopian Roads Administration</span></div>
+                        <div class="data-row"><span class="data-label">Country</span><span class="data-value">Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Oromia Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">December 2018</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">November 2022</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">36 Months</span></div>
+                        <div class="data-row"><span class="data-label">Staff Months</span><span class="data-value">28 Total (36 Associated)</span></div>
+                        <div class="data-row"><span class="data-label">Contract Value</span><span class="data-value gold">7,464,956.00 ETB</span></div>
+                        <div class="data-row"><span class="data-label">Address</span><span class="data-value">Ras Abebe Aregay St, Addis Ababa</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1515162305285-0293e4767cc2?q=80&w=1200&auto=format&fit=crop" alt="Realignment Geometric Design"> -->
+                <div class="photo-location-tag">
+                    <strong>Denegoro – Kingi – Mekebilla Alignment</strong>
+                    <span>Oromia Region, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-tie"></i> Ato Adamu Kebede <span>— Project Director</span></div>
+                    <div class="staff-tag"><i class="fa-solid fa-user-gear"></i> Ato Solomon Alebele <span>— Team Leader</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-coins"></i> 7.46+ Million ETB Realignment Framework</div>
+            </div>
+        </div>
+
+        <div class="project-divider">
+            <div class="project-divider-line"></div>
+            <div class="project-divider-label">Next Project</div>
+            <div class="project-divider-line"></div>
+        </div>
+
+        <!-- ══ PROJECT 06 (ACCESS ROAD GILGEL AGRO) ══ -->
+        <div class="project-card reveal-element">
+            <div class="card-top-strip">
+                <div class="card-top-left">
+                    <div class="card-ghost-num">06.</div>
+                    <div class="card-status-badge badge-completed"><div class="badge-dot"></div> Completed</div>
+                </div>
+                <div class="discipline-badges">
+                    <span class="disc-badge design">Access Road Design</span>
+                    <span class="disc-badge airfield">Industrial Infrastructure</span>
+                </div>
+            </div>
+            <div class="card-main-body">
+                <h3 class="card-project-title">Consultancy Service for Detailed Engineering Design of Access Road for the Gilgel Agro Industry Share Company Road Project</h3>
+                <div class="card-content-grid">
+                    <div class="card-left">
+                        <div class="card-narrative">Sole Contract — specialized asset pavement layout detailed design engineered to sustain commercial vehicle heavy axle loads supporting agricultural shipping fleet logistics connecting industrial farm structures directly into regional highway frameworks.</div>
+                        <div class="deliverables-title">Main Deliverables</div>
+                        <div class="deliverables-list">
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Final Inception Report &amp; Precise Route Selection Study Mapping</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Environmental Impact Assessment (EIA) Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Specific Design Standard Definition Parameters Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Comprehensive Material and Site Investigation Report</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Engineering Design Report, Final Volume Estimates &amp; Computation Book</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Digital Terrain Model (DTM) &amp; Industrial Access Road Design Software Configuration Output</div>
+                            <div class="deliverable-item"><i class="fa-solid fa-circle-check"></i> Right of Way (ROW) Identification Metrics &amp; Final Project Completion Report</div>
+                        </div>
+                    </div>
+                    <div class="card-data-panel">
+                        <div class="data-panel-title"><i class="fa-solid fa-database"></i> Project Data</div>
+                        <div class="data-row"><span class="data-label">Client</span><span class="data-value">Gilgel Agro-Industry Flower Farm Dev. Sh. Company</span></div>
+                        <div class="data-row"><span class="data-label">Country</span><span class="data-value">Ethiopia</span></div>
+                        <div class="data-row"><span class="data-label">Location</span><span class="data-value">Amhara Region</span></div>
+                        <div class="data-row"><span class="data-label">Engineer</span><span class="data-value highlight">Beles Consult P.L.C. (Sole)</span></div>
+                        <div class="data-row"><span class="data-label">Start</span><span class="data-value">September 2010</span></div>
+                        <div class="data-row"><span class="data-label">Completion</span><span class="data-value">February 2011</span></div>
+                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">7 Months</span></div>
+                        <div class="data-row"><span class="data-label">Contract Value</span><span class="data-value gold">875,000.00 ETB<br>$64,750.06 USD</span></div>
+                        <div class="data-row"><span class="data-label">Classification</span><span class="data-value">Heavy Axle Industrial Access Link</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-photo-strip">
+                <!-- <img src="https://images.unsplash.com/photo-1533928298208-27ff66555d8d?q=80&w=1200&auto=format&fit=crop" alt="Industrial Logistics Road Design"> -->
+                <div class="photo-location-tag">
+                    <strong>Gilgel Agro Industry Logistics Link</strong>
+                    <span>Amhara Region, Ethiopia</span>
+                </div>
+                <div class="photo-sole-badge">Sole Execution</div>
+            </div>
+            <div class="card-staff-footer">
+                <div class="staff-tags">
+                    <div class="staff-tag"><i class="fa-solid fa-user-gear"></i> Adamu Kebede <span>— Project Coordinator / Highway Engineer</span></div>
+                </div>
+                <div class="card-contract-value"><i class="fa-solid fa-truck-moving"></i> Optimized Commercial Logistics Routing Layout</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ══ WHY BELES ══ -->
+<section class="why-section">
+    <div class="why-inner">
+        <div class="section-eyebrow reveal-element">Why Beles Consulting</div>
+        <h2 class="reveal-element">Our Edge in Highway Design Engineering</h2>
+        <div class="why-grid">
+            <div class="why-card reveal-element delay-1">
+                <div class="why-icon"><i class="fa-solid fa-award"></i></div>
+                <h4>100% Sole Accountability</h4>
+                <p>Every major highway blueprint, material verification, and alignment computational dataset within our catalog is executed entirely by our internal design team without joint-consultant fragmentation.</p>
+            </div>
+            <div class="why-card reveal-element delay-2">
+                <div class="why-icon"><i class="fa-solid fa-compass"></i></div>
+                <h4>Advanced Software Modeling</h4>
+                <p>We leverage complete Digital Terrain Models (DTM) alongside precise algorithmic alignment software engines to evaluate geometry profiles, avoiding right-of-way spatial challenges early.</p>
+            </div>
+            <div class="why-card reveal-element delay-3">
+                <div class="why-icon"><i class="fa-solid fa-globe-africa"></i></div>
+                <h4>National Infrastructure Standards</h4>
+                <p>All detailed engineering design processes conform fully with modern Ethiopian Roads Administration manuals paired alongside global standard safety tolerances for international logistics links.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ ENGAGE US ══ -->
+<section class="engage-section">
+    <div class="engage-inner">
+        <div class="mascot-wrap reveal-element">
+            <div class="mascot-ring"></div>
+            <div class="css-avatar">
+                <div class="av-hat"><div class="av-hat-b">B</div></div>
+                <div class="av-brim"></div>
+                <div class="av-face">
+                    <div class="av-eye-l"></div><div class="av-eye-r"></div><div class="av-smile"></div>
+                </div>
+                <div class="av-body"><div class="av-shirt"></div></div>
+            </div>
+        </div>
+        <p class="engage-motto reveal-element">Honest to Serve</p>
+        <h2 class="reveal-element">Ready to Engineer Your Next Road Corridor Asset?</h2>
+        <p class="reveal-element">Whether dealing with complex highway alignments, industrial access road frameworks, airfield design, or heavy maintenance reviews—our expert engineering wing is deployed to help.</p>
+        <div class="engage-btns reveal-element">
+            <a href="https://wa.me/251911281227" target="_blank" class="btn-wa"><i class="fa-brands fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="mailto:belesconsult@gmail.com" class="btn-em"><i class="fa-solid fa-envelope"></i> Send an Email</a>
+        </div>
+        <div class="intl-note reveal-element">
+            <i class="fa-solid fa-earth-africa"></i>
+            International consultancy available across East Africa, Rwanda , and Uganda &amp; beyond
+        </div>
+    </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="corporate-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Beles Consulting P.L.C.</h4>
+            <p>Providing premium detailed engineering road designs, highway realignment models, structural pavement configurations, and rigorous design reviews since October 2007. Compliant with national and international infrastructure standards.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Other Project Categories</h5>
+            <ul class="footer-links">
+                <li><a href="project-bridge-design.html">Bridge Design</a></li>
+                <li><a href="project-feasibility-eia.html">Feasibility, EIA &amp; RAP</a></li>
+                <li><a href="project-supervision.html">Supervision &amp; Contract Admin</a></li>
+                <li><a href="project-building-design.html">Building Design &amp; Supervision</a></li>
+                <li><a href="project-water-supply.html">Water Supply &amp; Infrastructure</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact Channels</h5>
+            <ul class="footer-contact-list">
+                <li><i class="fa-solid fa-map-location-dot"></i> Gurd shola, Infront of Ethio Telecom , Addis Ababa, Ethiopia</li>
+                <li><i class="fa-solid fa-square-phone"></i> (+251) 911 281 227 / 911 459 248</li>
+                <li><i class="fa-solid fa-envelope-open-text"></i> belesconsult@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+        <span>Honest to Serve</span>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const reveals = document.querySelectorAll('.reveal-element');
+    if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => obs.observe(el));
+    } else {
+        reveals.forEach(el => el.classList.add('active'));
+    }
+});
+</script>
+</body>
+</html>

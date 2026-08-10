@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environmental Impact Assessment (EIA) | Beles Consulting P.L.C</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-brand: #164780;
+            --maroon-brand: #7F0A1C;
+            --blue-accent: #1587D2;
+            --bg-dark: #070d19;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-light); font-family: var(--font-main); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        /* ── REVEAL ANIMATION ── */
+        .reveal-element {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+            will-change: transform, opacity;
+        }
+        .reveal-element.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ── MINIMAL TOP CONTROL BAR ── */
+        .minimal-top-bar {
+            width: 100%; height: 75px; background: #ffffff;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 6%; border-bottom: 1px solid #eef2f6;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .back-services-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--navy-brand);
+            font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; transition: color 0.3s ease;
+        }
+        .back-services-btn i { transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+        .back-services-btn:hover { color: var(--maroon-brand); }
+        .back-services-btn:hover i { transform: translateX(-5px); }
+        
+        .compact-brand-mark img { max-height: 45px; width: auto; object-fit: contain; }
+
+        /* ── IMMERSIVE HERO SPLIT ── */
+        .detail-hero-section {
+            padding: 80px 6%; background: var(--bg-dark);
+            position: relative; overflow: hidden;
+            border-bottom: 5px solid var(--maroon-brand);
+        }
+        .hero-watermark-bg {
+            position: absolute; inset: 0; pointer-events: none; opacity: 0.04;
+            background-repeat: no-repeat; background-position: right center; background-size: contain;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' stroke='%23ffffff' stroke-width='0.6' fill='none'><path d='M100 300 h600 M400 100 v400' stroke-dasharray='6,4'/><circle cx='400' cy='300' r='140'/></svg>");
+        }
+        .hero-split-container {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: center;
+            position: relative; z-index: 5;
+        }
+        .hero-text-side .service-tag {
+            font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 3px; color: #10b981; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .hero-text-side .service-tag::before { content: ''; display: inline-block; width: 25px; height: 2px; background: #10b981; }
+        .hero-text-side h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem); font-weight: 800; color: #ffffff;
+            line-height: 1.15; letter-spacing: -1px; margin-bottom: 24px;
+        }
+        .hero-text-side h1 span { color: #10b981; }
+        .hero-text-side p { font-size: 1.05rem; color: #abbcd0; line-height: 1.7; margin-bottom: 30px; }
+        
+        .hero-global-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 18px; border-radius: 4px; color: #ffffff; font-size: 0.85rem; font-weight: 600;
+        }
+        .hero-global-badge i { color: #10b981; }
+
+        .hero-media-side { position: relative; }
+        .hero-frame-wrapper {
+            width: 100%; height: 420px; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hero-frame-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+        .hero-frame-wrapper:hover img { transform: scale(1.04); }
+
+        /* ── SECTION ARCHITECTURE ── */
+        .content-block-layout { max-width: 1200px; margin: 100px auto; padding: 0 6%; }
+        .section-headline { font-size: 1.8rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 35px; border-left: 4px solid var(--maroon-brand); padding-left: 15px; }
+
+        /* Scope & Strategy Cards */
+        .strategy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-bottom: 80px; }
+        .strategy-card { background: #ffffff; border: 1px solid #e2e8f0; padding: 40px; border-radius: 6px; position: relative; }
+        .strategy-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--navy-brand); }
+        .strategy-card h3 { font-size: 1.3rem; font-weight: 800; color: var(--navy-brand); margin-bottom: 15px; }
+        .strategy-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* Process Diagram Component (Scoping to Mitigation) */
+        .eia-flow-container {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 40px; margin-bottom: 80px; box-shadow: 0 10px 30px rgba(10,20,36,0.02);
+        }
+        .flow-header-node { margin-bottom: 30px; border-bottom: 1px solid #edf2f7; padding-bottom: 20px; }
+        .flow-header-node h3 { font-size: 1.3rem; font-weight: 800; color: var(--navy-brand); }
+        .flow-header-node p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .eia-process-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; position: relative;
+        }
+        .process-step-node {
+            background: var(--bg-light); border: 1px solid #e2e8f0; border-radius: 6px;
+            padding: 20px 15px; text-align: center; position: relative;
+            transition: all 0.3s ease;
+        }
+        .process-step-node:hover { transform: translateY(-3px); border-color: var(--blue-accent); background: #ffffff; }
+        .step-number-badge {
+            width: 30px; height: 30px; background: var(--navy-brand); color: #ffffff;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 800; margin: 0 auto 12px auto;
+        }
+        .process-step-node:nth-child(even) .step-number-badge { background: var(--maroon-brand); }
+        .process-step-node h4 { font-size: 0.9rem; font-weight: 800; color: var(--text-dark); margin-bottom: 8px; }
+        .process-step-node p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
+        /* Process Flow Connecting Arrows for Desktop Layouts */
+        @media (min-width: 1025px) {
+            .process-step-node:not(:last-child)::after {
+                content: '\f061'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+                position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+                color: #cbd5e1; font-size: 0.85rem; z-index: 5;
+            }
+        }
+
+        /* Technical Scope Ledger Dashboard */
+        .dashboard-container {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 40px; margin-bottom: 80px; box-shadow: 0 10px 30px rgba(10,20,36,0.02);
+        }
+        .dashboard-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #edf2f7; padding-bottom: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        .dashboard-title h3 { font-size: 1.3rem; font-weight: 800; color: var(--navy-brand); }
+        .dashboard-title p { font-size: 0.85rem; color: var(--text-muted); }
+        .total-counter-badge { background: #10b981; color: #ffffff; padding: 6px 16px; font-weight: 700; font-size: 0.85rem; border-radius: 3px; letter-spacing: 0.5px; }
+
+        .registry-table-wrapper { overflow-x: auto; }
+        .registry-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        .registry-table th { background: var(--navy-brand); color: #ffffff; padding: 14px 18px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+        .registry-table td { padding: 14px 18px; border-bottom: 1px solid #edf2f7; color: #4a5568; }
+        .registry-table tr:nth-child(even) td { background-color: #f8fafc; }
+        .badge-type { display: inline-block; padding: 3px 8px; font-size: 0.72rem; font-weight: 700; border-radius: 2px; text-transform: uppercase; }
+        .badge-type.env-active { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+        /* ── GALLERY SECTION PLACEHOLDERS ── */
+        .project-gallery-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px auto 80px auto;
+        }
+        .gallery-placeholder {
+            background-color: #e2e8f0; border-radius: 8px; height: 260px; overflow: hidden;
+            position: relative; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            cursor: pointer; transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .gallery-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-placeholder .gallery-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(22, 71, 128, 0.9), rgba(7, 13, 25, 0.2));
+            opacity: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+            transition: opacity 0.4s ease;
+        }
+        .gallery-placeholder:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(22,71,128,0.15); }
+        .gallery-placeholder:hover .gallery-overlay { opacity: 1; }
+        .gallery-overlay h4 { color: #ffffff; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .gallery-overlay p { color: #abbcd0; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Sustainability Action Metrics Panels */
+        .consultancy-showcase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 80px; }
+        .project-tracking-card {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;
+            padding: 28px; display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+        }
+        .project-tracking-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(22,71,128,0.06); border-color: rgba(16,185,129,0.3); }
+        .project-tracking-card .project-header-node { margin-bottom: 15px; }
+        .project-region-stamp { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: #10b981; letter-spacing: 1.5px; display: block; margin-bottom: 5px; }
+        .project-header-node h4 { font-size: 1.05rem; font-weight: 800; color: var(--navy-brand); line-height: 1.4; }
+        .project-desc-short { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+        
+        /* Progress mechanics */
+        .progress-bar-infrastructure { width: 100%; background: #edf2f7; height: 6px; border-radius: 10px; overflow: hidden; position: relative; margin-top: auto; }
+        .progress-fill-node { height: 100%; background: linear-gradient(90deg, var(--navy-brand), #10b981); border-radius: 10px; width: 0%; transition: width 1s cubic-bezier(0.16,1,0.3,1); }
+        .progress-fill-node.maroon-fill { background: linear-gradient(90deg, var(--maroon-brand), #10b981); }
+        .progress-label-node { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
+        .status-badge-inline { font-size: 0.7rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Structural Framework Alignment Block */
+        .eco-impact-block {
+            background: linear-gradient(135deg, #0f1e36 0%, #070d19 100%);
+            border-left: 4px solid #10b981; border-radius: 4px; padding: 45px; color: #ffffff;
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; align-items: center;
+        }
+        .eco-left-title h3 { font-size: 1.5rem; font-weight: 800; line-height: 1.3; color: #ffffff; }
+        .eco-left-title h3 i { color: #10b981; margin-right: 10px; }
+        .eco-right-desc p { font-size: 0.95rem; color: #abbcd0; line-height: 1.7; margin-bottom: 15px; }
+        .eco-right-desc ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .eco-right-desc ul li { font-size: 0.85rem; color: #ffffff; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .eco-right-desc ul li i { color: #10b981; font-size: 0.8rem; }
+
+        /* ── ANIMATED CAPSULE CONTACT DOCK FROM SCREENSHOT (309) ── */
+        .screenshot-contact-wrapper {
+            max-width: 750px; margin: 120px auto 60px auto; position: relative; padding: 0 20px;
+        }
+        .capsule-dock-container {
+            background: #ffffff; border-radius: 100px; padding: 12px 140px 12px 180px;
+            box-shadow: 0 20px 45px rgba(7, 13, 25, 0.08); border: 1px solid #e2e8f0;
+            display: flex; flex-direction: column; justify-content: center; min-height: 140px;
+            position: relative; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .capsule-dock-container:hover { transform: translateY(-4px); box-shadow: 0 25px 55px rgba(7, 13, 25, 0.12); }
+        
+        /* Interactive Channels Expansion Layout */
+        .capsule-expanded-channels {
+            max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease;
+            display: flex; gap: 12px; margin-top: 0;
+        }
+        .capsule-dock-container.is-active { border-radius: 30px; padding-bottom: 25px; padding-right: 40px; }
+        .capsule-dock-container.is-active .capsule-expanded-channels { max-height: 60px; opacity: 1; margin-top: 15px; }
+        .capsule-dock-container.is-active .trigger-badge-icon i { transform: translate(-50%, -50%) rotate(90deg); }
+
+        /* Pure CSS Animated Cartoon Blueprint from Screenshot (309) */
+        .cartoon-engineer-node {
+            position: absolute; left: 30px; bottom: 0; width: 130px; height: 165px; z-index: 10; pointer-events: none;
+        }
+        /* Hardhat */
+        .hardhat-cap { position: absolute; top: 18px; left: 20px; width: 80px; height: 42px; background: #FF9800; border-radius: 80px 80px 0 0; z-index: 3; }
+        .hardhat-brim { position: absolute; top: 56px; left: 10px; width: 100px; height: 8px; background: #FF5722; border-radius: 4px; z-index: 4; }
+        /* Face & Features */
+        .engineer-head { position: absolute; top: 48px; left: 30px; width: 60px; height: 60px; background: #FFDEB4; border-radius: 50%; z-index: 2; }
+        .engineer-eye { position: absolute; top: 22px; width: 6px; height: 6px; background: #232323; border-radius: 50%; }
+        .engineer-eye.left { left: 16px; } .engineer-eye.right { right: 16px; }
+        .engineer-smile { position: absolute; top: 32px; left: 20px; width: 20px; height: 10px; border-bottom: 3px solid #232323; border-radius: 0 0 20px 20px; }
+        /* Torso Vest & Striped Shirt */
+        .engineer-torso { position: absolute; bottom: 0; left: 10px; width: 100px; height: 65px; background: #7F0A1C; border-radius: 30px 30px 0 0; overflow: hidden; z-index: 1; border-left: 14px solid #164780; border-right: 14px solid #164780; }
+        .shirt-stripe { position: absolute; left: 0; width: 100%; height: 10px; background: #ffffff; top: 24px; }
+        /* Beles Crest Badge */
+        .beles-mini-badge { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); background: #ffffff; padding: 2px 8px; border-radius: 3px; font-size: 9px; font-weight: 900; color: #1587D2; letter-spacing: 0.5px; border: 1px solid #164780; }
+
+        /* Typography layout matching layout structure */
+        .capsule-text-node h4 { font-size: 1.5rem; font-weight: 800; color: #000000; line-height: 1.2; }
+        .capsule-text-node p { font-size: 1.2rem; color: #575757; font-weight: 500; margin-top: 2px; }
+
+        /* Maroon Action Circle Trigger */
+        .trigger-badge-icon {
+            position: absolute; right: 25px; top: 50%; transform: translateY(-50%);
+            width: 85px; height: 85px; background: var(--maroon-brand); border-radius: 50%;
+            box-shadow: 0 8px 25px rgba(127,10,28,0.3); display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; z-index: 5;
+        }
+        .trigger-badge-icon i { color: #ffffff; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: transform 0.3s ease; }
+        
+        /* Action buttons inside expanded dock */
+        .capsule-btn {
+            display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+            padding: 10px 20px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.5px; border-radius: 4px; color: #ffffff; transition: transform 0.2s ease;
+        }
+        .capsule-btn.wa { background: #25D366; }
+        .capsule-btn.em { background: var(--navy-brand); }
+        .capsule-btn:hover { transform: scale(1.03); }
+
+        /* Pulse Micro-Animation */
+        @keyframes subtlePulse {
+            0% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.04); box-shadow: 0 12px 30px rgba(127,10,28,0.45); }
+            100% { transform: translateY(-50%) scale(1); }
+        }
+        .capsule-dock-container:not(.is-active) .trigger-badge-icon { animation: subtlePulse 3s infinite ease-in-out; }
+
+        /* ── RESPONSIVE CROSSOVERS ── */
+        @media (max-width: 1024px) {
+            .hero-split-container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .hero-text-side .service-tag { justify-content: center; }
+            .hero-text-side .service-tag::before { display: none; }
+            .hero-frame-wrapper { height: 320px; }
+            .strategy-grid, .consultancy-showcase-grid, .eco-impact-block, .eia-process-grid { grid-template-columns: 1fr; gap: 30px; }
+            .project-gallery-grid { grid-template-columns: 1fr; }
+            .capsule-dock-container { padding: 140px 30px 30px 30px; text-align: center; border-radius: 24px; align-items: center; }
+            .cartoon-engineer-node { left: 50%; transform: translateX(-50%); top: -40px; bottom: auto; }
+            .trigger-badge-icon { position: relative; right: auto; top: auto; transform: none; margin-top: 20px; width: 65px; height: 65px; }
+            @keyframes subtlePulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+            .capsule-dock-container.is-active { padding-bottom: 30px; padding-right: 30px; }
+            .capsule-expanded-channels { flex-direction: column; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="minimal-top-bar">
+        <a href="services.html" class="back-services-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to All Services
+        </a>
+        <div class="compact-brand-mark">
+            <img src="logos/beles.png" alt="Beles Consulting" onerror="this.onerror=null;this.src='https://placehold.co/120x45/ffffff/164780?text=Beles'">
+        </div>
+    </header>
+
+    <section class="detail-hero-section">
+        <div class="hero-watermark-bg"></div>
+        <div class="hero-split-container">
+            <div class="hero-text-side">
+                <div class="service-tag reveal-element">Environmental Discipline 09</div>
+                <h1>Environmental <span>Impact</span> Assessment (EIA)</h1>
+                <p class="reveal-element delay-1">Balancing engineering necessities with long-term ecological and community safety. We deliver transparent, regulatory-compliant assessments to identify, evaluate, and mitigate potential adverse effects for industrial, infrastructure, and resource extraction initiatives.</p>
+                <div class="hero-global-badge reveal-element delay-2">
+                    <i class="fa-solid fa-leaf"></i> Sustainable Engineering Solutions Approved by Stakeholders
+                </div>
+            </div>
+            <div class="hero-media-side reveal-element delay-1">
+                <div class="hero-frame-wrapper">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" alt="Rural corridor landscape undergoing environmental monitoring survey">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="content-block-layout">
+        
+        <h2 class="section-headline reveal-element">Balanced Engineering Frameworks</h2>
+        <div class="strategy-grid">
+            <div class="strategy-card reveal-element">
+                <h3>Collaborative Problem Solving</h3>
+                <p>Our team of engineers and environmental specialists collaborates closely with clients, key interest groups, and communities. By analyzing local contexts alongside specific project targets, we design solutions that fulfill both legal and structural requirements while preserving surrounding ecosystems.</p>
+            </div>
+            <div class="strategy-card reveal-element delay-1">
+                <h3>Long-Term Sustainability</h3>
+                <p>Effective management of environmental impacts is critical to the long-term viability of any modern infrastructure. We supply decision makers with the exact data matrices and operational roadmaps required to execute transparent, participatory development strategies.</p>
+            </div>
+        </div>
+
+        <div class="eia-flow-container reveal-element">
+            <div class="flow-header-node">
+                <h3>Statutory Steps of the EIA Process</h3>
+                <p>Our systematic methodology ensures every assessment complies fully with relevant local and international regulatory frameworks.</p>
+            </div>
+            <div class="eia-process-grid">
+                <div class="process-step-node">
+                    <div class="step-number-badge">01</div>
+                    <h4>Project Scoping</h4>
+                    <p>Defining boundaries, data requirements, and key baseline parameters.</p>
+                </div>
+                <div class="process-step-node">
+                    <div class="step-number-badge">02</div>
+                    <h4>Impact ID</h4>
+                    <p>Detecting potential project actions on soil, water, and local habitats.</p>
+                </div>
+                <div class="process-step-node">
+                    <div class="step-number-badge">03</div>
+                    <h4>Assessment</h4>
+                    <p>Rigorous structural and scientific evaluation of impact scale.</p>
+                </div>
+                <div class="process-step-node">
+                    <div class="step-number-badge">04</div>
+                    <h4>Evaluation</h4>
+                    <p>Weighing consequences against legal thresholds and community interests.</p>
+                </div>
+                <div class="process-step-node">
+                    <div class="step-number-badge">05</div>
+                    <h4>Mitigation</h4>
+                    <p>Formulating alternative technologies or protective systems.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-headline reveal-element">Core Assessment Registry</h2>
+        <div class="dashboard-container reveal-element">
+            <div class="dashboard-meta">
+                <div class="dashboard-title">
+                    <h3>Environmental Consultation Matrices</h3>
+                    <p>Primary target sectors monitored and audited by our integrated engineering teams.</p>
+                </div>
+                <span class="total-counter-badge">Regulatory Compliance Safeguards</span>
+            </div>
+
+            <div class="registry-table-wrapper">
+                <table class="registry-table">
+                    <thead>
+                        <tr>
+                            <th>Infrastructure Sector</th>
+                            <th>Critical Audited Dimensions</th>
+                            <th>Regulatory Compliance Delivery</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Infrastructure Corridors</strong></td>
+                            <td>Ecosystem separation, runoff alterations, noise pollution vectors</td>
+                            <td><span class="badge-type env-active">EIA Clearance Reporting</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Industrial Facilities</strong></td>
+                            <td>Air quality preservation, waste management systems, resource use rates</td>
+                            <td><span class="badge-type env-active">Operational Management Frameworks</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Natural Resource Extraction</strong></td>
+                            <td>Geological disruption, soil chemistry retention, water table protection</td>
+                            <td><span class="badge-type env-active">Strategic Mitigation Planning</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="section-headline reveal-element">Environmental Monitoring &amp; Survey Gallery</h2>
+        <div class="project-gallery-grid reveal-element">
+            <div class="gallery-placeholder">
+                <img src="https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?q=80&w=600&auto=format&fit=crop" alt="Environmental hydrology monitoring field site">
+                <div class="gallery-overlay">
+                    <h4>Hydrological Context Surveys</h4>
+                    <p>Site Photography Placeholder</p>
+                </div>
+            </div>
+            <div class="gallery-placeholder">
+                <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=600&auto=format&fit=crop" alt="Ecological boundary survey near infrastructure project alignment">
+                <div class="gallery-overlay">
+                    <h4>Ecosystem Boundary Analysis</h4>
+                    <p>Site Photography Placeholder</p>
+                </div>
+            </div>
+            <div class="gallery-placeholder">
+                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=600&auto=format&fit=crop" alt="Environmental specialist collecting soil samples on construction path">
+                <div class="gallery-overlay">
+                    <h4>Soil &amp; Terrain Impact Audits</h4>
+                    <p>Site Photography Placeholder</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-headline reveal-element">Sustainability Targets</h2>
+        <div class="consultancy-showcase-grid">
+            
+            <div class="project-tracking-card reveal-element">
+                <div class="project-header-node">
+                    <span class="project-region-stamp">Regulatory Integrity Goal</span>
+                    <h4>Mitigation Blueprint Execution</h4>
+                </div>
+                <p class="project-desc-short">Developing comprehensive environmental management blueprints that pinpoint substitute raw materials, alternative site plans, or engineering fixes to limit damage.</p>
+                <div class="progress-wrapper-inline">
+                    <div class="progress-label-node">
+                        <span>Adverse Impact Minimization Focus</span>
+                        <span class="status-badge-inline">100% Monitored</span>
+                    </div>
+                    <div class="progress-bar-infrastructure">
+                        <div class="progress-fill-node" data-progress="100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-tracking-card reveal-element delay-1">
+                <div class="project-header-node">
+                    <span class="project-region-stamp">Stakeholder Support Systems</span>
+                    <h4>Transparent Public Consultation Loops</h4>
+                </div>
+                <p class="project-desc-short">Facilitating interactive, open focus group sessions involving community members and state regulators to align modern building milestones with regional ecosystem health.</p>
+                <div class="progress-wrapper-inline">
+                    <div class="progress-label-node">
+                        <span>Stakeholder Consensus Metric</span>
+                        <strong>100%</strong>
+                    </div>
+                    <div class="progress-bar-infrastructure">
+                        <div class="progress-fill-node maroon-fill" data-progress="100%"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="eco-impact-block reveal-element">
+            <div class="eco-left-title">
+                <h3><i class="fa-solid fa-shield-halved"></i> Guarding Long-Term Civil Sustainability</h3>
+            </div>
+            <div class="eco-right-desc">
+                <p>We blend detailed local environmental surveys with structural engineering expertise to deliver practical, stakeholder-supported mitigation plans for all project tiers.</p>
+                <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Scoping Protocol Definition</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Local Ecosystem Integrity Checks</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Legal Framework Alignment</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Habitats Protection Oversight</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="screenshot-contact-wrapper reveal-element">
+            <div class="capsule-dock-container" id="contactCapsule">
+                
+                <div class="cartoon-engineer-node">
+                    <div class="hardhat-cap"></div>
+                    <div class="hardhat-brim"></div>
+                    <div class="engineer-head">
+                        <div class="engineer-eye left"></div>
+                        <div class="engineer-eye right"></div>
+                        <div class="engineer-smile"></div>
+                    </div>
+                    <div class="engineer-torso">
+                        <div class="beles-mini-badge">BELES</div>
+                        <div class="shirt-stripe"></div>
+                    </div>
+                </div>
+
+                <div class="capsule-text-node">
+                    <h4>Do You Have A Project To Discuss?</h4>
+                    <p>Let's Chat.</p>
+                </div>
+
+                <div class="capsule-expanded-channels">
+                    <a href="https://wa.me/251911281227" target="_blank" class="capsule-btn wa">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="mailto:belesconsult@gmail.com?subject=Inquiry:%20Environmental%20Impact%20Assessment%20(EIA)%20Services" class="capsule-btn em">
+                        <i class="fa-regular fa-envelope"></i> Email Us
+                    </a>
+                </div>
+
+                <div class="trigger-badge-icon">
+                    <i class="fa-regular fa-comment-dots"></i>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="minimal-service-footer" style="background: var(--bg-dark); padding: 40px 6%; text-align: center; border-top: 1px solid rgba(255,255,255,0.06);">
+        <div class="minimal-footer-inner" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; color: #64748b; font-size: 0.8rem; flex-wrap: wrap; gap: 15px;">
+            <span>© 2026 Beles Consulting P.L.C. All Rights Reserved.</span>
+            <span>Honest to Serve</span>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // ── Scroll reveal trigger
+        const reveals = document.querySelectorAll('.reveal-element');
+        if ('IntersectionObserver' in window) {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { 
+                    if (e.isIntersecting) {
+                        e.target.classList.add('active'); 
+                    }
+                });
+            }, { threshold: 0.1 });
+            reveals.forEach(el => obs.observe(el));
+        } else {
+            reveals.forEach(el => el.classList.add('active'));
+        }
+
+        // ── Dynamic linear progress animation logic
+        setTimeout(() => {
+            const fills = document.querySelectorAll('.progress-fill-node');
+            fills.forEach(fill => {
+                const targetValue = fill.getAttribute('data-progress');
+                fill.style.width = targetValue;
+            });
+        }, 400);
+
+        // ── Interactive Contact Capsule Expanding Toggle Logic
+        const capsule = document.getElementById('contactCapsule');
+        capsule.addEventListener('click', function(event) {
+            if(event.target.closest('.capsule-btn')) return;
+            this.classList.toggle('is-active');
+        });
+    });
+    </script>
+</body>
+</html>
